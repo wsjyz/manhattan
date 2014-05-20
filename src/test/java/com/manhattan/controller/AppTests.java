@@ -11,7 +11,7 @@ public class AppTests {
         Server jettyServer = new Server();
 
         SocketConnector conn = new SocketConnector();
-        conn.setPort(8081);
+        conn.setPort(8090);
         jettyServer.setConnectors(new Connector[]{conn});
 
         WebAppContext wah = new WebAppContext();

@@ -11,45 +11,46 @@
     <context:component-scan base-package="com.manhattan">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
+
     <mvc:annotation-driven/>
+
     <mvc:default-servlet-handler/>
-    <mvc:view-controller path="/" view-name="forward:/index"/>
+    <mvc:view-controller path="/" view-name="forward:/app/index"/>
     <!-- 静态资源映射 使spring mvc不过滤这些资源 如果不配置则无法访问-->
-    <mvc:resources mapping="/images/**" location="/WEB-INF/images/"/>
-    <mvc:resources mapping="/css/**" location="/WEB-INF/css/"/>
-    <mvc:resources mapping="/js/**" location="/WEB-INF/js/"/>
+    <mvc:resources mapping="/images/**" location="/WEB-INF/app/images/"/>
+    <mvc:resources mapping="/styles/**" location="/WEB-INF/app/styles/"/>
+    <mvc:resources mapping="/scripts/**" location="/WEB-INF/app/scripts/"/>
+    <mvc:resources mapping="/font/**" location="/WEB-INF/app/fonts/"/>
+    <mvc:resources mapping="/bower_components/**" location="/WEB-INF/app/bower_components/"/>
+    <mvc:resources mapping="/views/**" location="/WEB-INF/app/views/"/>
     <!-- Content Negotiating View Resolver -->
     <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver" p:order="1">
         <!-- 设置内容协商管理器 -->
         <property name="contentNegotiationManager">
             <bean  class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
                 <!--这里是是否启用扩展名支持，默认就是true 例如  /user/{userid}.json-->
-                <property name="favorPathExtension" value="false" />
+                <property name="favorPathExtension" value="true" />
                 <!--这里是是否启用参数支持，默认就是true 例如  /user/{userid}?format=json-->
                 <property name="favorParameter" value="true" />
                 <property name="mediaTypes">
                     <props>
                         <prop key="html">text/html</prop>
-                        <prop key="json">application/json</prop>
                         <prop key="xml">application/xml</prop>
+                        <prop key="json">application/json</prop>
                     </props>
                 </property>
             </bean>
         </property>
         <!-- 设置视图解析器 -->
         <property name="viewResolvers">
-            <list>
-                <bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
-                    <property name="cache" value="true"/>
-                    <property name="prefix" value="/WEB-INF/pages/"/>
-                    <property name="suffix" value=".html"/>
-                    <property name="contentType" value="text/html;charset=UTF-8"></property>
-                    <property name="requestContextAttribute" value="request"/>
-                    <property name="exposeSpringMacroHelpers" value="true"/>
-                    <property name="exposeRequestAttributes" value="true"/>
-                    <property name="exposeSessionAttributes" value="true"/>
-                </bean>
-            </list>
+            <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+                <property name="prefix">
+                    <value>/WEB-INF/app/</value>
+                </property>
+                <property name="suffix">
+                    <value>.html</value>
+                </property>
+            </bean>
         </property>
         <!-- 设置默认视图 -->
         <property name="defaultViews">
@@ -62,7 +63,7 @@
     <bean id="viewResolver"
           class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver" p:order="2">
         <property name="cache" value="true"/>
-        <property name="prefix" value="/WEB-INF/pages/"/>
+        <property name="prefix" value="/WEB-INF/app/"/>
         <property name="suffix" value=".html"/>
         <property name="contentType" value="text/html;charset=UTF-8"></property>
         <property name="requestContextAttribute" value="request"/>
@@ -71,7 +72,7 @@
         <property name="exposeSessionAttributes" value="true"/>
     </bean>
     <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
-        <property name="templateLoaderPath" value="/WEB-INF/pages"/>
+        <property name="templateLoaderPath" value="/WEB-INF/app"/>
         <property name="freemarkerSettings">
             <props>
                 <prop key="template_update_delay">0</prop>

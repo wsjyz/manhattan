@@ -1,0 +1,41 @@
+package com.manhattan.util;
+
+
+public class JsonResult {
+
+	/**
+	 * 消息
+	 */
+	private String message;
+	/**
+	 * 返回的数据
+	 */
+	private Object data;
+
+    private boolean success;
+
+
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
+
+    public Object getData() {
+		return data;
+	}
+
+	public void setData(Object data) {
+		this.data = data;
+	}
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+}
