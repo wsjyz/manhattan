@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 /**
  * Created by lk.zh on 2014/5/20.
  */
-@Repository("userDAO")
-public interface InformationDao extends PagingAndSortingRepository<Information,String> {
+@Repository("informationDao")
+public interface InformationDao extends PagingAndSortingRepository<Information, String> {
 }

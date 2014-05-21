@@ -18,7 +18,7 @@ public class User {
     private String userName;
     @Column(name = "password")
     private String password;
-    @Column(name = "authCode")
+    @Column(name = "auth_code")
     private String authCode;
     @Column(name = "type")
     private String type;

@@ -14,13 +14,14 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDAO userDAO;
+
     @Override
     public void findUserById(String userId) {
         userDAO.findOne(userId);
     }
 
     @Override
-    public String findUserByFilter(String userName,String password) {
+    public String findUserByFilter(String userName, String password) {
         return userDAO.findUserByUserNameAndPassword(userName, password);
     }
 
@@ -37,5 +38,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserByUserName(String tel) {
         return userDAO.findUserByUserName(tel);
+    }
+
+    @Override
+    public int resetPassword(String tel, String newPassword) {
+        return userDAO.updatePass(tel, newPassword);
     }
 }

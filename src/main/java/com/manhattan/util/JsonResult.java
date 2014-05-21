@@ -3,14 +3,10 @@ package com.manhattan.util;
 
 public class JsonResult {
 
-	/**
-	 * 消息
-	 */
-	private String message;
-	/**
-	 * 返回的数据
-	 */
-	private Object data;
+
+    private String message;
+
+    private Object data;
 
     private boolean success;
 
@@ -24,12 +20,12 @@ public class JsonResult {
     }
 
     public Object getData() {
-		return data;
-	}
+        return data;
+    }
 
-	public void setData(Object data) {
-		this.data = data;
-	}
+    public void setData(Object data) {
+        this.data = data;
+    }
 
     public String getMessage() {
         return message;
