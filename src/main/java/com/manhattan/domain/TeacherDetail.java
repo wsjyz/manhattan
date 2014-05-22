@@ -56,6 +56,8 @@ public class TeacherDetail {
     private String teachingCertificate;
     @Column(name = "student_max_score")
     private String studentMaxScore;
+    @Column(name = "student_max_score_certificate")
+    private String studentMaxScoreCertificate;
     @Column(name = "authentication_status")
     private String authenticationStatus;
 
@@ -249,5 +251,13 @@ public class TeacherDetail {
 
     public void setAuthenticationStatus(String authenticationStatus) {
         this.authenticationStatus = authenticationStatus;
+    }
+
+    public String getStudentMaxScoreCertificate() {
+        return studentMaxScoreCertificate;
+    }
+
+    public void setStudentMaxScoreCertificate(String studentMaxScoreCertificate) {
+        this.studentMaxScoreCertificate = studentMaxScoreCertificate;
     }
 }

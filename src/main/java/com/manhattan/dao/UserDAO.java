@@ -1,24 +1,29 @@
-package com.manhattan.dao.user;
+package com.manhattan.dao;
 
 import com.manhattan.domain.User;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 /**
  * Created by dam on 14-4-15.
  */
-public interface UserDAO extends CrudRepository<User, String> {
+public interface UserDAO extends JpaRepository<User, String> {
 
-    String findUserIdBymobileAndPassword(String mobile, String password);
+    User findBymobileAndPassword(String mobile, String password);
 
-    User findUserByMobileAndAuthCode(String mobile, String authCode);
+    User findByMobileAndAuthCode(String mobile, String authCode);
 
-    User findUserByMobile(String mobile);
+    User findByMobile(String mobile);
 
     @Query(value = "update User u set u.password=:newPassword where u.mobile=:tel")
     int updatePass(@Param("tel") String tel, @Param("newPassword") String newPassword);
 
     @Query(value = "update User u set u.password=?2,u.type=?3 where u.userId=?1")
     int updateUser(String userId, String password, String type);
+
+    List<User> findByUserNameLikeAndType(String userName, String teacher);
 }

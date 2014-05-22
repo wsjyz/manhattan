@@ -1,7 +1,7 @@
 package com.manhattan.controller;
 
 import com.manhattan.domain.User;
-import com.manhattan.service.user.UserService;
+import com.manhattan.service.UserService;
 import com.manhattan.util.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,7 +26,7 @@ public class MainController {
 
     @RequestMapping(value = "/login")
     public @ResponseBody JsonResult login(@ModelAttribute("user")User user) {
-        String res=userService.findUserByFilter(user.getUserName(),user.getPassword());
+        String res=userService.findUserIdByFilter(user.getUserName(),user.getPassword());
         JsonResult jsonResult=new JsonResult();
         jsonResult.setSuccess(!StringUtils.isEmpty(res));
         return jsonResult;

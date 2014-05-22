@@ -22,8 +22,6 @@ public class User {
     private String authCode;
     @Column(name = "type")
     private String type;
-    @Column(name = "user_name")
-    private String nickName;
     @Column(name = "avatar")
     private String avatar;
     @Column(name = "sex")
@@ -36,6 +34,8 @@ public class User {
     private String address;
     @Column(name = "credit")
     private Integer credits;
+    @Column(name = "wallet")
+    private Integer wallet;
     @Column(name = "vip_end_time")
     private Date vipExpiredTime;
 
@@ -62,14 +62,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getNickName() {
-        return nickName;
-    }
-
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
     }
 
     public String getAvatar() {
@@ -142,5 +134,13 @@ public class User {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Integer getWallet() {
+        return wallet;
+    }
+
+    public void setWallet(Integer wallet) {
+        this.wallet = wallet;
     }
 }

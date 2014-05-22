@@ -26,6 +26,8 @@ public class Question {
     private String replyUser;
     @Column(name = "assign_teacher")
     private String assignTeacher;
+    @Column(name = "status")
+    private String status;
     @Column(name = "answer")
     private String answer;
     @Column(name = "create_time")
@@ -112,5 +114,13 @@ public class Question {
 
     public void setAnswerTime(Timestamp answerTime) {
         this.answerTime = answerTime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

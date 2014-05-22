@@ -1,10 +1,15 @@
-package com.manhattan.service.user.impl;
+package com.manhattan.service.impl;
 
-import com.manhattan.dao.user.UserDAO;
+import com.manhattan.dao.UserDAO;
 import com.manhattan.domain.User;
-import com.manhattan.service.user.UserService;
+import com.manhattan.service.UserService;
+import com.manhattan.util.MhtConstant;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Created by dam on 14-4-15.
@@ -22,12 +27,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String findUserIdByFilter(String mobile, String password) {
-        return userDAO.findUserIdBymobileAndPassword(mobile, password);
+        User user = userDAO.findBymobileAndPassword(mobile, password);
+        if (user != null) {
+            return user.getUserId();
+        }
+        return null;
     }
 
     @Override
     public User findUserByFilter(String mobile, String password) {
-        return userDAO.findUserByMobileAndAuthCode(mobile, password);
+        return userDAO.findByMobileAndAuthCode(mobile, password);
     }
 
     @Override
@@ -41,8 +50,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findUserByUserName(String tel) {
-        return userDAO.findUserByMobile(tel);
+    public User findUserByMobile(String tel) {
+        return userDAO.findByMobile(tel);
     }
 
     @Override
@@ -53,5 +62,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public int register(String userId, String password, String type) {
         return userDAO.updateUser(userId, password, type);
+    }
+
+    @Override
+    public List<User> getTeachersByName(String searchKey) {
+        return userDAO.findByUserNameLikeAndType(searchKey, MhtConstant.USER_TYPE_TEACHER);
+    }
+
+    @Override
+    public Page<User> findTeacherByPage(Pageable pageAble) {
+        return userDAO.findAll(pageAble);
     }
 }

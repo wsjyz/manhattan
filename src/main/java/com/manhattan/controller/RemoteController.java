@@ -1,18 +1,24 @@
 package com.manhattan.controller;
 
-import com.manhattan.domain.Question;
-import com.manhattan.domain.User;
+import com.manhattan.domain.*;
+import com.manhattan.service.QuestionService;
+import com.manhattan.service.TeacherDetailService;
+import com.manhattan.service.UserActionService;
 import com.manhattan.service.WalletService;
-import com.manhattan.service.user.UserService;
+import com.manhattan.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 /**
  * Created by lk.zh on 2014/5/20.
@@ -25,10 +31,15 @@ public class RemoteController {
     private UserService userService;
     @Autowired
     private WalletService walletService;
+    @Autowired
+    private TeacherDetailService teacherDetailService;
+    @Autowired
+    private UserActionService userActionService;
+    @Autowired
+    private QuestionService questionService;
 
     /**
-     * login
-     *
+     * 登录
      * @param mobile
      * @param password
      * @return
@@ -43,7 +54,7 @@ public class RemoteController {
     }
 
     /**
-     * register
+     * 注册
      * @param mobile
      * @param password
      * @param authCode
@@ -96,7 +107,7 @@ public class RemoteController {
     Boolean resetPassword(@RequestParam("tel") String tel,
                                             @RequestParam("newPassword" )String newPassword,
                                             @RequestParam("authCode" )String authCode) {
-        User user=userService.findUserByUserName(tel);
+        User user=userService.findUserByMobile(tel);
         if (user != null) {
             int result = userService.resetPassword(tel, newPassword);
             return result>0;
@@ -147,6 +158,10 @@ public class RemoteController {
     public
     @ResponseBody
     Integer getBalances(@RequestParam("userId") String userId) {
+        if (StringUtils.isNotBlank(userId)) {
+            User user=userService.load(userId);
+            return user.getWallet()!=null?user.getWallet():0;
+        }
         return 0;
     }
 
@@ -160,6 +175,13 @@ public class RemoteController {
     public
     @ResponseBody
     String[] getAuthData(@RequestParam("userId") String userId) {
+        TeacherDetail teacherDetail=teacherDetailService.findTeacherDetail(userId);
+        if (teacherDetail!=null) {
+            return new String[]{teacherDetail.getEducationCertificate(),
+                    teacherDetail.getExamCertificate(),
+                    teacherDetail.getTeachingCertificate(),
+                    teacherDetail.getStudentMaxScoreCertificate()};
+        }
         return null;
     }
 
@@ -173,7 +195,9 @@ public class RemoteController {
     public
     @ResponseBody
     Page<User> listTeachers(@ModelAttribute("page") Page<User> page) {
-        return null;
+        Pageable pageAble = new PageRequest(page.getNumber(), page.getSize());
+        page = userService.findTeacherByPage(pageAble);
+        return page;
     }
 
     /**
@@ -186,7 +210,8 @@ public class RemoteController {
     public
     @ResponseBody
     String[] listTeachersByName(@RequestParam("searchKey") String searchKey) {
-        return null;
+        List<User> userList=userService.getTeachersByName(searchKey);
+        return (String[]) userList.toArray();
     }
 
     /**
@@ -198,32 +223,32 @@ public class RemoteController {
     @RequestMapping(value = "/user/collect")
     public void collectTeacher(@RequestParam("userId") String userId,
                                @RequestParam("teacherId") String teacherId) {
+        UserAction userAction=userActionService.CollectTeacher(userId,teacherId);
     }
 
     @RequestMapping(value = "/user/cancelCollect")
     public void cancelCollect(@RequestParam("userId") String userId,
                               @RequestParam("teacherId") String teacherId) {
+        int result=userActionService.CancelCollectTeacher(userId, teacherId);
     }
 
     @RequestMapping(value = "/question/askQuestion")
     public
     @ResponseBody
     Boolean askQuestion(@ModelAttribute("question") Question question) {
-        return true;
+        return questionService.saveQuestion(question)!=null;
     }
 
     @RequestMapping(value = "/question/answerQuestion")
     public
     @ResponseBody
     Boolean answerQuestion(@ModelAttribute("question") Question question) {
-        return true;
+        return questionService.saveQuestion(question)!=null;
     }
 
     @RequestMapping(value = "/question/deleteQuestion")
-    public
-    @ResponseBody
-    String[] deleteQuestion(@RequestParam("questionId") String questionId) {
-        return null;
+    public void deleteQuestion(@RequestParam("questionId") String questionId) {
+        questionService.deleteQuestion(questionId);
     }
 
     /**
@@ -238,7 +263,9 @@ public class RemoteController {
     @ResponseBody
     Page<Question> myQuestions(@RequestParam("userId") String userId,
                                @ModelAttribute("question") Page<Question> page) {
-        return null;
+        Pageable pageAble = new PageRequest(page.getNumber(), page.getSize());
+        page = questionService.findQuestionByPage(userId,pageAble);
+        return page;
     }
 
     /**
@@ -246,7 +273,7 @@ public class RemoteController {
      *
      * @param userId
      * @param page
-     * @param type
+     * @param type （指定回答(ASSIGN)；已回答(ANSWER)；未回答(UNANSWER)）
      * @return （rows 是包含question 对象的数组）
      */
     @RequestMapping(value = "/question/needAnswerList")
@@ -255,6 +282,8 @@ public class RemoteController {
     Page<Question> needAnswerList(@RequestParam("userId") String userId,
                                   @ModelAttribute("question") Page<Question> page,
                                   @RequestParam("type") String type) {
-        return null;
+        Pageable pageAble = new PageRequest(page.getNumber(), page.getSize());
+        page = questionService.findQuestionByPage(userId,type,pageAble);
+        return page;
     }
 }
