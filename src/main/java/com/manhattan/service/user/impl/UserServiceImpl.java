@@ -21,8 +21,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String findUserByFilter(String userName, String password) {
-        return userDAO.findUserByUserNameAndPassword(userName, password);
+    public String findUserIdByFilter(String mobile, String password) {
+        return userDAO.findUserIdBymobileAndPassword(mobile, password);
+    }
+
+    @Override
+    public User findUserByFilter(String mobile, String password) {
+        return userDAO.findUserByMobileAndAuthCode(mobile, password);
     }
 
     @Override
@@ -37,11 +42,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserByUserName(String tel) {
-        return userDAO.findUserByUserName(tel);
+        return userDAO.findUserByMobile(tel);
     }
 
     @Override
     public int resetPassword(String tel, String newPassword) {
         return userDAO.updatePass(tel, newPassword);
+    }
+
+    @Override
+    public int register(String userId, String password, String type) {
+        return userDAO.updateUser(userId, password, type);
     }
 }

@@ -10,10 +10,15 @@ import org.springframework.data.repository.query.Param;
  */
 public interface UserDAO extends CrudRepository<User, String> {
 
-    String findUserByUserNameAndPassword(String userName, String password);
+    String findUserIdBymobileAndPassword(String mobile, String password);
 
-    User findUserByUserName(String tel);
+    User findUserByMobileAndAuthCode(String mobile, String authCode);
+
+    User findUserByMobile(String mobile);
 
     @Query(value = "update User u set u.password=:newPassword where u.mobile=:tel")
     int updatePass(@Param("tel") String tel, @Param("newPassword") String newPassword);
+
+    @Query(value = "update User u set u.password=?2,u.type=?3 where u.userId=?1")
+    int updateUser(String userId, String password, String type);
 }

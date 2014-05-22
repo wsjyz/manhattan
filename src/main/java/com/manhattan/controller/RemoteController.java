@@ -2,8 +2,10 @@ package com.manhattan.controller;
 
 import com.manhattan.domain.Question;
 import com.manhattan.domain.User;
+import com.manhattan.service.WalletService;
 import com.manhattan.service.user.UserService;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -21,26 +23,28 @@ public class RemoteController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private WalletService walletService;
 
     /**
      * login
      *
-     * @param userName
+     * @param mobile
      * @param password
      * @return
      */
     @RequestMapping(value = "/user/login")
     public
     @ResponseBody
-    String remotelogin(@RequestParam("userName") String userName,
+    String remotelogin(@RequestParam("mobile") String mobile,
                                           @RequestParam("password" )String password) {
-        String userId=userService.findUserByFilter(userName,password);
+        String userId=userService.findUserIdByFilter(mobile, password);
         return userId;
     }
 
     /**
      * register
-     * @param tel
+     * @param mobile
      * @param password
      * @param authCode
      * @param type
@@ -49,35 +53,34 @@ public class RemoteController {
     @RequestMapping(value = "/user/register")
     public
     @ResponseBody
-    Boolean register(@RequestParam("tel") String tel,
+    Boolean register(@RequestParam("mobile") String mobile,
                      @RequestParam("password") String password,
                      @RequestParam("authCode") String authCode,
                      @RequestParam("type") String type) {
-        User user=new User();
-        user.setMobile(tel);
-        user.setPassword(password);
-        user.setAuthCode(authCode);
-        user.setType(type);
-        User user1=userService.save(user);
-        return StringUtils.isNotEmpty(user1.getUserId());
+        User user = userService.findUserByFilter(mobile, authCode);
+        if (user != null) {
+            int res = userService.register(user.getUserId(), password, type);
+            return res!=0;
+        }
+        return false;
     }
 
     /**
-     * get auth code pic
+     * get auth code
      *
      * @param tel
      * @return
      */
-    @RequestMapping(value = "/user/getAuthCodePic")
+    @RequestMapping(value = "/user/getAuthCode")
     public
     @ResponseBody
-    String getAuthCodePic(@RequestParam("tel") String tel) {
-        String pic = "";
+    String getAuthCode(@RequestParam("tel") String tel) {
+        String authCode = "";
         User user = new User();
         user.setMobile(tel);
-        user.setAuthCode("");
+        user.setAuthCode(authCode);
         User user1 = userService.save(user);
-        return pic;
+        return authCode;
     }
 
     /**
@@ -96,7 +99,7 @@ public class RemoteController {
         User user=userService.findUserByUserName(tel);
         if (user != null) {
             int result = userService.resetPassword(tel, newPassword);
-            return true;
+            return result>0;
         }
         return false;
     }
@@ -125,8 +128,13 @@ public class RemoteController {
     public
     @ResponseBody
     Boolean updateUser(@ModelAttribute("user")User user) {
-        User user1 = userService.save(user);
-        return true;
+        if (StringUtils.isNotBlank(user.getUserId())) {
+            User user1=userService.load(user.getUserId());
+            BeanUtils.copyProperties(user,user1,"userId");
+            userService.save(user1);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -138,7 +146,7 @@ public class RemoteController {
     @RequestMapping(value = "/wallet/getBalances")
     public
     @ResponseBody
-    Integer getBalances(@RequestParam("tel") String userId) {
+    Integer getBalances(@RequestParam("userId") String userId) {
         return 0;
     }
 

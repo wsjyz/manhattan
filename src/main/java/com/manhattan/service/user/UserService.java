@@ -14,7 +14,9 @@ public interface UserService {
      */
     void findUserById(String userId);
 
-    String findUserByFilter(String userName, String password);
+    String findUserIdByFilter(String userName, String password);
+
+    User findUserByFilter(String userName, String password);
 
     User load(String userId);
 
@@ -23,4 +25,6 @@ public interface UserService {
     User findUserByUserName(String tel);
 
     int resetPassword(String tel, String newPassword);
+
+    int register(String userId, String password,String type);
 }
