@@ -16,7 +16,7 @@ public interface UserService {
      *
      * @param userId
      */
-    void findUserById(String userId);
+    User findUserById(String userId);
 
     String findUserIdByFilter(String userName, String password);
 

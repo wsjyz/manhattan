@@ -77,10 +77,9 @@ public class RemoteController {
     }
 
     /**
-     * get auth code
-     *
+     * 获取验证码
      * @param tel
-     * @return
+     * @return String
      */
     @RequestMapping(value = "/user/getAuthCode")
     public
@@ -95,7 +94,7 @@ public class RemoteController {
     }
 
     /**
-     * reset password
+     * 重置密码
      * @param tel
      * @param newPassword
      * @param authCode
@@ -116,8 +115,7 @@ public class RemoteController {
     }
 
     /**
-     * fetch personal info
-     *
+     * 获取人员信息
      * @param userId
      * @return
      */
@@ -130,8 +128,7 @@ public class RemoteController {
     }
 
     /**
-     * update personal info
-     *
+     * 更新人员信息
      * @param user
      * @return
      */
@@ -150,7 +147,6 @@ public class RemoteController {
 
     /**
      * 获取钱包余额
-     *
      * @param userId
      * @return 当前余额（int）
      */
@@ -204,7 +200,7 @@ public class RemoteController {
      * 获取教师列表
      *
      * @param searchKey
-     * @return teacherName
+     * @return String[]
      */
     @RequestMapping(value = "/teacher/listByName")
     public
@@ -226,12 +222,22 @@ public class RemoteController {
         UserAction userAction=userActionService.CollectTeacher(userId,teacherId);
     }
 
+    /**
+     * 取消收藏教师
+     * @param userId
+     * @param teacherId
+     */
     @RequestMapping(value = "/user/cancelCollect")
     public void cancelCollect(@RequestParam("userId") String userId,
                               @RequestParam("teacherId") String teacherId) {
         int result=userActionService.CancelCollectTeacher(userId, teacherId);
     }
 
+    /**
+     * 提问
+     * @param question
+     * @return
+     */
     @RequestMapping(value = "/question/askQuestion")
     public
     @ResponseBody
@@ -239,6 +245,11 @@ public class RemoteController {
         return questionService.saveQuestion(question)!=null;
     }
 
+    /**
+     * 回答问题
+     * @param question
+     * @return
+     */
     @RequestMapping(value = "/question/answerQuestion")
     public
     @ResponseBody
@@ -246,6 +257,10 @@ public class RemoteController {
         return questionService.saveQuestion(question)!=null;
     }
 
+    /**
+     * 删除问答
+     * @param questionId
+     */
     @RequestMapping(value = "/question/deleteQuestion")
     public void deleteQuestion(@RequestParam("questionId") String questionId) {
         questionService.deleteQuestion(questionId);

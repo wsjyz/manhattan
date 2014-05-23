@@ -20,7 +20,7 @@ public class MainController {
     @RequestMapping(value = "/")
 	public String index(ModelMap model) {
 		model.addAttribute("message", "Hello world!");
-        userService.findUserById("a");
+        User user=userService.findUserById("a");
 		return "index";
 	}
 
