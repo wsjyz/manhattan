@@ -6,7 +6,11 @@ import com.manhattan.service.TeacherDetailService;
 import com.manhattan.service.UserActionService;
 import com.manhattan.service.WalletService;
 import com.manhattan.service.UserService;
+
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.id.UUIDGenerator;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by lk.zh on 2014/5/20.
@@ -39,7 +44,7 @@ public class RemoteController {
     private QuestionService questionService;
 
     /**
-     * 登录
+     * 鐧诲綍
      * @param mobile
      * @param password
      * @return
@@ -49,12 +54,14 @@ public class RemoteController {
     @ResponseBody
     String remotelogin(@RequestParam("mobile") String mobile,
                                           @RequestParam("password" )String password) {
-        String userId=userService.findUserIdByFilter(mobile, password);
+    	String passwordMd5=DigestUtils.md5Hex(password);
+    	System.out.println(passwordMd5);
+        String userId=userService.findUserIdByFilter(mobile, passwordMd5);
         return userId;
     }
 
     /**
-     * 注册
+     * 娉ㄥ唽
      * @param mobile
      * @param password
      * @param authCode
@@ -70,14 +77,15 @@ public class RemoteController {
                      @RequestParam("type") String type) {
         User user = userService.findUserByFilter(mobile, authCode);
         if (user != null) {
-            int res = userService.register(user.getUserId(), password, type);
+        	String passwordMd5=DigestUtils.md5Hex(password);
+            int res = userService.register(user.getUserId(), passwordMd5, type);
             return res!=0;
         }
         return false;
     }
 
     /**
-     * 获取验证码
+     * 鑾峰彇楠岃瘉鐮�
      * @param tel
      * @return String
      */
@@ -85,16 +93,20 @@ public class RemoteController {
     public
     @ResponseBody
     String getAuthCode(@RequestParam("tel") String tel) {
-        String authCode = "";
-        User user = new User();
-        user.setMobile(tel);
+        String authCode = RandomStringUtils.randomAlphanumeric(6);
+        User user=userService.findUserByMobile(tel);
+        if(user==null){
+        	user=new User();
+        	user.setUserId(UUID.randomUUID().toString());
+            user.setMobile(tel);
+        }
         user.setAuthCode(authCode);
         User user1 = userService.save(user);
         return authCode;
     }
 
     /**
-     * 重置密码
+     * 閲嶇疆瀵嗙爜
      * @param tel
      * @param newPassword
      * @param authCode
@@ -108,27 +120,28 @@ public class RemoteController {
                                             @RequestParam("authCode" )String authCode) {
         User user=userService.findUserByMobile(tel);
         if (user != null) {
-            int result = userService.resetPassword(tel, newPassword);
+        	String passwordMd5=DigestUtils.md5Hex(newPassword);
+            int result = userService.resetPassword(tel, passwordMd5);
             return result>0;
         }
         return false;
     }
 
     /**
-     * 获取人员信息
+     * 鑾峰彇浜哄憳淇℃伅
      * @param userId
      * @return
      */
     @RequestMapping(value = "/user/getUser")
     public
     @ResponseBody
-    User getUser(@RequestParam("tel") String userId) {
+    User getUser(@RequestParam("userId") String userId) {
         User user = userService.load(userId);
         return user;
     }
 
     /**
-     * 更新人员信息
+     * 鏇存柊浜哄憳淇℃伅
      * @param user
      * @return
      */
@@ -146,9 +159,9 @@ public class RemoteController {
     }
 
     /**
-     * 获取钱包余额
+     * 鑾峰彇閽卞寘浣欓
      * @param userId
-     * @return 当前余额（int）
+     * @return 褰撳墠浣欓锛坕nt锛�
      */
     @RequestMapping(value = "/wallet/getBalances")
     public
@@ -162,10 +175,10 @@ public class RemoteController {
     }
 
     /**
-     * 教师认证数据
+     * 鏁欏笀璁よ瘉鏁版嵁
      *
      * @param userId
-     * @return 包含图片路径的数组
+     * @return 鍖呭惈鍥剧墖璺緞鐨勬暟缁�
      */
     @RequestMapping(value = "/teacher/getAuthData")
     public
@@ -182,7 +195,7 @@ public class RemoteController {
     }
 
     /**
-     * 获取教师列表
+     * 鑾峰彇鏁欏笀鍒楄〃
      *
      * @param page
      * @return
@@ -197,7 +210,7 @@ public class RemoteController {
     }
 
     /**
-     * 获取教师列表
+     * 鑾峰彇鏁欏笀鍒楄〃
      *
      * @param searchKey
      * @return String[]
@@ -211,7 +224,7 @@ public class RemoteController {
     }
 
     /**
-     * 收藏教师
+     * 鏀惰棌鏁欏笀
      *
      * @param userId
      * @param teacherId
@@ -223,7 +236,7 @@ public class RemoteController {
     }
 
     /**
-     * 取消收藏教师
+     * 鍙栨秷鏀惰棌鏁欏笀
      * @param userId
      * @param teacherId
      */
@@ -234,7 +247,7 @@ public class RemoteController {
     }
 
     /**
-     * 提问
+     * 鎻愰棶
      * @param question
      * @return
      */
@@ -246,7 +259,7 @@ public class RemoteController {
     }
 
     /**
-     * 回答问题
+     * 鍥炵瓟闂
      * @param question
      * @return
      */
@@ -258,7 +271,7 @@ public class RemoteController {
     }
 
     /**
-     * 删除问答
+     * 鍒犻櫎闂瓟
      * @param questionId
      */
     @RequestMapping(value = "/question/deleteQuestion")
@@ -267,7 +280,7 @@ public class RemoteController {
     }
 
     /**
-     * 获取我的问题
+     * 鑾峰彇鎴戠殑闂
      *
      * @param userId
      * @param page
@@ -284,12 +297,12 @@ public class RemoteController {
     }
 
     /**
-     * 获取需要回答列表
+     * 鑾峰彇闇�鍥炵瓟鍒楄〃
      *
      * @param userId
      * @param page
-     * @param type （指定回答(ASSIGN)；已回答(ANSWER)；未回答(UNANSWER)）
-     * @return （rows 是包含question 对象的数组）
+     * @param type 锛堟寚瀹氬洖绛�ASSIGN)锛涘凡鍥炵瓟(ANSWER)锛涙湭鍥炵瓟(UNANSWER)锛�
+     * @return 锛坮ows 鏄寘鍚玵uestion 瀵硅薄鐨勬暟缁勶級
      */
     @RequestMapping(value = "/question/needAnswerList")
     public

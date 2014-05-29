@@ -39,7 +39,9 @@
         <property name="persistenceUnitName" value="mhtJPA" />
     </bean>
 
-    <jpa:repositories base-package="com.manhattan.dao"/>
+    <jpa:repositories base-package="com.manhattan.dao"
+	    entity-manager-factory-ref="entityManagerFactory" 
+	 transaction-manager-ref="transactionManager"/>
 
     <bean id="transactionManager"
           class="org.springframework.orm.jpa.JpaTransactionManager">

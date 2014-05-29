@@ -1,6 +1,9 @@
 package com.manhattan.domain;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -12,8 +15,9 @@ public class User {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "user_id")
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid") 
+    @Column(name="user_id")
     private String userId;
     @Column(name = "user_name")
     private String userName;
@@ -27,7 +31,7 @@ public class User {
     private String avatar;
     @Column(name = "sex")
     private String sex;
-    @Column(name = "mobile")
+    @Column(name = "mobile")@NotNull
     private String mobile;
     @Column(name = "email")
     private String email;
@@ -39,6 +43,8 @@ public class User {
     private Integer wallet;
     @Column(name = "vip_end_time")
     private Date vipExpiredTime;
+    @Column
+    private String evaluation;
 
 
     public String getUserId() {
@@ -143,5 +149,13 @@ public class User {
 
     public void setWallet(Integer wallet) {
         this.wallet = wallet;
+    }
+
+    public String getEvaluation() {
+        return evaluation;
+    }
+
+    public void setEvaluation(String evaluation) {
+        this.evaluation = evaluation;
     }
 }

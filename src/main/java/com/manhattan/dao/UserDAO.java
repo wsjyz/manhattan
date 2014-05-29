@@ -1,10 +1,13 @@
 package com.manhattan.dao;
 
 import com.manhattan.domain.User;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,10 +21,14 @@ public interface UserDAO extends JpaRepository<User, String> {
     User findByMobileAndAuthCode(String mobile, String authCode);
 
     User findByMobile(String mobile);
-
+    
+    @Modifying
+    @Transactional
     @Query(value = "update User u set u.password=:newPassword where u.mobile=:tel")
     int updatePass(@Param("tel") String tel, @Param("newPassword") String newPassword);
-
+    
+    @Modifying
+    @Transactional
     @Query(value = "update User u set u.password=?2,u.type=?3 where u.userId=?1")
     int updateUser(String userId, String password, String type);
 

@@ -23,8 +23,29 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
+    <head class="navbar navbar-inverse navbar-fixed-top bs-docs-nav">
+        <div class="container">
+            <div class="navbar-header">
+                欢迎来到 <a ui-sref="index">曼哈顿英语</a> 请 </image><a ui-sref="login">登录</a>，<a ui-sref="register">注册</a><image src="images/index/collect.png">收藏网站
+                <span class="pull-right"></span>
+            </div>
+        </div>
+    </head>
+    <div class="bs-header" id="content">
+        <div class="container">
+            <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+                <ul class="nav nav-pills pull-right">
+                    <li><a ui-sref="#" class="data"></a></li>
+                    <li><a ui-sref="#" class="wallet"></a></li>
+                    <li><a ui-sref="#" class="appointment"></a></li>
+                    <li><a ui-sref="#" class="homework"></a></li>
+                    <li><a ui-sref="#" class="coursecourse"></a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
     <!-- Add your site or application content here -->
-    <div class="container" ng-include="'views/main.html'" ng-controller="MainCtrl"></div>
+    <div class="container" ui-view></div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
      <script>
