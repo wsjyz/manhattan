@@ -4,7 +4,8 @@ package com.manhattan.util;
  * Created by Administrator on 2014/5/23 0023.
  */
 public class MhtConstant {
-
+    
+    
     /**
      * user type
      */
@@ -21,4 +22,9 @@ public class MhtConstant {
      */
     public final static String QUESTION_STATUS_ANSWERED="ANSWERED";
     public final static String QUESTION_STATUS_UNANSWERED="UNANSWERED";
+
+    //短信API
+    public final static String SMS_URL="http://sms.uuvio.com:8001/sms.aspx";
+
+    public static final String ERROR_CODE = "ErrorMsg";
 }

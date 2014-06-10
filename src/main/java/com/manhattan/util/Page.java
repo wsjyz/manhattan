@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class OpenPage<T> {
+public class Page<T> {
 
     public final static int DEFAULT_PAGE_SIZE = 10;
 
@@ -19,10 +19,10 @@ public class OpenPage<T> {
     protected long total = 0;
 
 
-    public OpenPage() {
+    public Page() {
     }
 
-    public OpenPage(int pageSize) {
+    public Page(int pageSize) {
         this.pageSize = pageSize;
     }
 

@@ -1,27 +1,27 @@
 package com.manhattan.controller;
 
-import com.manhattan.domain.*;
-import com.manhattan.service.QuestionService;
-import com.manhattan.service.TeacherDetailService;
-import com.manhattan.service.UserActionService;
-import com.manhattan.service.WalletService;
-import com.manhattan.service.UserService;
-
+import com.google.common.collect.ImmutableList;
+import com.manhattan.domain.Question;
+import com.manhattan.domain.TeacherDetail;
+import com.manhattan.domain.User;
+import com.manhattan.domain.UserAction;
+import com.manhattan.service.*;
+import com.manhattan.util.CustomException;
+import com.manhattan.util.MhtConstant;
+import com.manhattan.util.Page;
+import com.manhattan.util.PageConvert;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.id.UUIDGenerator;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
 
@@ -42,9 +42,11 @@ public class RemoteController {
     private UserActionService userActionService;
     @Autowired
     private QuestionService questionService;
+    @Autowired
+    private SmsSendService smsSendService;
 
     /**
-     * 鐧诲綍
+     * 登录
      * @param mobile
      * @param password
      * @return
@@ -55,13 +57,12 @@ public class RemoteController {
     String remotelogin(@RequestParam("mobile") String mobile,
                                           @RequestParam("password" )String password) {
     	String passwordMd5=DigestUtils.md5Hex(password);
-    	System.out.println(passwordMd5);
         String userId=userService.findUserIdByFilter(mobile, passwordMd5);
         return userId;
     }
 
     /**
-     * 娉ㄥ唽
+     * 注册
      * @param mobile
      * @param password
      * @param authCode
@@ -85,7 +86,7 @@ public class RemoteController {
     }
 
     /**
-     * 鑾峰彇楠岃瘉鐮�
+     * 获取验证码
      * @param tel
      * @return String
      */
@@ -106,7 +107,7 @@ public class RemoteController {
     }
 
     /**
-     * 閲嶇疆瀵嗙爜
+     * 重置密码
      * @param tel
      * @param newPassword
      * @param authCode
@@ -128,7 +129,7 @@ public class RemoteController {
     }
 
     /**
-     * 鑾峰彇浜哄憳淇℃伅
+     * 获取用户信息
      * @param userId
      * @return
      */
@@ -141,7 +142,7 @@ public class RemoteController {
     }
 
     /**
-     * 鏇存柊浜哄憳淇℃伅
+     * 更新用户信息
      * @param user
      * @return
      */
@@ -159,14 +160,14 @@ public class RemoteController {
     }
 
     /**
-     * 鑾峰彇閽卞寘浣欓
+     * 获取钱包
      * @param userId
-     * @return 褰撳墠浣欓锛坕nt锛�
+     * @return 余额
      */
     @RequestMapping(value = "/wallet/getBalances")
     public
     @ResponseBody
-    Integer getBalances(@RequestParam("userId") String userId) {
+    int getBalances(@RequestParam("userId") String userId) {
         if (StringUtils.isNotBlank(userId)) {
             User user=userService.load(userId);
             return user.getWallet()!=null?user.getWallet():0;
@@ -175,27 +176,27 @@ public class RemoteController {
     }
 
     /**
-     * 鏁欏笀璁よ瘉鏁版嵁
+     * 教师认证信息
      *
      * @param userId
-     * @return 鍖呭惈鍥剧墖璺緞鐨勬暟缁�
+     * @return 图片路径
      */
     @RequestMapping(value = "/teacher/getAuthData")
     public
     @ResponseBody
-    String[] getAuthData(@RequestParam("userId") String userId) {
+    List<String> getAuthData(@RequestParam("userId") String userId) {
         TeacherDetail teacherDetail=teacherDetailService.findTeacherDetail(userId);
         if (teacherDetail!=null) {
-            return new String[]{teacherDetail.getEducationCertificate(),
+            return ImmutableList.of(teacherDetail.getEducationCertificate(),
                     teacherDetail.getExamCertificate(),
                     teacherDetail.getTeachingCertificate(),
-                    teacherDetail.getStudentMaxScoreCertificate()};
+                    teacherDetail.getStudentMaxScoreCertificate());
         }
         return null;
     }
 
     /**
-     * 鑾峰彇鏁欏笀鍒楄〃
+     * 获取教师列表
      *
      * @param page
      * @return
@@ -204,13 +205,13 @@ public class RemoteController {
     public
     @ResponseBody
     Page<User> listTeachers(@ModelAttribute("page") Page<User> page) {
-        Pageable pageAble = new PageRequest(page.getNumber(), page.getSize());
-        page = userService.findTeacherByPage(pageAble);
-        return page;
+        Pageable pageAble = new PageRequest(page.getPageNo(), page.getPageSize());
+        org.springframework.data.domain.Page resultPage = userService.findTeacherByPage(pageAble);
+        return PageConvert.convert(resultPage);
     }
 
     /**
-     * 鑾峰彇鏁欏笀鍒楄〃
+     * 搜索教师
      *
      * @param searchKey
      * @return String[]
@@ -218,13 +219,13 @@ public class RemoteController {
     @RequestMapping(value = "/teacher/listByName")
     public
     @ResponseBody
-    String[] listTeachersByName(@RequestParam("searchKey") String searchKey) {
+    List<User> listTeachersByName(@RequestParam("searchKey") String searchKey) {
         List<User> userList=userService.getTeachersByName(searchKey);
-        return (String[]) userList.toArray();
+        return userList;
     }
 
     /**
-     * 鏀惰棌鏁欏笀
+     * 收藏教师
      *
      * @param userId
      * @param teacherId
@@ -236,7 +237,7 @@ public class RemoteController {
     }
 
     /**
-     * 鍙栨秷鏀惰棌鏁欏笀
+     * 取消收藏教师
      * @param userId
      * @param teacherId
      */
@@ -247,7 +248,7 @@ public class RemoteController {
     }
 
     /**
-     * 鎻愰棶
+     * 提问
      * @param question
      * @return
      */
@@ -259,7 +260,7 @@ public class RemoteController {
     }
 
     /**
-     * 鍥炵瓟闂
+     * 回答问题
      * @param question
      * @return
      */
@@ -271,7 +272,7 @@ public class RemoteController {
     }
 
     /**
-     * 鍒犻櫎闂瓟
+     * 删除问题
      * @param questionId
      */
     @RequestMapping(value = "/question/deleteQuestion")
@@ -280,7 +281,7 @@ public class RemoteController {
     }
 
     /**
-     * 鑾峰彇鎴戠殑闂
+     * 获取我的问题
      *
      * @param userId
      * @param page
@@ -291,18 +292,18 @@ public class RemoteController {
     @ResponseBody
     Page<Question> myQuestions(@RequestParam("userId") String userId,
                                @ModelAttribute("question") Page<Question> page) {
-        Pageable pageAble = new PageRequest(page.getNumber(), page.getSize());
-        page = questionService.findQuestionByPage(userId,pageAble);
-        return page;
+        Pageable pageAble = new PageRequest(page.getPageNo(), page.getPageSize());
+        org.springframework.data.domain.Page result = questionService.findQuestionByPage(userId,pageAble);
+        return PageConvert.convert(result);
     }
 
     /**
-     * 鑾峰彇闇�鍥炵瓟鍒楄〃
+     * 获取我要回答列表
      *
      * @param userId
      * @param page
-     * @param type 锛堟寚瀹氬洖绛�ASSIGN)锛涘凡鍥炵瓟(ANSWER)锛涙湭鍥炵瓟(UNANSWER)锛�
-     * @return 锛坮ows 鏄寘鍚玵uestion 瀵硅薄鐨勬暟缁勶級
+     * @param type 指定回答(ASSIGN)已回答(ANSWER)未回答(UNANSWER)
+     * @return page
      */
     @RequestMapping(value = "/question/needAnswerList")
     public
@@ -310,8 +311,31 @@ public class RemoteController {
     Page<Question> needAnswerList(@RequestParam("userId") String userId,
                                   @ModelAttribute("question") Page<Question> page,
                                   @RequestParam("type") String type) {
-        Pageable pageAble = new PageRequest(page.getNumber(), page.getSize());
-        page = questionService.findQuestionByPage(userId,type,pageAble);
-        return page;
+        Pageable pageAble = new PageRequest(page.getPageNo(), page.getPageSize());
+        org.springframework.data.domain.Page result = questionService.findQuestionByPage(userId,type,pageAble);
+        return PageConvert.convert(result);
+    }
+
+    /**
+     * 异常处理
+     * @return
+     */
+    @ExceptionHandler
+    public String exception(Exception exception,HttpServletResponse response) {
+        String msg="";
+        exception.printStackTrace();
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("text/html; charset=utf-8");
+        if(exception instanceof NullPointerException){
+            msg="对象为空";
+        }else if(exception instanceof SQLException){
+            msg="数据查询错误";
+        }else if(exception instanceof RuntimeException){
+            msg="系统运行错误";
+        }else if(exception instanceof CustomException){
+            msg="系统运行错误";
+        }
+        response.addHeader(MhtConstant.ERROR_CODE,msg);
+        return null;
     }
 }

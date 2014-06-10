@@ -16,36 +16,51 @@
     <!-- endbuild -->
     <!-- build:css({.tmp,app}) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/app.css">
     <!-- endbuild -->
   </head>
   <body ng-app="mhtApp">
-    <!--[if lt IE 7]>
-      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
 
-    <head class="navbar navbar-inverse navbar-fixed-top bs-docs-nav">
-        <div class="container">
-            <div class="navbar-header">
-                欢迎来到 <a ui-sref="index">曼哈顿英语</a> 请 </image><a ui-sref="login">登录</a>，<a ui-sref="register">注册</a><image src="images/index/collect.png">收藏网站
-                <span class="pull-right"></span>
+    <header class="navbar navbar-fixed-top bs-docs-nav">
+        <div class="navbar-inner">
+            <div class="container">
+                <div class="navbar-header pull-left">
+                    欢迎来到 <a ui-sref="index">曼哈顿英语</a> 请
+                    <a ui-sref="login">登录</a>，
+                    <a ui-sref="register">注册</a>
+                    <image src="images/index/collect.png">收藏网站
+                    <span class="pull-right"></span>
+                </div>
             </div>
         </div>
-    </head>
-    <div class="bs-header" id="content">
-        <div class="container">
-            <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
-                <ul class="nav nav-pills pull-right">
-                    <li><a ui-sref="#" class="data"></a></li>
-                    <li><a ui-sref="#" class="wallet"></a></li>
-                    <li><a ui-sref="#" class="appointment"></a></li>
-                    <li><a ui-sref="#" class="homework"></a></li>
-                    <li><a ui-sref="#" class="coursecourse"></a></li>
-                </ul>
-            </nav>
+    </header>
+    <div>
+        <header class="bs-header" id="content">
+            <div class="container">
+                <div class="navbar-inner nav-justified menu">
+                    <ul class="nav nav-pills pull-right">
+                        <li><a ui-sref="#" class="data"></a></li>
+                        <li><a ui-sref="#" class="wallet"></a></li>
+                        <li><a ui-sref="#" class="appointment"></a></li>
+                        <li><a ui-sref="#" class="homework"></a></li>
+                        <li><a ui-sref="#" class="coursecourse"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+        <div class="navbar-inner nav-justified menu">
+            <ul class="nav nav-justified">
+                <li class="active"><a ui-sref="index">首页</a></li>
+                <li><a ui-sref="course">曼哈顿课堂</a></li>
+                <li><a ui-sref="teacher">我的名师</a></li>
+                <li><a ui-sref="place">场地风采</a></li>
+                <li><a ui-sref="appoint">我要预约</a></li>
+                <li><a ui-sref="question">精彩问答</a></li>
+            </ul>
         </div>
     </div>
     <!-- Add your site or application content here -->
-    <div class="container" ui-view></div>
+    <div id="main" class="container" ui-view></div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
      <script>
@@ -61,6 +76,7 @@
     <!--[if lt IE 9]>
     <script src="bower_components/es5-shim/es5-shim.js"></script>
     <script src="bower_components/json3/lib/json3.min.js"></script>
+    <script src="bower_components/html5shiv/dist/html5shiv.js"></script>
     <![endif]-->
 
     <!-- build:js scripts/vendor.js -->
@@ -73,13 +89,14 @@
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
         <script src="scripts/controllers/main.js"></script>
-        <script src="scripts/controllers/login.js"></script>
+        <script src="scripts/resource.js"></script>
         <!-- endbuild -->
 </body>
 </html>

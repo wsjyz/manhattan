@@ -1,0 +1,81 @@
+@charset"utf-8";body,html {
+    width: 100%;
+    height: 100%;
+    font-size: 14px;
+    font-family: "微软雅黑 ","宋体","Trebuchet MS",Arial,Helvetica,sans-serif
+}
+
+/*
+  Header
+*/
+
+.bs-header {
+    color: #FFF;
+    text-align: center;
+    background-color: #5fb0e4;
+    background-image: url('../images/index/logo.png');
+    text-shadow: 0 1px 3px rgba(0,0,0,.4), 0 0 30px rgba(0,0,0,.075);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+}
+
+.bs-header {
+    padding: 10px 15px 10px;
+    margin-top:20px;
+    font-size: 16px;
+    height: 114px;
+    text-shadow: 0 1px 0 rgba(0,0,0,.15);
+}
+
+.bs-header .container {
+    position: relative;
+}
+.bs-header ul li{
+    margin: 0px 0px;
+    padding: 0px 0px;
+}
+
+.bs-header li{
+    float:left;
+    width:63px;
+    height:65px;
+    position:relative;
+}
+.bs-header li a{
+    height:65px;
+    background: #DBEAF8 url(../images/index/headermenu.png) no-repeat;
+}
+.bs-header .data{
+    background-position:0% 0%;
+}
+.bs-header .wallet{
+    background-position:25% 0%;
+}
+.bs-header .appointment{
+    background-position:50% 0%;
+}
+.bs-header .homework{
+    background-position:75% 0%;
+}
+.bs-header .coursecourse{
+    background-position:101% 0%;
+}
+
+.menu{
+  text-align: center;
+  text-shadow: 0 1px 3px rgba(0,0,0,.4), 0 0 30px rgba(0,0,0,.075);
+  background-color: #FE4141;
+}
+.menu a{
+  color:#FFF;
+}
+
+#main{
+  margin:5px;
+  padding:10px;
+  width:100%;
+  height:100%;
+  background: #DBEAF8 url(../images/index/bg.png) no-repeat left top;
+  background-position: center;
+}

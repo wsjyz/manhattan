@@ -30,11 +30,12 @@ public class Question {
     private String status;
     @Column(name = "answer")
     private String answer;
+    @Column(name = "answer_pic")
+    private String answerPic;
     @Column(name = "create_time")
     private Timestamp createTime;
     @Column(name = "answer_time")
     private Timestamp answerTime;
-
 
     public String getQuestionId() {
         return questionId;
@@ -122,5 +123,13 @@ public class Question {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getAnswerPic() {
+        return answerPic;
+    }
+
+    public void setAnswerPic(String answerPic) {
+        this.answerPic = answerPic;
     }
 }

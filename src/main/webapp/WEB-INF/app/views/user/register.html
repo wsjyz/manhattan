@@ -1,0 +1,108 @@
+<div class="col-md-10 col-md-offset-1">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#student" data-toggle="tab">注册为学生</a></li>
+        <li><a href="#teacher" data-toggle="tab">注册为教师</a></li>
+    </ul>
+    <div class="tab-content" style="padding:10px;">
+        <div class="tab-pane active" id="student">
+            <div class="row">
+                <div class="col-md-6">
+                    <form class="form-horizontal" ng-submit="login()" role="form">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-md-3 control-label">手机号</label>
+
+                            <div class="col-md-7">
+                                <input class="form-control" id="inputEmail3" ng-model="user.mobile" placeholder="phone">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword3" class="col-md-3 control-label">密码</label>
+
+                            <div class="col-md-7">
+                                <input type="password" class="form-control" id="inputPassword3" ng-model="user.password"
+                                       placeholder="Password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword31" class="col-md-3 control-label">确认密码</label>
+
+                            <div class="col-md-7">
+                                <input type="password" class="form-control" id="inputPassword31"
+                                       ng-model="user.password1" placeholder="Password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="authCode" class="col-md-3 control-label">验证码</label>
+
+                            <div class="col-md-7">
+                                <input type="password" class="form-control" id="authCode" ng-model="user.authCode"
+                                       placeholder="Password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-7">
+                                <button type="submit" class="btn btn-warning">立即注册</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-4"><br/>
+                    想更进一步？
+                    <button type="submit" class="btn btn-warning">成为VIP</button>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="teacher">
+            <div class="row">
+                <div class="col-md-6">
+                    <form class="form-horizontal col-md-10" ng-submit="login()" role="form">
+                        <div class="form-group">
+                            <label for="tinputEmail3" class="col-md-3 control-label">手机号</label>
+
+                            <div class="col-md-7">
+                                <input class="form-control" id="tinputEmail3" ng-model="user.mobile"
+                                       placeholder="phone">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="tinputPassword3" class="col-md-3 control-label">密码</label>
+
+                            <div class="col-md-7">
+                                <input type="password" class="form-control" id="tinputPassword3"
+                                       ng-model="user.password"
+                                       placeholder="Password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="tinputPassword31" class="col-md-3 control-label">确认密码</label>
+
+                            <div class="col-md-7">
+                                <input type="password" class="form-control" id="tinputPassword31"
+                                       ng-model="user.password1"
+                                       placeholder="Password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="tauthCode" class="col-md-3 control-label">验证码</label>
+
+                            <div class="col-md-7">
+                                <input type="password" class="form-control" id="tauthCode" ng-model="user.authCode"
+                                       placeholder="Password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-7">
+                                <button type="submit" class="btn btn-warning">立即注册</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-4">
+                    <p color="red">教师请注意</p>
+                    <p color="red">只有认证后</p>
+                    <p color="red">才能激活账号</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="bower_components/bootstrap/js/tab.js"></script>

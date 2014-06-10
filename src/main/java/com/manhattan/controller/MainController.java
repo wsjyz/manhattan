@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class MainController {
@@ -24,9 +22,9 @@ public class MainController {
 		return "index";
 	}
 
-    @RequestMapping(value = "/login")
-    public @ResponseBody JsonResult login(@ModelAttribute("user")User user) {
-        String res=userService.findUserIdByFilter(user.getUserName(),user.getPassword());
+    @RequestMapping(value = "/login",method = RequestMethod.POST)
+    public @ResponseBody JsonResult login(@RequestBody User user) {
+        String res=userService.findUserIdByFilter(user.getMobile(),user.getPassword());
         JsonResult jsonResult=new JsonResult();
         jsonResult.setSuccess(!StringUtils.isEmpty(res));
         return jsonResult;
