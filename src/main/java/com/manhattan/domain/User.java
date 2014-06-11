@@ -46,6 +46,8 @@ public class User {
     @Column
     private String evaluation;
 
+    public User() {
+    }
 
     public String getUserId() {
         return userId;

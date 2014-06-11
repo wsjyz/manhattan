@@ -1,10 +1,7 @@
 package com.manhattan.controller;
 
 import com.google.common.collect.ImmutableList;
-import com.manhattan.domain.Question;
-import com.manhattan.domain.TeacherDetail;
-import com.manhattan.domain.User;
-import com.manhattan.domain.UserAction;
+import com.manhattan.domain.*;
 import com.manhattan.service.*;
 import com.manhattan.util.CustomException;
 import com.manhattan.util.MhtConstant;
@@ -18,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -44,7 +42,8 @@ public class RemoteController {
     private QuestionService questionService;
     @Autowired
     private SmsSendService smsSendService;
-
+    @Autowired
+    private CourseService courseService;
     /**
      * 登录
      * @param mobile
@@ -291,7 +290,7 @@ public class RemoteController {
     public
     @ResponseBody
     Page<Question> myQuestions(@RequestParam("userId") String userId,
-                               @ModelAttribute("question") Page<Question> page) {
+                               @ModelAttribute("page") Page<Question> page) {
         Pageable pageAble = new PageRequest(page.getPageNo(), page.getPageSize());
         org.springframework.data.domain.Page result = questionService.findQuestionByPage(userId,pageAble);
         return PageConvert.convert(result);
@@ -309,13 +308,226 @@ public class RemoteController {
     public
     @ResponseBody
     Page<Question> needAnswerList(@RequestParam("userId") String userId,
-                                  @ModelAttribute("question") Page<Question> page,
+                                  @ModelAttribute("page") Page<Question> page,
                                   @RequestParam("type") String type) {
         Pageable pageAble = new PageRequest(page.getPageNo(), page.getPageSize());
         org.springframework.data.domain.Page result = questionService.findQuestionByPage(userId,type,pageAble);
         return PageConvert.convert(result);
     }
 
+    /**
+     * 获取精品课程列表
+     * @return
+     */
+    @RequestMapping(value = "/course/getWorthCourses")
+    @ResponseBody
+    public List<Course> getWorthCourses(HttpServletResponse response){
+        List<Course> courses=courseService.findCourses();
+        if (CollectionUtils.isEmpty(courses)) {
+            setResponse("暂无课程", response);
+        }
+        return courses;
+    }
+
+    /**
+     * 获取详情
+     * @return
+     */
+    @RequestMapping(value = "/course/getCourseDetail")
+    @ResponseBody
+    public Course getCourseDetail(@RequestParam String courseId) {
+        Course course = courseService.load(courseId);
+        return course;
+    }
+
+    /**
+     * 发布课程
+     * @return
+     */
+    @RequestMapping(value = "/course/postCourses")
+    @ResponseBody
+    public String postCourses(@ModelAttribute Course course,HttpServletResponse response) {
+        Course saved=courseService.postCourse(course);
+        if (StringUtils.isEmpty(saved.getCourseId())) {
+            setResponse("保存课程失败", response);
+        }
+        return "";
+    }
+
+    /**
+     * 根据指定条件搜索可预约课程
+     * @return
+     */
+    @RequestMapping(value = "/course/getOrderCourses")
+    @ResponseBody
+    public List<Course> getOrderCourses(@ModelAttribute Course course,HttpServletResponse response) {
+        List<Course> courses = courseService.findCoursesByFilter(course);
+        if (CollectionUtils.isEmpty(courses)) {
+            setResponse("没有可预约的课程", response);
+        }
+        return courses;
+    }
+
+    /**
+     * 获取指定学生的课程日历表
+     * @return
+     */
+    @RequestMapping(value = "/course/getSchedule")
+    @ResponseBody
+    public String getSchedule(@RequestParam String userId){
+        List<Course> courses =courseService.findCoursesByUserId(userId,"");
+        String scheduleData= fetchSchedule(courses);
+        return scheduleData;
+    }
+
+
+
+    /**
+     * 获取指定学生的预约课程列表
+     * @return
+     */
+    @RequestMapping(value = "/course/getOrderCoursesByUserId")
+    @ResponseBody
+    public List<Course> getOrderCoursesByUserId(@RequestParam String userId,HttpServletResponse response){
+        List<Course> courses =courseService.findCoursesByUserId(userId,MhtConstant.USER_ACTION_APPOINTMENT);
+        if (CollectionUtils.isEmpty(courses)) {
+            setResponse("没有任何预约的课程", response);
+        }
+        return courses;
+    }
+
+    /**
+     * 获取指定学生的试听课程列表
+     * @return
+     */
+    @RequestMapping(value = "/course/getListenCoursesByUserId")
+    @ResponseBody
+    public List<Course> getListenCoursesByUserId(@RequestParam String userId,HttpServletResponse response){
+        List<Course> courses =courseService.findCoursesByUserId(userId,MhtConstant.USER_ACTION_LISTEN);
+        if (CollectionUtils.isEmpty(courses)) {
+            setResponse("没有任何试听的课程", response);
+        }
+        return courses;
+    }
+
+    /**
+     * 获取指定学生的收藏课程列表
+     * @return
+     */
+    @RequestMapping(value = "/course/getCollectCoursesByUserId")
+    @ResponseBody
+    public List<Course> getCollectCoursesByUserId(@RequestParam String userId,HttpServletResponse response){
+        List<Course> courses =courseService.findCoursesByUserId(userId,MhtConstant.USER_ACTION_COLLECT);
+        if (CollectionUtils.isEmpty(courses)) {
+            setResponse("没有任何收藏的课程", response);
+        }
+        return courses;
+    }
+
+    /**
+     * 添加预约课程记录
+     * @return
+     */
+    @ResponseBody
+    public void addAppointment(@RequestParam String userId,@RequestParam String courseId,HttpServletResponse response) {
+        UserAction userAction=userActionService.save(userId, courseId, MhtConstant.USER_ACTION_APPOINTMENT);
+        if (userAction == null) {
+            setResponse("预约课程失败", response);
+        }
+    }
+
+    /**
+     * 添加试听课程记录
+     * @return
+     */
+    public void addListen(@RequestParam String userId,@RequestParam String courseId,HttpServletResponse response){
+        UserAction userAction=userActionService.save(userId, courseId, MhtConstant.USER_ACTION_LISTEN);
+        if (userAction == null) {
+            setResponse("试听课程记录保存失败", response);
+        }
+    }
+
+    /**
+     * 收藏试听课程记录
+     * @return
+     */
+    public void addCollect(@RequestParam String userId,@RequestParam String courseId,HttpServletResponse response){
+        UserAction userAction=userActionService.save(userId, courseId, MhtConstant.USER_ACTION_COLLECT);
+        if (userAction == null) {
+            setResponse("收藏课程失败", response);
+        }
+    }
+
+    /**
+     * 获取指定教师的预约课程列表
+     * @return
+     */
+    public List<Course> getOrderCoursesByTeacher(String userId){
+        return null;
+    }
+
+    /**
+     * 获取指定教师的试听课程列表
+     * @return
+     */
+    public List<Course> getListenCoursesByTeacher(String userId){
+        return null;
+    }
+
+    /**
+     * 获取指定教师的试听课程列表
+     * @return
+     */
+    public List getInformations(String userId){
+        return null;
+    }
+
+    /**
+     * 获取指定学生的作业列表
+     * @return
+     */
+    public List getHomeworksByUser(String userId){
+        return null;
+    }
+
+    /**
+     * 获取指定教师的作业列表
+     * @return
+     */
+    public List getHomeworksByTeacher(String userId){
+        return null;
+    }
+
+    /**
+     * 发布一个新的作业
+     * @param userId
+     */
+    public void postHomeWork(String userId){
+
+    }
+
+    /**
+     * 提交一个新的作业
+     * @param userId
+     */
+    public void submitHomeWork(String userId){
+
+    }
+
+    /**
+     * 上传附件
+     * @param content
+     */
+    public void uploadAnnex(String content){
+
+    }
+    /**
+     * 根据教师Id获取学生列表信息
+     * @param teacherId
+     */
+    public List<User> getStudentList(String teacherId){
+        return null;
+    }
     /**
      * 异常处理
      * @return
@@ -336,6 +548,16 @@ public class RemoteController {
             msg="系统运行错误";
         }
         response.addHeader(MhtConstant.ERROR_CODE,msg);
+        return null;
+    }
+
+    public void setResponse(String msg,HttpServletResponse response){
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("text/html; charset=utf-8");
+        response.addHeader(MhtConstant.ERROR_CODE,msg);
+    }
+
+    private String fetchSchedule(List<Course> courses) {
         return null;
     }
 }

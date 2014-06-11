@@ -27,4 +27,12 @@ public class MhtConstant {
     public final static String SMS_URL="http://sms.uuvio.com:8001/sms.aspx";
 
     public static final String ERROR_CODE = "ErrorMsg";
+
+    /**
+     * 用户动作
+     */
+    //预约课程
+    public static final String USER_ACTION_APPOINTMENT = "APPOINTMENT";
+    public static final String USER_ACTION_LISTEN = "LISTEN";
+    public static final String USER_ACTION_COLLECT = "COLLECT";
 }

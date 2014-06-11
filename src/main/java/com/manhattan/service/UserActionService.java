@@ -9,4 +9,6 @@ public interface UserActionService {
     UserAction CollectTeacher(String userId, String teacherId);
 
     int CancelCollectTeacher(String userId, String teacherId);
+
+    UserAction save(String userId, String courseId, String userActionAppointment);
 }

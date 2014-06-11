@@ -34,4 +34,13 @@ public class UserActionServiceImpl implements UserActionService {
         userActionDao.delete(userAction.getActionId());
         return userAction!=null?1:0;
     }
+
+    @Override
+    public UserAction save(String userId, String courseId, String type) {
+        UserAction userAction=new UserAction();
+        userAction.setUserId(userId);
+        userAction.setResourceId(courseId);
+        userAction.setActionType(type);
+        return userActionDao.save(userAction);
+    }
 }
