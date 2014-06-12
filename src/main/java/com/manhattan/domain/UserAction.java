@@ -24,6 +24,10 @@ public class UserAction {
     @Column(name = "status")
     private String status;
 
+    @ManyToOne(cascade=CascadeType.REFRESH)
+    @JoinColumn(name="courseId")
+    private Course course;
+
     public String getActionId() {
         return actionId;
     }
@@ -70,5 +74,13 @@ public class UserAction {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
     }
 }

@@ -1,6 +1,8 @@
 package com.manhattan.service;
 
 import com.manhattan.domain.Course;
+import com.manhattan.domain.TeacherDetail;
+import com.manhattan.domain.User;
 
 import java.util.List;
 
@@ -14,7 +16,9 @@ public interface CourseService {
 
     Course postCourse(Course course);
 
-    List<Course> findCoursesByFilter(Course course);
+    List<Course> findCoursesByFilter(Course course,String sex,TeacherDetail teacher);
 
     List<Course> findCoursesByUserId(String userId,String action);
+
+    List<Course> getCoursesByTeacher(String userId,String action);
 }

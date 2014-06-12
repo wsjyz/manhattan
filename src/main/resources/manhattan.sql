@@ -169,6 +169,7 @@ DROP TABLE IF EXISTS `t_mht_teacher_homework`;
 CREATE TABLE `t_mht_teacher_homework` (
   `homework_id` varchar(45) NOT NULL,
   `teacher_id` varchar(32) NOT NULL,
+  `user_id` varchar(32) NOT NULL,
   `post_time` varchar(45) DEFAULT NULL,
   `homework_file` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`homework_id`)

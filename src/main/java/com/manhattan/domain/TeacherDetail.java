@@ -1,6 +1,7 @@
 package com.manhattan.domain;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by Administrator on 2014/5/21 0021.
@@ -60,6 +61,9 @@ public class TeacherDetail {
     private String studentMaxScoreCertificate;
     @Column(name = "authentication_status")
     private String authenticationStatus;
+
+    @OneToMany(cascade=CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy="postTeacher")
+    private List<Course> courses;
 
     public String getUserId() {
         return userId;
@@ -259,5 +263,13 @@ public class TeacherDetail {
 
     public void setStudentMaxScoreCertificate(String studentMaxScoreCertificate) {
         this.studentMaxScoreCertificate = studentMaxScoreCertificate;
+    }
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
     }
 }

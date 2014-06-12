@@ -1,6 +1,8 @@
 package com.manhattan.service.impl;
 
 import com.manhattan.dao.UserActionDao;
+import com.manhattan.domain.Course;
+import com.manhattan.domain.User;
 import com.manhattan.domain.UserAction;
 import com.manhattan.service.UserActionService;
 import com.manhattan.util.MhtConstant;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Administrator on 2014/5/23 0023.
@@ -41,6 +44,18 @@ public class UserActionServiceImpl implements UserActionService {
         userAction.setUserId(userId);
         userAction.setResourceId(courseId);
         userAction.setActionType(type);
+        userAction.setActionTime(new Timestamp(new Date().getTime()));
         return userActionDao.save(userAction);
+    }
+
+    @Override
+    public List<Course> getListenCoursesByTeacher(String userId) {
+
+        return null;
+    }
+
+    @Override
+    public List<User> getUserByTeacher(String teacherId) {
+        return null;
     }
 }

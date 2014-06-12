@@ -2,11 +2,10 @@ package com.manhattan.domain;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * Created by Administrator on 2014/6/12 0012.
@@ -47,6 +46,15 @@ public class Course {
     private String videoUrl;
     @Column(name = "teaching_time")
     private String teachingTime;
+
+    @ManyToOne
+    @JoinColumn(name="post_teacher")
+    private TeacherDetail teacher;
+    @ManyToOne
+    @JoinColumn(name="post_teacher")
+    private User user;
+    @OneToMany(cascade=CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy="resourceId")
+    private List<UserAction> userActions;
 
     public String getCourseId() {
         return courseId;
@@ -174,5 +182,21 @@ public class Course {
 
     public void setTeachingTime(String teachingTime) {
         this.teachingTime = teachingTime;
+    }
+
+    public TeacherDetail getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(TeacherDetail teacher) {
+        this.teacher = teacher;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
