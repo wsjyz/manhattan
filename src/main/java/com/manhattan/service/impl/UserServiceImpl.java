@@ -1,14 +1,19 @@
 package com.manhattan.service.impl;
 
 import com.manhattan.dao.UserDAO;
+import com.manhattan.domain.Course;
 import com.manhattan.domain.User;
+import com.manhattan.domain.UserAction;
 import com.manhattan.service.UserService;
 import com.manhattan.util.MhtConstant;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.*;
 import java.util.List;
 
 /**
@@ -26,12 +31,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String findUserIdByFilter(String mobile, String password) {
+    public User findUserIdByFilter(String mobile, String password) {
         User user = userDAO.findBymobileAndPassword(mobile, password);
-        if (user != null) {
-            return user.getUserId();
-        }
-        return null;
+        return user;
     }
 
     @Override
@@ -70,7 +72,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<User> findTeacherByPage(Pageable pageAble) {
-        return userDAO.findAll(pageAble);
+    public Page<User> findTeacherByPage(Pageable pageAble,final String searchKey) {
+        return userDAO.findAll(new Specification<User>() {
+            @Override
+            public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                Predicate predicate = cb.conjunction();
+                if (StringUtils.isNotBlank(searchKey)) {
+                    predicate.getExpressions().add(
+                            cb.like(root.<String>get("userName"), "%"+StringUtils.trim(searchKey)+"%")
+                    );
+                }
+                return predicate;
+            }
+        }, pageAble);
     }
 }

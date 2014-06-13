@@ -59,15 +59,15 @@ public class RemoteController {
     @RequestMapping(value = "/user/login")
     public
     @ResponseBody
-    String remotelogin(@RequestParam("mobile") String mobile,
+    User remotelogin(@RequestParam("mobile") String mobile,
                                         @RequestParam("password" )String password
                                         ,HttpServletResponse response) {
     	String passwordMd5=DigestUtils.md5Hex(password);
-        String userId=userService.findUserIdByFilter(mobile, passwordMd5);
-        if (StringUtils.isEmpty(userId)) {
+        User user=userService.findUserIdByFilter(mobile, passwordMd5);
+        if (user==null) {
             setResponse("用户名或密码错误", response);
         }
-        return userId;
+        return user;
     }
 
     /**
@@ -213,13 +213,15 @@ public class RemoteController {
     @RequestMapping(value = "/teacher/getAuthData")
     public
     @ResponseBody
-    List<String> getAuthData(@RequestParam("userId") String userId) {
+    List<String> getAuthData(@RequestParam("userId") String userId,HttpServletResponse response) {
         TeacherDetail teacherDetail=teacherDetailService.findTeacherDetail(userId);
         if (teacherDetail!=null) {
             return ImmutableList.of(teacherDetail.getEducationCertificate(),
                     teacherDetail.getExamCertificate(),
                     teacherDetail.getTeachingCertificate(),
                     teacherDetail.getStudentMaxScoreCertificate());
+        }else{
+            setResponse("暂无认证信息", response);
         }
         return null;
     }
@@ -233,9 +235,9 @@ public class RemoteController {
     @RequestMapping(value = "/teacher/listPage")
     public
     @ResponseBody
-    Page<User> listTeachers(@ModelAttribute("page") Page<User> page) {
+    Page<User> listTeachers(@ModelAttribute("page") Page<User> page,@RequestParam(value = "searchKey",required = false) String searchKey) {
         Pageable pageAble = new PageRequest(page.getPageNo(), page.getPageSize());
-        org.springframework.data.domain.Page resultPage = userService.findTeacherByPage(pageAble);
+        org.springframework.data.domain.Page resultPage = userService.findTeacherByPage(pageAble,searchKey);
         return PageConvert.convert(resultPage);
     }
 
@@ -261,8 +263,12 @@ public class RemoteController {
      */
     @RequestMapping(value = "/user/collect")
     public void collectTeacher(@RequestParam("userId") String userId,
-                               @RequestParam("teacherId") String teacherId) {
+                               @RequestParam("teacherId") String teacherId
+                                ,HttpServletResponse response) {
         UserAction userAction=userActionService.CollectTeacher(userId,teacherId);
+        if (userAction == null||StringUtils.isEmpty(userAction.getActionId())) {
+            setResponse("收藏教师失败", response);
+        }
     }
 
     /**
@@ -272,8 +278,12 @@ public class RemoteController {
      */
     @RequestMapping(value = "/user/cancelCollect")
     public void cancelCollect(@RequestParam("userId") String userId,
-                              @RequestParam("teacherId") String teacherId) {
+                              @RequestParam("teacherId") String teacherId
+                                ,HttpServletResponse response) {
         int result=userActionService.CancelCollectTeacher(userId, teacherId);
+        if (result<1) {
+            setResponse("取消收藏失败", response);
+        }
     }
 
     /**
@@ -284,8 +294,13 @@ public class RemoteController {
     @RequestMapping(value = "/question/askQuestion")
     public
     @ResponseBody
-    Boolean askQuestion(@ModelAttribute("question") Question question) {
-        return questionService.saveQuestion(question)!=null;
+    Boolean askQuestion(@ModelAttribute("question") Question question,HttpServletResponse response) {
+        Question question1=questionService.saveQuestion(question);
+        if (question1 == null || StringUtils.isEmpty(question1.getQuestionId())) {
+            setResponse("保存提问失败", response);
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -296,8 +311,13 @@ public class RemoteController {
     @RequestMapping(value = "/question/answerQuestion")
     public
     @ResponseBody
-    Boolean answerQuestion(@ModelAttribute("question") Question question) {
-        return questionService.saveQuestion(question)!=null;
+    Boolean answerQuestion(@ModelAttribute("question") Question question,HttpServletResponse response) {
+        Question question1=questionService.saveQuestion(question);
+        if (question1 == null || StringUtils.isEmpty(question1.getQuestionId())) {
+            setResponse("保存提问失败", response);
+            return false;
+        }
+        return true;
     }
 
     /**

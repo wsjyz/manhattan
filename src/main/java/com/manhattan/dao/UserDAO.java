@@ -3,9 +3,9 @@ package com.manhattan.dao;
 import com.manhattan.domain.User;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by dam on 14-4-15.
  */
-public interface UserDAO extends JpaRepository<User, String> {
+public interface UserDAO extends JpaRepository<User, String>,JpaSpecificationExecutor<User> {
 
     User findBymobileAndPassword(String mobile, String password);
 

@@ -10,6 +10,8 @@ import java.util.List;
 /**
  * Created by Administrator on 2014/6/12 0012.
  */
+@Entity
+@Table(name = "t_mht_course")
 public class Course {
     @Id
     @GeneratedValue(generator = "system-uuid")
@@ -48,10 +50,10 @@ public class Course {
     private String teachingTime;
 
     @ManyToOne
-    @JoinColumn(name="post_teacher")
+    @JoinColumn(name="userId",insertable = false,updatable = false)
     private TeacherDetail teacher;
     @ManyToOne
-    @JoinColumn(name="post_teacher")
+    @JoinColumn(name="userId",insertable = false,updatable = false)
     private User user;
     @OneToMany(cascade=CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy="resourceId")
     private List<UserAction> userActions;

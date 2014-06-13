@@ -18,7 +18,7 @@ public interface UserService {
      */
     User findUserById(String userId);
 
-    String findUserIdByFilter(String userName, String password);
+    User findUserIdByFilter(String userName, String password);
 
     User findUserByFilter(String userName, String password);
 
@@ -34,5 +34,5 @@ public interface UserService {
 
     List<User> getTeachersByName(String searchKey);
 
-    Page<User> findTeacherByPage(Pageable pageAble);
+    Page<User> findTeacherByPage(Pageable pageAble,String searchKey);
 }
