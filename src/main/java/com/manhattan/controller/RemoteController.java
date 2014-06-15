@@ -3,10 +3,7 @@ package com.manhattan.controller;
 import com.google.common.collect.ImmutableList;
 import com.manhattan.domain.*;
 import com.manhattan.service.*;
-import com.manhattan.util.CustomException;
-import com.manhattan.util.MhtConstant;
-import com.manhattan.util.Page;
-import com.manhattan.util.PageConvert;
+import com.manhattan.util.*;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -170,18 +167,22 @@ public class RemoteController {
      * @param user
      * @return
      */
-    @RequestMapping(value = "/user/updateUser")
+    @RequestMapping(value = "/user/updateUser",method = RequestMethod.POST)
     public
     @ResponseBody
-    Boolean updateUser(@ModelAttribute("user")User user,HttpServletResponse response) {
+    Boolean updateUser(@FastJson User user,HttpServletResponse response) {
         if (StringUtils.isNotBlank(user.getUserId())) {
             User user1=userService.load(user.getUserId());
-            BeanUtils.copyProperties(user,user1,"userId");
-            user1=userService.save(user1);
             if (user1 == null) {
                 setResponse("更新用户信息出错", response);
+            }else{
+                BeanUtils.copyProperties(user,user1,"userId","mobile");
+                user1=userService.save(user1);
+                if (user1 == null) {
+                    setResponse("更新用户信息出错", response);
+                }
+                return true;
             }
-            return true;
         }else{
             setResponse("人员不存在", response);
         }
@@ -396,7 +397,7 @@ public class RemoteController {
      */
     @RequestMapping(value = "/course/postCourses")
     @ResponseBody
-    public String postCourses(@ModelAttribute Course course,HttpServletResponse response) {
+    public String postCourses(@FastJson Course course,HttpServletResponse response) {
         Course saved=courseService.postCourse(course);
         if (StringUtils.isEmpty(saved.getCourseId())) {
             setResponse("保存课程失败", response);
@@ -411,11 +412,9 @@ public class RemoteController {
      */
     @RequestMapping(value = "/course/getOrderCourses")
     @ResponseBody
-    public List<Course> getOrderCourses(@ModelAttribute Course course,
-                                        @RequestParam String sex,
-                                        @ModelAttribute TeacherDetail teacherDetail,
+    public List<Course> getOrderCourses(@FastJson QueryParam queryParam,
                                         HttpServletResponse response) {
-        List<Course> courses = courseService.findCoursesByFilter(course,sex,teacherDetail);
+        List<Course> courses = courseService.findCoursesByFilter(queryParam);
         if (CollectionUtils.isEmpty(courses)) {
             setResponse("没有可预约的课程", response);
         }
@@ -428,9 +427,9 @@ public class RemoteController {
      */
     @RequestMapping(value = "/course/getSchedule")
     @ResponseBody
-    public String getSchedule(@RequestParam String userId){
+    public List<CourseSchedule> getSchedule(@RequestParam String userId){
         List<Course> courses =courseService.findCoursesByUserId(userId,"");
-        String scheduleData= fetchSchedule(courses);
+        List<CourseSchedule> scheduleData= fetchSchedule(courses);
         return scheduleData;
     }
 
@@ -551,8 +550,8 @@ public class RemoteController {
      */
     @RequestMapping(value = "/course/getInformations")
     @ResponseBody
-    public List getInformations(HttpServletResponse response) {
-        List list=informationService.getInformations();
+    public List<Information> getInformations(HttpServletResponse response) {
+        List<Information> list=informationService.getInformations();
         if (CollectionUtils.isEmpty(list)) {
             setResponse("暂无资讯", response);
         }
@@ -579,7 +578,7 @@ public class RemoteController {
      */
     @RequestMapping(value = "/course/getHomeworksByTeacher")
     @ResponseBody
-    public List getHomeworksByTeacher(@RequestParam String userId,HttpServletResponse response){
+    public List<HomeWork> getHomeworksByTeacher(@RequestParam String userId,HttpServletResponse response){
         List<HomeWork> list = homeWorkService.getHomeworksByTeacher(userId);
         if (CollectionUtils.isEmpty(list)) {
             setResponse("没有发布作业", response);
@@ -644,7 +643,7 @@ public class RemoteController {
         String msg="";
         exception.printStackTrace();
         response.setCharacterEncoding("utf-8");
-        response.setContentType("text/html; charset=utf-8");
+        response.setContentType("text/plain; charset=utf-8");
         if(exception instanceof NullPointerException){
             msg="对象为空";
         }else if(exception instanceof SQLException){
@@ -659,12 +658,15 @@ public class RemoteController {
     }
 
     public void setResponse(String msg,HttpServletResponse response){
+        response.setContentType("text/plain; charset=gb2312");
         response.setCharacterEncoding("utf-8");
-        response.setContentType("text/html; charset=utf-8");
         response.addHeader(MhtConstant.ERROR_CODE,msg);
     }
 
-    private String fetchSchedule(List<Course> courses) {
-        return null;
+    private List<CourseSchedule> fetchSchedule(List<Course> courses) {
+        List<CourseSchedule> schedules=ImmutableList.of();
+        CourseSchedule courseSchedule=new CourseSchedule();
+        schedules.add(courseSchedule);
+        return schedules;
     }
 }

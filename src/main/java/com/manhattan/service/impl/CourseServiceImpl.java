@@ -2,10 +2,7 @@ package com.manhattan.service.impl;
 
 import com.manhattan.dao.CourseDao;
 import com.manhattan.dao.InformationDao;
-import com.manhattan.domain.Course;
-import com.manhattan.domain.TeacherDetail;
-import com.manhattan.domain.User;
-import com.manhattan.domain.UserAction;
+import com.manhattan.domain.*;
 import com.manhattan.service.CourseService;
 import com.manhattan.util.MhtConstant;
 import org.apache.commons.lang3.StringUtils;
@@ -15,6 +12,7 @@ import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.*;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -41,8 +39,8 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<Course> findCoursesByFilter(Course course,String sex,TeacherDetail teacher) {
-        List<Course> courses=courseDao.findAll(Specifications.where(getWhereClause(course,sex,teacher)));
+    public List<Course> findCoursesByFilter(QueryParam qp) {
+        List<Course> courses=courseDao.findAll(Specifications.where(getWhereClause(qp)));
         return courses;
     }
 
@@ -93,31 +91,39 @@ public class CourseServiceImpl implements CourseService {
         return courses;
     }
 
-    private Specification<Course> getWhereClause(final Course course,final String sex,final TeacherDetail teacher) {
+    private Specification<Course> getWhereClause(final QueryParam qp) {
         return new Specification<Course>() {
             @Override
             public Predicate toPredicate(Root<Course> r, CriteriaQuery<?> q, CriteriaBuilder cb) {
                 Predicate predicate = cb.conjunction();
                 SetJoin<Course,User> userJoin = r.join(r.getModel().getSet("setUser", User.class), JoinType.LEFT);
                 SetJoin<Course,TeacherDetail> teacherJoin = r.join(r.getModel().getSet("setTeacher", TeacherDetail.class) , JoinType.LEFT);
-                if (StringUtils.isNotBlank(course.getCourseCategory())) {
+                if (StringUtils.isNotBlank(qp.getCourseCategory())) {
                     predicate.getExpressions().add(
-                            cb.equal(r.<String>get("courseCategory"), StringUtils.trim(course.getCourseCategory()))
+                            cb.equal(r.<String>get("courseCategory"), StringUtils.trim(qp.getCourseCategory()))
                     );
                 }
-                if (StringUtils.isNotBlank(course.getPlace())) {
+                if (StringUtils.isNotBlank(qp.getPlace())) {
                     predicate.getExpressions().add(
-                            cb.equal(r.<String>get("place"), StringUtils.trim(course.getPlace()) )
+                            cb.equal(r.<String>get("place"), StringUtils.trim(qp.getPlace()) )
                     );
                 }
-                if (StringUtils.isNotBlank(sex)) {
+                if (qp.getAppointmentTime()!=null) {
                     predicate.getExpressions().add(
-                            cb.equal(userJoin.<String>get("sex"), StringUtils.trim(sex))
+                            cb.lessThanOrEqualTo(r.<Timestamp>get("start_time"), new Timestamp(qp.getAppointmentTime().getTime()))
+                    );
+                    predicate.getExpressions().add(
+                            cb.greaterThanOrEqualTo(r.<Timestamp>get("endTime"), new Timestamp(qp.getAppointmentTime().getTime()))
                     );
                 }
-                if (StringUtils.isNotBlank(teacher.getTutoringWay())) {
+                if (StringUtils.isNotBlank(qp.getSex())) {
                     predicate.getExpressions().add(
-                            cb.equal(teacherJoin.<String>get("tutoringWay"), StringUtils.trim(teacher.getTutoringWay()))
+                            cb.equal(userJoin.<String>get("sex"), StringUtils.trim(qp.getSex()))
+                    );
+                }
+                if (StringUtils.isNotBlank(qp.getTutoringWay())) {
+                    predicate.getExpressions().add(
+                            cb.equal(teacherJoin.<String>get("tutoringWay"), StringUtils.trim(qp.getTutoringWay()))
                     );
                 }
                 return predicate;

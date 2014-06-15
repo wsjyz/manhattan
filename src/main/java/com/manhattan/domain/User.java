@@ -5,6 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by lk.zh on 2014/5/19.
@@ -31,7 +32,7 @@ public class User {
     private String avatar;
     @Column(name = "sex")
     private String sex;
-    @Column(name = "mobile")@NotNull
+    @Column(name = "mobile")
     private String mobile;
     @Column(name = "email")
     private String email;
@@ -45,6 +46,9 @@ public class User {
     private Date vipExpiredTime;
     @Column
     private String evaluation;
+
+    @OneToMany(cascade=CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy="postTeacher")
+    private List<Course> courses;
 
     public User() {
     }

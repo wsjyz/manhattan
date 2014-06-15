@@ -2,6 +2,7 @@ package com.manhattan.controller;
 
 import com.manhattan.domain.User;
 import com.manhattan.service.UserService;
+import com.manhattan.util.FastJson;
 import com.manhattan.util.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,9 +25,9 @@ public class MainController {
 
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public @ResponseBody JsonResult login(@RequestBody User user) {
-        String res=userService.findUserIdByFilter(user.getMobile(),user.getPassword());
+        user=userService.findUserIdByFilter(user.getMobile(), user.getPassword());
         JsonResult jsonResult=new JsonResult();
-        jsonResult.setSuccess(!StringUtils.isEmpty(res));
+        jsonResult.setSuccess(user!=null);
         return jsonResult;
     }
 }

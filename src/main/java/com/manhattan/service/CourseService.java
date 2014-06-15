@@ -1,6 +1,7 @@
 package com.manhattan.service;
 
 import com.manhattan.domain.Course;
+import com.manhattan.domain.QueryParam;
 import com.manhattan.domain.TeacherDetail;
 import com.manhattan.domain.User;
 
@@ -16,7 +17,7 @@ public interface CourseService {
 
     Course postCourse(Course course);
 
-    List<Course> findCoursesByFilter(Course course,String sex,TeacherDetail teacher);
+    List<Course> findCoursesByFilter(QueryParam qp);
 
     List<Course> findCoursesByUserId(String userId,String action);
 
