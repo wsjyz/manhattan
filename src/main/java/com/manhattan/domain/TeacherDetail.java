@@ -71,6 +71,11 @@ public class TeacherDetail {
     @JoinColumn(name="userId",insertable = false,updatable = false)
     private User user;
 
+
+    @OneToOne
+    @JoinColumn(name="userId",insertable = false,updatable = false)
+    private User user;
+
     public String getUserId() {
         return userId;
     }
