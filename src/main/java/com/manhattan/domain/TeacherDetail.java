@@ -66,12 +66,6 @@ public class TeacherDetail {
     private List<Course> courses;
     @OneToMany(cascade=CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy="userId")
     private List<UserAction> userActions;
-
-    @OneToOne
-    @JoinColumn(name="userId",insertable = false,updatable = false)
-    private User user;
-
-
     @OneToOne
     @JoinColumn(name="userId",insertable = false,updatable = false)
     private User user;
