@@ -47,7 +47,7 @@ public class User {
     @Column
     private String evaluation;
 
-    @OneToMany(cascade=CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy="postTeacher")
+    @OneToMany(cascade=CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy="postTeacher")
     private List<Course> courses;
 
     public User() {

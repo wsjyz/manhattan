@@ -5,6 +5,7 @@ import com.manhattan.dao.InformationDao;
 import com.manhattan.domain.Information;
 import com.manhattan.service.InformationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,9 +19,9 @@ public class InformationServiceImpl implements InformationService {
     private InformationDao informationDao;
 
     @Override
-    public List<Information> getInformations() {
+    public List<Information> getInformations(Pageable pageAble) {
         List<Information> list = ImmutableList.of();
-        Iterable<Information> iterator = informationDao.findAll();
+        Iterable<Information> iterator = informationDao.findAll(pageAble);
         while (iterator.iterator().hasNext()) {
             list.add(iterator.iterator().next());
         }

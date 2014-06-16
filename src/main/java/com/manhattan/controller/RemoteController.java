@@ -9,13 +9,17 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
@@ -236,7 +240,7 @@ public class RemoteController {
     @RequestMapping(value = "/teacher/listPage")
     public
     @ResponseBody
-    Page<User> listTeachers(@ModelAttribute("page") Page<User> page,@RequestParam(value = "searchKey",required = false) String searchKey) {
+    Page<User> listTeachers(@FastJson  Page<User> page,@RequestParam(value = "searchKey",required = false) String searchKey) {
         Pageable pageAble = new PageRequest(page.getPageNo(), page.getPageSize());
         org.springframework.data.domain.Page resultPage = userService.findTeacherByPage(pageAble,searchKey);
         return PageConvert.convert(resultPage);
@@ -295,7 +299,7 @@ public class RemoteController {
     @RequestMapping(value = "/question/askQuestion")
     public
     @ResponseBody
-    Boolean askQuestion(@ModelAttribute("question") Question question,HttpServletResponse response) {
+    Boolean askQuestion(@FastJson Question question,HttpServletResponse response) {
         Question question1=questionService.saveQuestion(question);
         if (question1 == null || StringUtils.isEmpty(question1.getQuestionId())) {
             setResponse("保存提问失败", response);
@@ -312,7 +316,7 @@ public class RemoteController {
     @RequestMapping(value = "/question/answerQuestion")
     public
     @ResponseBody
-    Boolean answerQuestion(@ModelAttribute("question") Question question,HttpServletResponse response) {
+    Boolean answerQuestion(@FastJson Question question,HttpServletResponse response) {
         Question question1=questionService.saveQuestion(question);
         if (question1 == null || StringUtils.isEmpty(question1.getQuestionId())) {
             setResponse("保存提问失败", response);
@@ -341,7 +345,7 @@ public class RemoteController {
     public
     @ResponseBody
     Page<Question> myQuestions(@RequestParam("userId") String userId,
-                               @ModelAttribute("page") Page<Question> page) {
+                               @FastJson Page<Question> page) {
         Pageable pageAble = new PageRequest(page.getPageNo(), page.getPageSize());
         org.springframework.data.domain.Page result = questionService.findQuestionByPage(userId,pageAble);
         return PageConvert.convert(result);
@@ -359,7 +363,7 @@ public class RemoteController {
     public
     @ResponseBody
     Page<Question> needAnswerList(@RequestParam("userId") String userId,
-                                  @ModelAttribute("page") Page<Question> page,
+                                  @FastJson Page<Question> page,
                                   @RequestParam("type") String type) {
         Pageable pageAble = new PageRequest(page.getPageNo(), page.getPageSize());
         org.springframework.data.domain.Page result = questionService.findQuestionByPage(userId,type,pageAble);
@@ -550,12 +554,14 @@ public class RemoteController {
      */
     @RequestMapping(value = "/course/getInformations")
     @ResponseBody
-    public List<Information> getInformations(HttpServletResponse response) {
-        List<Information> list=informationService.getInformations();
+    public Page<Information> getInformations(@FastJson Page<Information> page,HttpServletResponse response) {
+        Pageable pageAble= new PageRequest(page.getPageNo(), page.getPageSize());
+        List<Information> list=informationService.getInformations(pageAble);
+        page.setRows(list);
         if (CollectionUtils.isEmpty(list)) {
             setResponse("暂无资讯", response);
         }
-        return list;
+        return page;
     }
 
     /**
@@ -592,7 +598,7 @@ public class RemoteController {
      */
     @RequestMapping(value = "/homeWork/postHomeWork")
     @ResponseBody
-    public void postHomeWork(@ModelAttribute HomeWork homeWork,HttpServletResponse response) {
+    public void postHomeWork(@FastJson HomeWork homeWork,HttpServletResponse response) {
         HomeWork homeWork1=homeWorkService.post(homeWork);
         if (homeWork1==null) {
             setResponse("作业发布失败", response);
@@ -605,7 +611,7 @@ public class RemoteController {
      */
     @RequestMapping(value = "/homeWork/submitHomeWork")
     @ResponseBody
-    public void submitHomeWork(@ModelAttribute HomeworkSubmit homeworkSubmit,HttpServletResponse response){
+    public void submitHomeWork(@FastJson HomeworkSubmit homeworkSubmit,HttpServletResponse response){
         HomeworkSubmit homeworkSubmit1=homeworkSubmitService.submit(homeworkSubmit);
         if (homeworkSubmit1==null) {
             setResponse("作业提交失败", response);
@@ -614,11 +620,11 @@ public class RemoteController {
 
     /**
      * 上传附件
-     * @param content
+     * @param file
      */
     @RequestMapping(value = "/upload/uploadAnnex")
     @ResponseBody
-    public void uploadAnnex(@RequestParam String content){
+    public void uploadAnnex(@RequestParam(value = "file") MultipartFile file){
 
     }
     /**
@@ -635,18 +641,16 @@ public class RemoteController {
         return users;
     }
     /**
-     * 异常处理
+     * 统一异常处理
      * @return
      */
     @ExceptionHandler
     public String exception(Exception exception,HttpServletResponse response) {
         String msg="";
         exception.printStackTrace();
-        response.setCharacterEncoding("utf-8");
-        response.setContentType("text/plain; charset=utf-8");
         if(exception instanceof NullPointerException){
             msg="对象为空";
-        }else if(exception instanceof SQLException){
+        }else if(exception instanceof SQLException || exception instanceof DataAccessException){
             msg="数据查询错误";
         }else if(exception instanceof RuntimeException){
             msg="系统运行错误";
@@ -657,10 +661,18 @@ public class RemoteController {
         return null;
     }
 
-    public void setResponse(String msg,HttpServletResponse response){
-        response.setContentType("text/plain; charset=gb2312");
-        response.setCharacterEncoding("utf-8");
-        response.addHeader(MhtConstant.ERROR_CODE,msg);
+    /**
+     * 设置错误消息
+     * @param msg
+     * @param response
+     * 获取方式：new String(conn.getHeaderField("ErrorMsg").getBytes("ISO-8859-1"), "UTF-8")
+     */
+    public void setResponse(String msg,HttpServletResponse response) {
+        try {
+            response.addHeader("ErrorMsg" ,new String(msg.getBytes("ISO-8859-1"), "gbk"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
 
     private List<CourseSchedule> fetchSchedule(List<Course> courses) {
