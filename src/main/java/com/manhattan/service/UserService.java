@@ -32,7 +32,7 @@ public interface UserService {
 
     int register(String userId, String password,String type);
 
-    List<User> getTeachersByName(String searchKey);
+    Page<User> getTeachersByName(Pageable pageAble,String searchKey);
 
     Page<User> findTeacherByPage(Pageable pageAble,String searchKey);
 }

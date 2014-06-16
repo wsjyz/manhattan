@@ -67,8 +67,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getTeachersByName(String searchKey) {
-        return userDAO.findByUserNameLikeAndType(searchKey, MhtConstant.USER_TYPE_TEACHER);
+    public Page<User> getTeachersByName(Pageable pageAble,String searchKey) {
+        return userDAO.findByUserNameLikeAndType(searchKey, MhtConstant.USER_TYPE_TEACHER,pageAble);
     }
 
     @Override

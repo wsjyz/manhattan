@@ -2,6 +2,8 @@ package com.manhattan.dao;
 
 import com.manhattan.domain.User;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -32,5 +34,5 @@ public interface UserDAO extends JpaRepository<User, String>,JpaSpecificationExe
     @Query(value = "update User u set u.password=?2,u.type=?3 where u.userId=?1")
     int updateUser(String userId, String password, String type);
 
-    List<User> findByUserNameLikeAndType(String userName, String teacher);
+    Page<User> findByUserNameLikeAndType(String userName, String teacher,Pageable pageAble);
 }

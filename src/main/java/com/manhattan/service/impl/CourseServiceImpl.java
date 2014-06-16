@@ -7,12 +7,15 @@ import com.manhattan.service.CourseService;
 import com.manhattan.util.MhtConstant;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.*;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,8 +27,8 @@ public class CourseServiceImpl implements CourseService {
     private CourseDao courseDao;
 
     @Override
-    public List<Course> findCourses() {
-        return courseDao.findAll();
+    public Page<Course> findCourses(Pageable pageAble) {
+        return courseDao.findAll(pageAble);
     }
 
     @Override
@@ -39,37 +42,19 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<Course> findCoursesByFilter(QueryParam qp) {
-        List<Course> courses=courseDao.findAll(Specifications.where(getWhereClause(qp)));
+    public Page<Course> findCoursesByFilter(Pageable pageAble,QueryParam qp) {
+        Page<Course> courses=courseDao.findAll(Specifications.where(getWhereClause(qp)),pageAble);
         return courses;
     }
 
     @Override
-    public List<Course> findCoursesByUserId(final String userId,final String action) {
-        List<Course> courses=courseDao.findAll(new Specification<Course>() {
-            @Override
-            public Predicate toPredicate(Root<Course> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                Predicate predicate = cb.conjunction();
-                SetJoin<Course,UserAction> userActionSetJoin=root.join(root.getModel().getSet("setUserActions", UserAction.class), JoinType.LEFT);
-                if (StringUtils.isNotBlank(userId)) {
-                    predicate.getExpressions().add(
-                            cb.equal(userActionSetJoin.<String>get("userId"), StringUtils.trim(userId))
-                    );
-                }
-                if (StringUtils.isNotBlank(action)) {
-                    predicate.getExpressions().add(
-                            cb.equal(userActionSetJoin.<String>get("actionType"), StringUtils.trim(action))
-                    );
-                }
-                return predicate;
-            }
-        });
-        return courses;
+    public Page<Course> findCoursesByUserId(Pageable pageAble,final String userId,final String action) {
+        return findCoursesByUserId(pageAble,userId,action,null,null);
     }
 
     @Override
-    public List<Course> getCoursesByTeacher(final String userId,final String action) {
-        List<Course> courses=courseDao.findAll(new Specification<Course>() {
+    public Page<Course> getCoursesByTeacher(Pageable pageAble,final String userId,final String action) {
+        Page<Course> courses=courseDao.findAll(new Specification<Course>() {
             @Override
             public Predicate toPredicate(Root<Course> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
                 Predicate predicate = cb.conjunction();
@@ -87,7 +72,40 @@ public class CourseServiceImpl implements CourseService {
                 }
                 return predicate;
             }
-        });
+        },pageAble);
+        return courses;
+    }
+
+    @Override
+    public Page<Course> findCoursesByUserId(Pageable pageable,final String userId,final String actionType,final Date startTime,final Date endTime) {
+        Page<Course> courses=courseDao.findAll(new Specification<Course>() {
+            @Override
+            public Predicate toPredicate(Root<Course> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                Predicate predicate = cb.conjunction();
+                SetJoin<Course,UserAction> userActionSetJoin=root.join(root.getModel().getSet("setUserActions", UserAction.class), JoinType.LEFT);
+                if (StringUtils.isNotBlank(userId)) {
+                    predicate.getExpressions().add(
+                            cb.equal(userActionSetJoin.<String>get("userId"), StringUtils.trim(userId))
+                    );
+                }
+                if (StringUtils.isNotBlank(actionType)) {
+                    predicate.getExpressions().add(
+                            cb.equal(userActionSetJoin.<String>get("actionType"), StringUtils.trim(actionType))
+                    );
+                }
+                if (null!=startTime) {
+                    predicate.getExpressions().add(
+                            cb.lessThanOrEqualTo(userActionSetJoin.<Date>get("startTime"), startTime)
+                    );
+                }
+                if (null!=endTime) {
+                    predicate.getExpressions().add(
+                            cb.greaterThanOrEqualTo(userActionSetJoin.<Date>get("endTime"), endTime)
+                    );
+                }
+                return predicate;
+            }
+        },pageable);
         return courses;
     }
 

@@ -4,6 +4,8 @@ import com.manhattan.dao.HomeWorkDao;
 import com.manhattan.domain.HomeWork;
 import com.manhattan.service.HomeWorkService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,8 +19,8 @@ public class HomeWorkServiceImpl implements HomeWorkService {
     private HomeWorkDao homeWorkDao;
 
     @Override
-    public List<HomeWork> getHomeworksByUser(String userId) {
-        return homeWorkDao.findByUserId(userId);
+    public Page<HomeWork> getHomeworksByUser(Pageable pageAble,String userId) {
+        return homeWorkDao.findByUserId(userId,pageAble);
     }
 
     @Override

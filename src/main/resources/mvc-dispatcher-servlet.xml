@@ -27,6 +27,7 @@
     <mvc:resources mapping="/font/**" location="/WEB-INF/app/fonts/"/>
     <mvc:resources mapping="/bower_components/**" location="/WEB-INF/app/bower_components/"/>
     <mvc:resources mapping="/views/**" location="/WEB-INF/app/views/"/>
+    <mvc:resources mapping="/upload/**" location="/WEB-INF/upload/"/>
     <!-- Content Negotiating View Resolver -->
     <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver" p:order="1">
         <!-- 设置内容协商管理器 -->
@@ -89,4 +90,8 @@
         </property>
     </bean>
 
+    <!-- 支持上传文件 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="100000"/>
+    </bean>
 </beans>

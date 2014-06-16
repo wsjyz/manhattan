@@ -4,19 +4,25 @@ import com.google.common.collect.ImmutableList;
 import com.manhattan.domain.*;
 import com.manhattan.service.*;
 import com.manhattan.util.*;
+import com.manhattan.util.OpenPage;
+import org.springframework.data.domain.Page;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -221,24 +227,22 @@ public class RemoteController {
                     teacherDetail.getExamCertificate(),
                     teacherDetail.getTeachingCertificate(),
                     teacherDetail.getStudentMaxScoreCertificate());
-        }else{
-            setResponse("暂无认证信息", response);
         }
-        return null;
+        return ImmutableList.of();
     }
 
     /**
      * 获取教师列表
      *
-     * @param page
+     * @param openPage
      * @return
      */
     @RequestMapping(value = "/teacher/listPage")
     public
     @ResponseBody
-    Page<User> listTeachers(@ModelAttribute("page") Page<User> page,@RequestParam(value = "searchKey",required = false) String searchKey) {
-        Pageable pageAble = new PageRequest(page.getPageNo(), page.getPageSize());
-        org.springframework.data.domain.Page resultPage = userService.findTeacherByPage(pageAble,searchKey);
+    OpenPage<User> listTeachers(@FastJson OpenPage<User> openPage,@RequestParam(value = "searchKey",required = false) String searchKey) {
+        Pageable pageAble = new PageRequest(openPage.getPageNo(), openPage.getPageSize());
+        Page resultPage = userService.findTeacherByPage(pageAble,searchKey);
         return PageConvert.convert(resultPage);
     }
 
@@ -251,9 +255,10 @@ public class RemoteController {
     @RequestMapping(value = "/teacher/listByName")
     public
     @ResponseBody
-    List<User> listTeachersByName(@RequestParam("searchKey") String searchKey) {
-        List<User> userList=userService.getTeachersByName(searchKey);
-        return userList;
+    OpenPage<User> listTeachersByName(@FastJson OpenPage<User> openPage,@RequestParam("searchKey") String searchKey) {
+        Pageable pageAble = new PageRequest(openPage.getPageNo(), openPage.getPageSize());
+        Page<User> resultPage=userService.getTeachersByName(pageAble,searchKey);
+        return PageConvert.convert(resultPage);
     }
 
     /**
@@ -295,7 +300,7 @@ public class RemoteController {
     @RequestMapping(value = "/question/askQuestion")
     public
     @ResponseBody
-    Boolean askQuestion(@ModelAttribute("question") Question question,HttpServletResponse response) {
+    Boolean askQuestion(@FastJson Question question,HttpServletResponse response) {
         Question question1=questionService.saveQuestion(question);
         if (question1 == null || StringUtils.isEmpty(question1.getQuestionId())) {
             setResponse("保存提问失败", response);
@@ -312,7 +317,7 @@ public class RemoteController {
     @RequestMapping(value = "/question/answerQuestion")
     public
     @ResponseBody
-    Boolean answerQuestion(@ModelAttribute("question") Question question,HttpServletResponse response) {
+    Boolean answerQuestion(@FastJson Question question,HttpServletResponse response) {
         Question question1=questionService.saveQuestion(question);
         if (question1 == null || StringUtils.isEmpty(question1.getQuestionId())) {
             setResponse("保存提问失败", response);
@@ -334,16 +339,16 @@ public class RemoteController {
      * 获取我的问题
      *
      * @param userId
-     * @param page
+     * @param openPage
      * @return
      */
     @RequestMapping(value = "/question/myQuestions")
     public
     @ResponseBody
-    Page<Question> myQuestions(@RequestParam("userId") String userId,
-                               @ModelAttribute("page") Page<Question> page) {
-        Pageable pageAble = new PageRequest(page.getPageNo(), page.getPageSize());
-        org.springframework.data.domain.Page result = questionService.findQuestionByPage(userId,pageAble);
+    OpenPage<Question> myQuestions(@RequestParam("userId") String userId,
+                               @FastJson OpenPage<Question> openPage) {
+        Pageable pageAble = new PageRequest(openPage.getPageNo(), openPage.getPageSize());
+        Page result = questionService.findQuestionByPage(userId,pageAble);
         return PageConvert.convert(result);
     }
 
@@ -351,18 +356,18 @@ public class RemoteController {
      * 获取我要回答列表
      *
      * @param userId
-     * @param page
+     * @param openPage
      * @param type 指定回答(ASSIGN)已回答(ANSWER)未回答(UNANSWER)
      * @return page
      */
     @RequestMapping(value = "/question/needAnswerList")
     public
     @ResponseBody
-    Page<Question> needAnswerList(@RequestParam("userId") String userId,
-                                  @ModelAttribute("page") Page<Question> page,
+    OpenPage<Question> needAnswerList(@RequestParam("userId") String userId,
+                                  @FastJson OpenPage<Question> openPage,
                                   @RequestParam("type") String type) {
-        Pageable pageAble = new PageRequest(page.getPageNo(), page.getPageSize());
-        org.springframework.data.domain.Page result = questionService.findQuestionByPage(userId,type,pageAble);
+        Pageable pageAble = new PageRequest(openPage.getPageNo(), openPage.getPageSize());
+        Page result = questionService.findQuestionByPage(userId,type,pageAble);
         return PageConvert.convert(result);
     }
 
@@ -372,12 +377,10 @@ public class RemoteController {
      */
     @RequestMapping(value = "/course/getWorthCourses")
     @ResponseBody
-    public List<Course> getWorthCourses(HttpServletResponse response){
-        List<Course> courses=courseService.findCourses();
-        if (CollectionUtils.isEmpty(courses)) {
-            setResponse("暂无课程", response);
-        }
-        return courses;
+    public OpenPage<Course> getWorthCourses(@FastJson OpenPage<Question> openPage,HttpServletResponse response){
+        Pageable pageAble = new PageRequest(openPage.getPageNo(), openPage.getPageSize());
+        Page<Course> courses=courseService.findCourses(pageAble);
+        return PageConvert.convert(courses);
     }
 
     /**
@@ -412,13 +415,12 @@ public class RemoteController {
      */
     @RequestMapping(value = "/course/getOrderCourses")
     @ResponseBody
-    public List<Course> getOrderCourses(@FastJson QueryParam queryParam,
+    public OpenPage<Course> getOrderCourses(@FastJson OpenPage<Course> openPage,
+                                        @FastJson QueryParam queryParam,
                                         HttpServletResponse response) {
-        List<Course> courses = courseService.findCoursesByFilter(queryParam);
-        if (CollectionUtils.isEmpty(courses)) {
-            setResponse("没有可预约的课程", response);
-        }
-        return courses;
+        Pageable pageAble = new PageRequest(openPage.getPageNo(), openPage.getPageSize());
+        Page<Course> courses = courseService.findCoursesByFilter(pageAble,queryParam);
+        return PageConvert.convert(courses);
     }
 
     /**
@@ -427,12 +429,16 @@ public class RemoteController {
      */
     @RequestMapping(value = "/course/getSchedule")
     @ResponseBody
-    public List<CourseSchedule> getSchedule(@RequestParam String userId){
-        List<Course> courses =courseService.findCoursesByUserId(userId,"");
-        List<CourseSchedule> scheduleData= fetchSchedule(courses);
-        return scheduleData;
+    public List<Date> getSchedule(@RequestParam Date startTime,
+                                            @RequestParam Date endTime,
+                                            @RequestParam String userId){
+        Page<Course> courses =courseService.findCoursesByUserId(null, userId, MhtConstant.USER_ACTION_APPOINTMENT_COURSE, startTime, endTime);
+        List<Date> date=ImmutableList.of();
+        for (Course course : courses.getContent()) {
+            date.add(course.getStartTime());
+        }
+        return date;
     }
-
 
 
     /**
@@ -441,12 +447,10 @@ public class RemoteController {
      */
     @RequestMapping(value = "/course/getOrderCoursesByUserId")
     @ResponseBody
-    public List<Course> getOrderCoursesByUserId(@RequestParam String userId,HttpServletResponse response){
-        List<Course> courses =courseService.findCoursesByUserId(userId,MhtConstant.USER_ACTION_APPOINTMENT);
-        if (CollectionUtils.isEmpty(courses)) {
-            setResponse("没有任何预约的课程", response);
-        }
-        return courses;
+    public OpenPage<Course> getOrderCoursesByUserId(@FastJson OpenPage<Course> openPage,@RequestParam String userId,HttpServletResponse response){
+        Pageable pageAble = new PageRequest(openPage.getPageNo(), openPage.getPageSize());
+        Page<Course> courses =courseService.findCoursesByUserId(pageAble,userId,MhtConstant.USER_ACTION_APPOINTMENT_COURSE);
+        return PageConvert.convert(courses);
     }
 
     /**
@@ -455,12 +459,10 @@ public class RemoteController {
      */
     @RequestMapping(value = "/course/getListenCoursesByUserId")
     @ResponseBody
-    public List<Course> getListenCoursesByUserId(@RequestParam String userId,HttpServletResponse response){
-        List<Course> courses =courseService.findCoursesByUserId(userId,MhtConstant.USER_ACTION_LISTEN);
-        if (CollectionUtils.isEmpty(courses)) {
-            setResponse("没有任何试听的课程", response);
-        }
-        return courses;
+    public OpenPage<Course> getListenCoursesByUserId(@FastJson OpenPage<Course> openPage,@RequestParam String userId,HttpServletResponse response){
+        Pageable pageAble = new PageRequest(openPage.getPageNo(), openPage.getPageSize());
+        Page<Course> courses =courseService.findCoursesByUserId(pageAble,userId,MhtConstant.USER_ACTION_LISTEN_COURSE);
+        return PageConvert.convert(courses);
     }
 
     /**
@@ -469,12 +471,10 @@ public class RemoteController {
      */
     @RequestMapping(value = "/course/getCollectCoursesByUserId")
     @ResponseBody
-    public List<Course> getCollectCoursesByUserId(@RequestParam String userId,HttpServletResponse response){
-        List<Course> courses =courseService.findCoursesByUserId(userId,MhtConstant.USER_ACTION_COLLECT);
-        if (CollectionUtils.isEmpty(courses)) {
-            setResponse("没有任何收藏的课程", response);
-        }
-        return courses;
+    public OpenPage<Course> getCollectCoursesByUserId(@FastJson OpenPage<Course> openPage,@RequestParam String userId,HttpServletResponse response){
+        Pageable pageAble = new PageRequest(openPage.getPageNo(), openPage.getPageSize());
+        Page<Course> courses =courseService.findCoursesByUserId(pageAble,userId,MhtConstant.USER_ACTION_COLLECT_COURSE);
+        return PageConvert.convert(courses);
     }
 
     /**
@@ -484,7 +484,7 @@ public class RemoteController {
     @RequestMapping(value = "/course/addAppointment")
     @ResponseBody
     public void addAppointment(@RequestParam String userId,@RequestParam String courseId,HttpServletResponse response) {
-        UserAction userAction=userActionService.save(userId, courseId, MhtConstant.USER_ACTION_APPOINTMENT);
+        UserAction userAction=userActionService.save(userId, courseId, MhtConstant.USER_ACTION_APPOINTMENT_COURSE);
         if (userAction == null) {
             setResponse("预约课程失败", response);
         }
@@ -497,7 +497,7 @@ public class RemoteController {
     @RequestMapping(value = "/course/addListen")
     @ResponseBody
     public void addListen(@RequestParam String userId,@RequestParam String courseId,HttpServletResponse response){
-        UserAction userAction=userActionService.save(userId, courseId, MhtConstant.USER_ACTION_LISTEN);
+        UserAction userAction=userActionService.save(userId, courseId, MhtConstant.USER_ACTION_LISTEN_COURSE);
         if (userAction == null) {
             setResponse("试听课程记录保存失败", response);
         }
@@ -510,7 +510,7 @@ public class RemoteController {
     @RequestMapping(value = "/course/addCollect")
     @ResponseBody
     public void addCollect(@RequestParam String userId,@RequestParam String courseId,HttpServletResponse response){
-        UserAction userAction=userActionService.save(userId, courseId, MhtConstant.USER_ACTION_COLLECT);
+        UserAction userAction=userActionService.save(userId, courseId, MhtConstant.USER_ACTION_COLLECT_COURSE);
         if (userAction == null) {
             setResponse("收藏课程失败", response);
         }
@@ -522,12 +522,10 @@ public class RemoteController {
      */
     @RequestMapping(value = "/course/getOrderCoursesByTeacher")
     @ResponseBody
-    public List<Course> getOrderCoursesByTeacher(@RequestParam String userId,HttpServletResponse response){
-        List<Course> courses=courseService.getCoursesByTeacher(userId, MhtConstant.USER_ACTION_APPOINTMENT);
-        if (CollectionUtils.isEmpty(courses)) {
-            setResponse("没有任何预约的课程", response);
-        }
-        return courses;
+    public OpenPage<Course> getOrderCoursesByTeacher(@FastJson OpenPage openPage,@RequestParam String userId,HttpServletResponse response){
+        Pageable pageAble = new PageRequest(openPage.getPageNo(), openPage.getPageSize());
+        Page<Course> courses=courseService.getCoursesByTeacher(pageAble,userId, MhtConstant.USER_ACTION_APPOINTMENT_COURSE);
+        return PageConvert.convert(courses);
     }
 
     /**
@@ -536,12 +534,34 @@ public class RemoteController {
      */
     @RequestMapping(value = "/course/getListenCoursesByTeacher")
     @ResponseBody
-    public List<Course> getListenCoursesByTeacher(@RequestParam String userId,HttpServletResponse response){
-        List<Course> courses=courseService.getCoursesByTeacher(userId, MhtConstant.USER_ACTION_LISTEN);
-        if (CollectionUtils.isEmpty(courses)) {
-            setResponse("没有任何试听的课程", response);
-        }
-        return courses;
+    public OpenPage<Course> getListenCoursesByTeacher(@FastJson OpenPage openPage,@RequestParam String userId,HttpServletResponse response){
+        Pageable pageAble = new PageRequest(openPage.getPageNo(), openPage.getPageSize());
+        Page<Course> courses=courseService.getCoursesByTeacher(pageAble,userId, MhtConstant.USER_ACTION_LISTEN_COURSE);
+        return PageConvert.convert(courses);
+    }
+
+    /**
+     * 获取指定学生的预约教师列表
+     * @return
+     */
+    @RequestMapping(value = "/teacher/getOrderTeachersByUserId")
+    @ResponseBody
+    public OpenPage<TeacherDetail> getOrderTeachersByUserId(@FastJson OpenPage<TeacherDetail> openPage,@RequestParam String userId,HttpServletResponse response){
+        Pageable pageAble = new PageRequest(openPage.getPageNo(), openPage.getPageSize());
+        Page<TeacherDetail> teachers =teacherDetailService.findTeachersByUserId(pageAble, userId, MhtConstant.USER_ACTION_APPOINTMENT_TEACHER);
+        return PageConvert.convert(teachers);
+    }
+
+    /**
+     * 获取指定学生的试听教师列表
+     * @return
+     */
+    @RequestMapping(value = "/teacher/getListenTeachersByUserId")
+    @ResponseBody
+    public OpenPage<TeacherDetail> getListenTeachersByUserId(@FastJson OpenPage<TeacherDetail> openPage,@RequestParam String userId,HttpServletResponse response){
+        Pageable pageAble = new PageRequest(openPage.getPageNo(), openPage.getPageSize());
+        Page<TeacherDetail> teachers =teacherDetailService.findTeachersByUserId(pageAble, userId, MhtConstant.USER_ACTION_LISTEN_TEACHER);
+        return PageConvert.convert(teachers);
     }
 
     /**
@@ -550,12 +570,10 @@ public class RemoteController {
      */
     @RequestMapping(value = "/course/getInformations")
     @ResponseBody
-    public List<Information> getInformations(HttpServletResponse response) {
-        List<Information> list=informationService.getInformations();
-        if (CollectionUtils.isEmpty(list)) {
-            setResponse("暂无资讯", response);
-        }
-        return list;
+    public OpenPage<Information> getInformations(@FastJson OpenPage<Information> openPage,HttpServletResponse response) {
+        Pageable pageAble= new PageRequest(openPage.getPageNo(), openPage.getPageSize());
+        Page<Information> page=informationService.getInformations(pageAble);
+        return PageConvert.convert(page);
     }
 
     /**
@@ -564,12 +582,10 @@ public class RemoteController {
      */
     @RequestMapping(value = "/homeWork/getHomeworksByUser")
     @ResponseBody
-    public List<HomeWork> getHomeworksByUser(@RequestParam String userId,HttpServletResponse response) {
-        List<HomeWork> list = homeWorkService.getHomeworksByUser(userId);
-        if (CollectionUtils.isEmpty(list)) {
-            setResponse("暂无作业", response);
-        }
-        return list;
+    public OpenPage<HomeWork> getHomeworksByUser(@FastJson OpenPage<Information> openPage,@RequestParam String userId,HttpServletResponse response) {
+        Pageable pageAble = new PageRequest(openPage.getPageNo(), openPage.getPageSize());
+        Page<HomeWork> page = homeWorkService.getHomeworksByUser(pageAble,userId);
+        return PageConvert.convert(page);
     }
 
     /**
@@ -580,9 +596,6 @@ public class RemoteController {
     @ResponseBody
     public List<HomeWork> getHomeworksByTeacher(@RequestParam String userId,HttpServletResponse response){
         List<HomeWork> list = homeWorkService.getHomeworksByTeacher(userId);
-        if (CollectionUtils.isEmpty(list)) {
-            setResponse("没有发布作业", response);
-        }
         return list;
     }
 
@@ -592,7 +605,7 @@ public class RemoteController {
      */
     @RequestMapping(value = "/homeWork/postHomeWork")
     @ResponseBody
-    public void postHomeWork(@ModelAttribute HomeWork homeWork,HttpServletResponse response) {
+    public void postHomeWork(@FastJson HomeWork homeWork,HttpServletResponse response) {
         HomeWork homeWork1=homeWorkService.post(homeWork);
         if (homeWork1==null) {
             setResponse("作业发布失败", response);
@@ -605,7 +618,7 @@ public class RemoteController {
      */
     @RequestMapping(value = "/homeWork/submitHomeWork")
     @ResponseBody
-    public void submitHomeWork(@ModelAttribute HomeworkSubmit homeworkSubmit,HttpServletResponse response){
+    public void submitHomeWork(@FastJson HomeworkSubmit homeworkSubmit,HttpServletResponse response){
         HomeworkSubmit homeworkSubmit1=homeworkSubmitService.submit(homeworkSubmit);
         if (homeworkSubmit1==null) {
             setResponse("作业提交失败", response);
@@ -614,12 +627,24 @@ public class RemoteController {
 
     /**
      * 上传附件
-     * @param content
+     * @param file
      */
     @RequestMapping(value = "/upload/uploadAnnex")
     @ResponseBody
-    public void uploadAnnex(@RequestParam String content){
-
+    public String uploadAnnex(@RequestParam MultipartFile file,HttpServletRequest request,HttpServletResponse response){
+        String path = request.getSession().getServletContext().getRealPath("upload");
+        String fileName = file.getOriginalFilename();
+        File targetFile = new File(path, fileName);
+        if(!targetFile.exists()){
+            targetFile.mkdirs();
+        }
+        try {
+            file.transferTo(targetFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+            setResponse("上传附件失败", response);
+        }
+        return request.getContextPath()+"/upload/"+fileName;
     }
     /**
      * 根据教师Id获取学生列表信息
@@ -629,24 +654,19 @@ public class RemoteController {
     @ResponseBody
     public List<User> getStudentList(@RequestParam String teacherId,HttpServletResponse response) {
         List<User> users=userActionService.getUserByTeacher(teacherId);
-        if (CollectionUtils.isEmpty(users)) {
-            setResponse("没有相关学生", response);
-        }
         return users;
     }
     /**
-     * 异常处理
+     * 统一异常处理
      * @return
      */
     @ExceptionHandler
     public String exception(Exception exception,HttpServletResponse response) {
         String msg="";
         exception.printStackTrace();
-        response.setCharacterEncoding("utf-8");
-        response.setContentType("text/plain; charset=utf-8");
         if(exception instanceof NullPointerException){
             msg="对象为空";
-        }else if(exception instanceof SQLException){
+        }else if(exception instanceof SQLException || exception instanceof DataAccessException){
             msg="数据查询错误";
         }else if(exception instanceof RuntimeException){
             msg="系统运行错误";
@@ -657,10 +677,14 @@ public class RemoteController {
         return null;
     }
 
-    public void setResponse(String msg,HttpServletResponse response){
-        response.setContentType("text/plain; charset=gb2312");
-        response.setCharacterEncoding("utf-8");
-        response.addHeader(MhtConstant.ERROR_CODE,msg);
+    /**
+     * 设置错误消息
+     * @param msg
+     * @param response
+     * 获取方式：new String(conn.getHeaderField("ErrorMsg").getBytes("ISO-8859-1"), "UTF-8")
+     */
+    public void setResponse(String msg,HttpServletResponse response) {
+        response.addHeader("ErrorMsg" ,msg);
     }
 
     private List<CourseSchedule> fetchSchedule(List<Course> courses) {

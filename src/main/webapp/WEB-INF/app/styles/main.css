@@ -21,8 +21,7 @@
 }
 
 .bs-header {
-    padding: 10px 15px 10px;
-    margin-top:20px;
+    margin-top:10px;
     font-size: 16px;
     height: 114px;
     text-shadow: 0 1px 0 rgba(0,0,0,.15);
@@ -62,14 +61,12 @@
     background-position:101% 0%;
 }
 
-.menu{
+#main-menu .menu{
   text-align: center;
   text-shadow: 0 1px 3px rgba(0,0,0,.4), 0 0 30px rgba(0,0,0,.075);
   background-color: #FE4141;
 }
-.menu a{
-  color:#FFF;
-}
+
 
 #main{
   margin:5px;
@@ -78,4 +75,10 @@
   height:100%;
   background: #DBEAF8 url(../images/index/bg.png) no-repeat left top;
   background-position: center;
+}
+
+
+#main-menu ul a :hover{
+    background: #FFF url(../images/index/menuselect.png) no-repeat left top;
+    background-position: center;
 }

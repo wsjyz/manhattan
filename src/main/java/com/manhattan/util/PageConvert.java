@@ -5,8 +5,8 @@ package com.manhattan.util;
  */
 public class PageConvert {
 
-    public static Page convert(org.springframework.data.domain.Page page) {
-        Page pages = new Page();
+    public static OpenPage convert(org.springframework.data.domain.Page page) {
+        OpenPage pages = new OpenPage();
         if (page == null) {
             return pages;
         }

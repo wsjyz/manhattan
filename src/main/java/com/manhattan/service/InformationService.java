@@ -1,6 +1,8 @@
 package com.manhattan.service;
 
 import com.manhattan.domain.Information;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,5 +12,5 @@ import java.util.List;
  */
 public interface InformationService {
 
-    List<Information> getInformations();
+    Page<Information> getInformations(Pageable pageAble);
 }

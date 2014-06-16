@@ -28,8 +28,10 @@ app.config(function($stateProvider, $urlRouterProvider){
     .state('register',{
         url:"/register",
         templateUrl:"views/user/register.html",
-        controller:function($scope){
-            
+        controller: function($scope,myFactory) {
+            $scope.studentRegister=function(){
+                myFactory.register($scope.user);
+            }
         }
     })
     ;
@@ -38,6 +40,14 @@ app.factory('myFactory', function($http,$state) {
     var service={};
     service.login=function(user){
         $http.post(resource.login,user).success(function(res){
+            if(res&&res.success) {
+                $state.go('home');
+            }
+            return res;
+        })
+    }
+    service.register=function(user){
+        $http.post(resource.register,user).success(function(res){
             if(res&&res.success) {
                 $state.go('home');
             }

@@ -50,11 +50,8 @@ public class Course {
     private String teachingTime;
 
     @ManyToOne
-    @JoinColumn(name="userId",insertable = false,updatable = false)
+    @JoinColumn(name="postTeacher",insertable = false,updatable = false)
     private TeacherDetail teacher;
-    @ManyToOne
-    @JoinColumn(name="userId",insertable = false,updatable = false)
-    private User user;
     @OneToMany(cascade=CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy="resourceId")
     private List<UserAction> userActions;
 
@@ -194,11 +191,4 @@ public class Course {
         this.teacher = teacher;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 }

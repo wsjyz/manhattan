@@ -32,7 +32,12 @@ public class MhtConstant {
      * 用户动作
      */
     //预约课程
-    public static final String USER_ACTION_APPOINTMENT = "APPOINTMENT";
-    public static final String USER_ACTION_LISTEN = "LISTEN";
-    public static final String USER_ACTION_COLLECT = "COLLECT";
+    public static final String USER_ACTION_APPOINTMENT_COURSE = "APPOINTMENT_COURSE";
+    public static final String USER_ACTION_LISTEN_COURSE = "LISTEN_COURSE";
+    public static final String USER_ACTION_COLLECT_COURSE = "COLLECT_COURSE";
+
+    //预约教师
+    public static final String USER_ACTION_APPOINTMENT_TEACHER = "APPOINTMENT_TEACHER";
+    public static final String USER_ACTION_LISTEN_TEACHER = "LISTEN_TEACHER";
+    public static final String USER_ACTION_COLLECT_TEACHER = "COLLECT_TEACHER";
 }

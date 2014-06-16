@@ -5,91 +5,77 @@
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>曼哈顿英语</title>
     <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,app}) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/app.css">
+    <link rel="stylesheet" href="styles/style.css">
     <!-- endbuild -->
   </head>
   <body ng-app="mhtApp">
 
-    <header class="navbar navbar-fixed-top bs-docs-nav">
-        <div class="navbar-inner">
-            <div class="container">
-                <div class="navbar-header pull-left">
-                    欢迎来到 <a ui-sref="index">曼哈顿英语</a> 请
-                    <a ui-sref="login">登录</a>，
-                    <a ui-sref="register">注册</a>
-                    <image src="images/index/collect.png">收藏网站
-                    <span class="pull-right"></span>
-                </div>
+    <div class="bs-docs-nav">
+        <div class="container">
+            <div class="pull-left title">
+                欢迎来到 <a ui-sref="index">曼哈顿英语</a> 请
+                <a ui-sref="login">登录</a>，
+                <a ui-sref="register">注册</a>
+                <image src="images/index/collect.png">收藏网站
+                <span class="pull-right"></span>
             </div>
         </div>
-    </header>
+    </div>
     <div>
-        <header class="bs-header" id="content">
+        <div class="bs-header" id="content">
             <div class="container">
-                <div class="navbar-inner nav-justified menu">
-                    <ul class="nav nav-pills pull-right">
-                        <li><a ui-sref="#" class="data"></a></li>
-                        <li><a ui-sref="#" class="wallet"></a></li>
-                        <li><a ui-sref="#" class="appointment"></a></li>
-                        <li><a ui-sref="#" class="homework"></a></li>
-                        <li><a ui-sref="#" class="coursecourse"></a></li>
-                    </ul>
-                </div>
+                <ul class="nav nav-pills pull-right">
+                    <li><a ui-sref="#" class="data"></a></li>
+                    <li><a ui-sref="#" class="wallet"></a></li>
+                    <li><a ui-sref="#" class="appointment"></a></li>
+                    <li><a ui-sref="#" class="homework"></a></li>
+                    <li><a ui-sref="#" class="coursecourse"></a></li>
+                </ul>
             </div>
-        </header>
-        <div class="navbar-inner nav-justified menu">
-            <ul class="nav nav-justified">
-                <li class="active"><a ui-sref="index">首页</a></li>
-                <li><a ui-sref="course">曼哈顿课堂</a></li>
-                <li><a ui-sref="teacher">我的名师</a></li>
-                <li><a ui-sref="place">场地风采</a></li>
-                <li><a ui-sref="appoint">我要预约</a></li>
-                <li><a ui-sref="question">精彩问答</a></li>
-            </ul>
         </div>
+        <section id="main-menu">
+            <div class="container menu" id="menu" style="width:100%;">
+                <ul>
+                    <li class="active"><a ui-sref="index">首页</a></li>
+                    <li><a ui-sref="course">曼哈顿课堂</a></li>
+                    <li><a ui-sref="teacher">我的名师</a></li>
+                    <li><a ui-sref="place">场地风采</a></li>
+                    <li><a ui-sref="appoint">我要预约</a></li>
+                    <li><a ui-sref="question">精彩问答</a></li>
+                </ul>
+            </div>
+        </section>
     </div>
     <!-- Add your site or application content here -->
     <div id="main" class="container" ui-view></div>
 
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
-     <script>
-       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-       ga('create', 'UA-XXXXX-X');
-       ga('send', 'pageview');
-    </script>
-
     <!--[if lt IE 9]>
-    <script src="bower_components/es5-shim/es5-shim.js"></script>
-    <script src="bower_components/json3/lib/json3.min.js"></script>
-    <script src="bower_components/html5shiv/dist/html5shiv.js"></script>
+    <script src="bower_components/html5shiv/html5shiv.min.js"></script>
     <![endif]-->
 
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
-    <script src="bower_components/jquery/dist/jquery.js"></script>
-    <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
-    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-    <script src="bower_components/angular-route/angular-route.js"></script>
-    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-    <script src="bower_components/angular-animate/angular-animate.js"></script>
-    <script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
+    <script src="bower_components/jquery/jquery.min.js"></script>
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+    <script src="bower_components/angular-route/angular-route.min.js"></script>
+    <script src="bower_components/angular-ui-router/angular-ui-router.min.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.min.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 

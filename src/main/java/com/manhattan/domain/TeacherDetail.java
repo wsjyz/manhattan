@@ -62,8 +62,14 @@ public class TeacherDetail {
     @Column(name = "authentication_status")
     private String authenticationStatus;
 
-    @OneToMany(cascade=CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy="postTeacher")
+    @OneToMany(cascade=CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy="postTeacher")
     private List<Course> courses;
+    @OneToMany(cascade=CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy="userId")
+    private List<UserAction> userActions;
+
+    @OneToOne
+    @JoinColumn(name="userId",insertable = false,updatable = false)
+    private User user;
 
     public String getUserId() {
         return userId;
@@ -271,5 +277,13 @@ public class TeacherDetail {
 
     public void setCourses(List<Course> courses) {
         this.courses = courses;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

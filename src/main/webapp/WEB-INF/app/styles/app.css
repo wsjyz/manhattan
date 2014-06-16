@@ -1,9 +1,9 @@
 /*** Docs ***/
 body {
-	margin-top: 40px;
+	margin-top: 10px;
 }
 section {
-	padding-top: 40px;
+	padding-top: 10px;
 }
 .icon-github {
 	background: no-repeat url('../lib/bootstrap/docs/assets/img/github-16px.png');
