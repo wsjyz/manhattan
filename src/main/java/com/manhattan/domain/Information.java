@@ -1,5 +1,7 @@
 package com.manhattan.domain;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 
 /**
@@ -10,8 +12,10 @@ import javax.persistence.*;
 public class Information {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private String informationid;
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
+    @Column(name = "information_id")
+    private String informationId;
     @Column(name = "title")
     private String title;
     @Column(name = "content")
@@ -21,12 +25,12 @@ public class Information {
     @Column(name = "status")
     private String status;
 
-    public String getInformationid() {
-        return informationid;
+    public String getInformationId() {
+        return informationId;
     }
 
-    public void setInformationid(String informationid) {
-        this.informationid = informationid;
+    public void setInformationId(String informationId) {
+        this.informationId = informationId;
     }
 
     public String getTitle() {

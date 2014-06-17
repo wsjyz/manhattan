@@ -17,7 +17,7 @@ public class Wallet {
     @Column(name = "user_id")
     private String userId;
     @Column(name = "money")
-    private Integer money;
+    private Float money;
     @Column(name = "pay_status")
     private String payStatus;
     @Column(name = "opt_time")
@@ -39,11 +39,11 @@ public class Wallet {
         this.userId = userId;
     }
 
-    public Integer getMoney() {
+    public Float getMoney() {
         return money;
     }
 
-    public void setMoney(Integer money) {
+    public void setMoney(Float money) {
         this.money = money;
     }
 

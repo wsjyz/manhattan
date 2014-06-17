@@ -62,8 +62,8 @@ public class TeacherDetail {
     @Column(name = "authentication_status")
     private String authenticationStatus;
 
-    @OneToMany(cascade=CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy="postTeacher")
-    private List<Course> courses;
+//    @OneToMany(cascade=CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy="postTeacher")
+//    private List<Course> courses;
     @OneToMany(cascade=CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy="userId")
     private List<UserAction> userActions;
     @OneToOne
@@ -270,13 +270,13 @@ public class TeacherDetail {
         this.studentMaxScoreCertificate = studentMaxScoreCertificate;
     }
 
-    public List<Course> getCourses() {
-        return courses;
-    }
-
-    public void setCourses(List<Course> courses) {
-        this.courses = courses;
-    }
+//    public List<Course> getCourses() {
+//        return courses;
+//    }
+//
+//    public void setCourses(List<Course> courses) {
+//        this.courses = courses;
+//    }
 
     public User getUser() {
         return user;

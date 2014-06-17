@@ -241,7 +241,7 @@ public class RemoteController {
     public
     @ResponseBody
     OpenPage<User> listTeachers(@FastJson OpenPage<User> openPage,@RequestParam(value = "searchKey",required = false) String searchKey) {
-        Pageable pageAble = new PageRequest(openPage.getPageNo(), openPage.getPageSize());
+        Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
         Page resultPage = userService.findTeacherByPage(pageAble,searchKey);
         return PageConvert.convert(resultPage);
     }
@@ -256,7 +256,7 @@ public class RemoteController {
     public
     @ResponseBody
     OpenPage<User> listTeachersByName(@FastJson OpenPage<User> openPage,@RequestParam("searchKey") String searchKey) {
-        Pageable pageAble = new PageRequest(openPage.getPageNo(), openPage.getPageSize());
+        Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
         Page<User> resultPage=userService.getTeachersByName(pageAble,searchKey);
         return PageConvert.convert(resultPage);
     }
@@ -347,7 +347,7 @@ public class RemoteController {
     @ResponseBody
     OpenPage<Question> myQuestions(@RequestParam("userId") String userId,
                                @FastJson OpenPage<Question> openPage) {
-        Pageable pageAble = new PageRequest(openPage.getPageNo(), openPage.getPageSize());
+        Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
         Page result = questionService.findQuestionByPage(userId,pageAble);
         return PageConvert.convert(result);
     }
@@ -366,7 +366,7 @@ public class RemoteController {
     OpenPage<Question> needAnswerList(@RequestParam("userId") String userId,
                                   @FastJson OpenPage<Question> openPage,
                                   @RequestParam("type") String type) {
-        Pageable pageAble = new PageRequest(openPage.getPageNo(), openPage.getPageSize());
+        Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
         Page result = questionService.findQuestionByPage(userId,type,pageAble);
         return PageConvert.convert(result);
     }
@@ -378,7 +378,7 @@ public class RemoteController {
     @RequestMapping(value = "/course/getWorthCourses")
     @ResponseBody
     public OpenPage<Course> getWorthCourses(@FastJson OpenPage<Question> openPage,HttpServletResponse response){
-        Pageable pageAble = new PageRequest(openPage.getPageNo(), openPage.getPageSize());
+        Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
         Page<Course> courses=courseService.findCourses(pageAble);
         return PageConvert.convert(courses);
     }
@@ -418,7 +418,7 @@ public class RemoteController {
     public OpenPage<Course> getOrderCourses(@FastJson OpenPage<Course> openPage,
                                         @FastJson QueryParam queryParam,
                                         HttpServletResponse response) {
-        Pageable pageAble = new PageRequest(openPage.getPageNo(), openPage.getPageSize());
+        Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
         Page<Course> courses = courseService.findCoursesByFilter(pageAble,queryParam);
         return PageConvert.convert(courses);
     }
@@ -448,7 +448,7 @@ public class RemoteController {
     @RequestMapping(value = "/course/getOrderCoursesByUserId")
     @ResponseBody
     public OpenPage<Course> getOrderCoursesByUserId(@FastJson OpenPage<Course> openPage,@RequestParam String userId,HttpServletResponse response){
-        Pageable pageAble = new PageRequest(openPage.getPageNo(), openPage.getPageSize());
+        Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
         Page<Course> courses =courseService.findCoursesByUserId(pageAble,userId,MhtConstant.USER_ACTION_APPOINTMENT_COURSE);
         return PageConvert.convert(courses);
     }
@@ -460,7 +460,7 @@ public class RemoteController {
     @RequestMapping(value = "/course/getListenCoursesByUserId")
     @ResponseBody
     public OpenPage<Course> getListenCoursesByUserId(@FastJson OpenPage<Course> openPage,@RequestParam String userId,HttpServletResponse response){
-        Pageable pageAble = new PageRequest(openPage.getPageNo(), openPage.getPageSize());
+        Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
         Page<Course> courses =courseService.findCoursesByUserId(pageAble,userId,MhtConstant.USER_ACTION_LISTEN_COURSE);
         return PageConvert.convert(courses);
     }
@@ -472,7 +472,7 @@ public class RemoteController {
     @RequestMapping(value = "/course/getCollectCoursesByUserId")
     @ResponseBody
     public OpenPage<Course> getCollectCoursesByUserId(@FastJson OpenPage<Course> openPage,@RequestParam String userId,HttpServletResponse response){
-        Pageable pageAble = new PageRequest(openPage.getPageNo(), openPage.getPageSize());
+        Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
         Page<Course> courses =courseService.findCoursesByUserId(pageAble,userId,MhtConstant.USER_ACTION_COLLECT_COURSE);
         return PageConvert.convert(courses);
     }
@@ -523,7 +523,7 @@ public class RemoteController {
     @RequestMapping(value = "/course/getOrderCoursesByTeacher")
     @ResponseBody
     public OpenPage<Course> getOrderCoursesByTeacher(@FastJson OpenPage openPage,@RequestParam String userId,HttpServletResponse response){
-        Pageable pageAble = new PageRequest(openPage.getPageNo(), openPage.getPageSize());
+        Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
         Page<Course> courses=courseService.getCoursesByTeacher(pageAble,userId, MhtConstant.USER_ACTION_APPOINTMENT_COURSE);
         return PageConvert.convert(courses);
     }
@@ -535,7 +535,7 @@ public class RemoteController {
     @RequestMapping(value = "/course/getListenCoursesByTeacher")
     @ResponseBody
     public OpenPage<Course> getListenCoursesByTeacher(@FastJson OpenPage openPage,@RequestParam String userId,HttpServletResponse response){
-        Pageable pageAble = new PageRequest(openPage.getPageNo(), openPage.getPageSize());
+        Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
         Page<Course> courses=courseService.getCoursesByTeacher(pageAble,userId, MhtConstant.USER_ACTION_LISTEN_COURSE);
         return PageConvert.convert(courses);
     }
@@ -547,7 +547,7 @@ public class RemoteController {
     @RequestMapping(value = "/teacher/getOrderTeachersByUserId")
     @ResponseBody
     public OpenPage<TeacherDetail> getOrderTeachersByUserId(@FastJson OpenPage<TeacherDetail> openPage,@RequestParam String userId,HttpServletResponse response){
-        Pageable pageAble = new PageRequest(openPage.getPageNo(), openPage.getPageSize());
+        Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
         Page<TeacherDetail> teachers =teacherDetailService.findTeachersByUserId(pageAble, userId, MhtConstant.USER_ACTION_APPOINTMENT_TEACHER);
         return PageConvert.convert(teachers);
     }
@@ -559,7 +559,7 @@ public class RemoteController {
     @RequestMapping(value = "/teacher/getListenTeachersByUserId")
     @ResponseBody
     public OpenPage<TeacherDetail> getListenTeachersByUserId(@FastJson OpenPage<TeacherDetail> openPage,@RequestParam String userId,HttpServletResponse response){
-        Pageable pageAble = new PageRequest(openPage.getPageNo(), openPage.getPageSize());
+        Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
         Page<TeacherDetail> teachers =teacherDetailService.findTeachersByUserId(pageAble, userId, MhtConstant.USER_ACTION_LISTEN_TEACHER);
         return PageConvert.convert(teachers);
     }
@@ -568,10 +568,10 @@ public class RemoteController {
      * 获取资讯列表
      * @return
      */
-    @RequestMapping(value = "/course/getInformations")
+    @RequestMapping(value = "/info/getInformations")
     @ResponseBody
     public OpenPage<Information> getInformations(@FastJson OpenPage<Information> openPage,HttpServletResponse response) {
-        Pageable pageAble= new PageRequest(openPage.getPageNo(), openPage.getPageSize());
+        Pageable pageAble= new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
         Page<Information> page=informationService.getInformations(pageAble);
         return PageConvert.convert(page);
     }
@@ -583,7 +583,7 @@ public class RemoteController {
     @RequestMapping(value = "/homeWork/getHomeworksByUser")
     @ResponseBody
     public OpenPage<HomeWork> getHomeworksByUser(@FastJson OpenPage<Information> openPage,@RequestParam String userId,HttpServletResponse response) {
-        Pageable pageAble = new PageRequest(openPage.getPageNo(), openPage.getPageSize());
+        Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
         Page<HomeWork> page = homeWorkService.getHomeworksByUser(pageAble,userId);
         return PageConvert.convert(page);
     }
@@ -592,7 +592,7 @@ public class RemoteController {
      * 获取指定教师的作业列表
      * @return
      */
-    @RequestMapping(value = "/course/getHomeworksByTeacher")
+    @RequestMapping(value = "/homeWork/getHomeworksByTeacher")
     @ResponseBody
     public List<HomeWork> getHomeworksByTeacher(@RequestParam String userId,HttpServletResponse response){
         List<HomeWork> list = homeWorkService.getHomeworksByTeacher(userId);

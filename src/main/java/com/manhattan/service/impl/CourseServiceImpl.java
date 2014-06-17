@@ -1,13 +1,17 @@
 package com.manhattan.service.impl;
 
+import com.google.common.collect.ImmutableList;
 import com.manhattan.dao.CourseDao;
 import com.manhattan.dao.InformationDao;
+import com.manhattan.dao.TeacherDetailDao;
 import com.manhattan.domain.*;
 import com.manhattan.service.CourseService;
 import com.manhattan.util.MhtConstant;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
@@ -25,6 +29,8 @@ import java.util.List;
 public class CourseServiceImpl implements CourseService {
     @Autowired
     private CourseDao courseDao;
+    @Autowired
+    private TeacherDetailDao teacherDetailDao;
 
     @Override
     public Page<Course> findCourses(Pageable pageAble) {
@@ -147,5 +153,34 @@ public class CourseServiceImpl implements CourseService {
                 return predicate;
             }
         };
+    }
+
+    /**
+     * 获取主讲教师
+     * @param page
+     * @return
+     */
+    @Deprecated
+    private Page<Course> loadTeachers(Page<Course> page) {
+        List<TeacherDetail> teacherDetails= ImmutableList.of();
+        if (page != null) {
+            for (Course course : page.getContent()) {
+                if (StringUtils.isNotBlank(course.getTeachers())) {
+                    String teachers[] = course.getTeachers().split(",");
+                    for (String teacher : teachers) {
+                        TeacherDetail teacherDetail=teacherDetailDao.findOne(new Specification<TeacherDetail>() {
+                            @Override
+                            public Predicate toPredicate(Root<TeacherDetail> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                                Join<TeacherDetail,User> userJoin =root.join(root.getModel().getSingularAttribute("dep",User.class),JoinType.INNER);
+                                return query.getRestriction();
+                            }
+                        });
+                        teacherDetails.add(teacherDetail);
+                    }
+                }
+                course.setTeacherDetailList(teacherDetails);
+            }
+        }
+        return page;
     }
 }

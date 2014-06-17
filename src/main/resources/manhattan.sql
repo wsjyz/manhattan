@@ -21,7 +21,7 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `t_mht_ appointment`;
 CREATE TABLE `t_mht_ appointment` (
   `appointment_id` varchar(32) NOT NULL,
-  `user_id` varchar(32) DEFAULT NULL,
+  `action_id` varchar(32) DEFAULT NULL,
   `course_category` varchar(45) DEFAULT NULL COMMENT '学习科目',
   `tutoring_way` varchar(45) DEFAULT NULL,
   `other_content` varchar(200) DEFAULT NULL COMMENT '补充说明',
@@ -41,6 +41,7 @@ CREATE TABLE `t_mht_course` (
   `course_title` varchar(45) DEFAULT NULL COMMENT '标题',
   `course_subtitle` varchar(200) DEFAULT NULL COMMENT '副标题',
   `course_pic` varchar(100) DEFAULT NULL COMMENT '课程图片',
+  `class_no` varchar(100) DEFAULT NULL COMMENT '班号',
   `start_time` datetime DEFAULT NULL COMMENT '开课时间',
   `end_time` datetime DEFAULT NULL COMMENT '结课时间',
   `period` decimal(10,3) DEFAULT NULL COMMENT '课时',

@@ -1,6 +1,10 @@
 package com.manhattan.domain;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
+import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -10,6 +14,16 @@ import java.util.List;
 /**
  * Created by Administrator on 2014/6/12 0012.
  */
+@TypeDefs(
+    {
+        @TypeDef(
+        name = "teacherDetailList",
+        defaultForType = List.class,
+        typeClass = TeacherList.class
+        )
+    }
+)
+
 @Entity
 @Table(name = "t_mht_course")
 public class Course {
@@ -24,6 +38,8 @@ public class Course {
     private String courseSubtitle;
     @Column(name = "course_pic")
     private String coursePic;
+    @Column(name = "class_no")
+    private String classNo;
     @Column(name = "start_time")
     private Timestamp startTime;
     @Column(name = "end_time")
@@ -42,18 +58,20 @@ public class Course {
     private String teachers;
     @Column(name = "course_category")
     private String courseCategory;
-    @Column(name = "post_teacher")
-    private String postTeacher;
+//    @Column(name = "post_teacher")
+//    private String postTeacher;
     @Column(name = "video_url")
     private String videoUrl;
     @Column(name = "teaching_time")
     private String teachingTime;
 
     @ManyToOne
-    @JoinColumn(name="postTeacher",insertable = false,updatable = false)
+    @JoinColumn(name="post_teacher",insertable = false,updatable = false)
     private TeacherDetail teacher;
-    @OneToMany(cascade=CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy="resourceId")
+    @OneToMany(cascade=CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy="resourceId")
     private List<UserAction> userActions;
+    @Type(type = "teacherDetailList")
+    private List<TeacherDetail> teacherDetailList;
 
     public String getCourseId() {
         return courseId;
@@ -159,13 +177,13 @@ public class Course {
         this.coursePic = coursePic;
     }
 
-    public String getPostTeacher() {
-        return postTeacher;
-    }
-
-    public void setPostTeacher(String postTeacher) {
-        this.postTeacher = postTeacher;
-    }
+//    public String getPostTeacher() {
+//        return postTeacher;
+//    }
+//
+//    public void setPostTeacher(String postTeacher) {
+//        this.postTeacher = postTeacher;
+//    }
 
     public String getVideoUrl() {
         return videoUrl;
@@ -191,4 +209,27 @@ public class Course {
         this.teacher = teacher;
     }
 
+    public List<UserAction> getUserActions() {
+        return userActions;
+    }
+
+    public void setUserActions(List<UserAction> userActions) {
+        this.userActions = userActions;
+    }
+
+    public List<TeacherDetail> getTeacherDetailList() {
+        return teacherDetailList;
+    }
+
+    public void setTeacherDetailList(List<TeacherDetail> teacherDetailList) {
+        this.teacherDetailList = teacherDetailList;
+    }
+
+    public String getClassNo() {
+        return classNo;
+    }
+
+    public void setClassNo(String classNo) {
+        this.classNo = classNo;
+    }
 }
