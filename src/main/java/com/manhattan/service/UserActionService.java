@@ -3,6 +3,8 @@ package com.manhattan.service;
 import com.manhattan.domain.Course;
 import com.manhattan.domain.User;
 import com.manhattan.domain.UserAction;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -18,5 +20,5 @@ public interface UserActionService {
 
     List<Course> getListenCoursesByTeacher(String userId);
 
-    List<User> getUserByTeacher(String teacherId);
+    Page<UserAction> getUserByTeacher(Pageable pageAble,String teacherId);
 }

@@ -24,8 +24,8 @@ public class HomeWorkServiceImpl implements HomeWorkService {
     }
 
     @Override
-    public List<HomeWork> getHomeworksByTeacher(String userId) {
-        return homeWorkDao.findByTeacherId(userId);
+    public Page<HomeWork> getHomeworksByTeacher(Pageable pageAble,String userId) {
+        return homeWorkDao.findByTeacherId(userId,pageAble);
     }
 
     @Override

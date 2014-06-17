@@ -15,5 +15,5 @@ public interface HomeWorkDao extends JpaRepository<HomeWork,String>,JpaSpecifica
 
     Page<HomeWork> findByUserId(String userId,Pageable pageAble);
 
-    List<HomeWork> findByTeacherId(String userId);
+    Page<HomeWork> findByTeacherId(String userId,Pageable pageAble);
 }

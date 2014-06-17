@@ -14,15 +14,15 @@ import java.util.List;
 /**
  * Created by Administrator on 2014/6/12 0012.
  */
-@TypeDefs(
-    {
-        @TypeDef(
-        name = "teacherDetailList",
-        defaultForType = List.class,
-        typeClass = TeacherList.class
-        )
-    }
-)
+//@TypeDefs(
+//    {
+//        @TypeDef(
+//        name = "teacherDetailList",
+//        defaultForType = List.class,
+//        typeClass = TeacherList.class
+//        )
+//    }
+//)
 
 @Entity
 @Table(name = "t_mht_course")
@@ -58,8 +58,8 @@ public class Course {
     private String teachers;
     @Column(name = "course_category")
     private String courseCategory;
-//    @Column(name = "post_teacher")
-//    private String postTeacher;
+    @Column(name = "post_teacher")
+    private String postTeacher;
     @Column(name = "video_url")
     private String videoUrl;
     @Column(name = "teaching_time")
@@ -70,7 +70,7 @@ public class Course {
     private TeacherDetail teacher;
     @OneToMany(cascade=CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy="resourceId")
     private List<UserAction> userActions;
-    @Type(type = "teacherDetailList")
+//    @Type(type = "teacherDetailList")
     private List<TeacherDetail> teacherDetailList;
 
     public String getCourseId() {
@@ -177,13 +177,13 @@ public class Course {
         this.coursePic = coursePic;
     }
 
-//    public String getPostTeacher() {
-//        return postTeacher;
-//    }
-//
-//    public void setPostTeacher(String postTeacher) {
-//        this.postTeacher = postTeacher;
-//    }
+    public String getPostTeacher() {
+        return postTeacher;
+    }
+
+    public void setPostTeacher(String postTeacher) {
+        this.postTeacher = postTeacher;
+    }
 
     public String getVideoUrl() {
         return videoUrl;

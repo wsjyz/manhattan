@@ -2,13 +2,19 @@ package com.manhattan.service.impl;
 
 import com.manhattan.dao.UserActionDao;
 import com.manhattan.domain.Course;
+import com.manhattan.domain.TeacherDetail;
 import com.manhattan.domain.User;
 import com.manhattan.domain.UserAction;
 import com.manhattan.service.UserActionService;
 import com.manhattan.util.MhtConstant;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.*;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -55,7 +61,20 @@ public class UserActionServiceImpl implements UserActionService {
     }
 
     @Override
-    public List<User> getUserByTeacher(String teacherId) {
-        return null;
+    public Page<UserAction> getUserByTeacher(Pageable pageable,final String teacherId) {
+        return userActionDao.findAll(new Specification<UserAction>() {
+            @Override
+            public Predicate toPredicate(Root<UserAction> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                Predicate predicate = cb.conjunction();
+                Join<UserAction,User> userJoin =
+                        root.join(root.getModel().getSingularAttribute("userId",User.class),JoinType.LEFT);
+                if (StringUtils.isNotBlank(teacherId)) {
+                    predicate.getExpressions().add(
+                            cb.equal(root.<String>get("resourceId"), StringUtils.trim(teacherId))
+                    );
+                }
+                return predicate;
+            }
+        },pageable);
     }
 }

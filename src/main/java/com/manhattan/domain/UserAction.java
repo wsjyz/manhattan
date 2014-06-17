@@ -28,6 +28,10 @@ public class UserAction {
     @JoinColumn(name="courseId")
     private Course course;
 
+    @OneToOne
+    @JoinColumn(name="userId")
+    private User user;
+
     public String getActionId() {
         return actionId;
     }
