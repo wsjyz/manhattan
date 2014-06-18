@@ -400,12 +400,12 @@ public class RemoteController {
      */
     @RequestMapping(value = "/course/postCourses")
     @ResponseBody
-    public String postCourses(@FastJson Course course,HttpServletResponse response) {
+    public Course postCourses(@FastJson Course course,HttpServletResponse response) {
         Course saved=courseService.postCourse(course);
         if (StringUtils.isEmpty(saved.getCourseId())) {
             setResponse("保存课程失败", response);
         }
-        return "";
+        return saved;
     }
 
     /**
@@ -608,11 +608,12 @@ public class RemoteController {
      */
     @RequestMapping(value = "/homeWork/postHomeWork")
     @ResponseBody
-    public void postHomeWork(@FastJson HomeWork homeWork,HttpServletResponse response) {
+    public HomeWork postHomeWork(@FastJson HomeWork homeWork,HttpServletResponse response) {
         HomeWork homeWork1=homeWorkService.post(homeWork);
         if (homeWork1==null) {
             setResponse("作业发布失败", response);
         }
+        return homeWork1;
     }
 
     /**
@@ -621,11 +622,12 @@ public class RemoteController {
      */
     @RequestMapping(value = "/homeWork/submitHomeWork")
     @ResponseBody
-    public void submitHomeWork(@FastJson HomeworkSubmit homeworkSubmit,HttpServletResponse response){
+    public HomeworkSubmit submitHomeWork(@FastJson HomeworkSubmit homeworkSubmit,HttpServletResponse response){
         HomeworkSubmit homeworkSubmit1=homeworkSubmitService.submit(homeworkSubmit);
         if (homeworkSubmit1==null) {
             setResponse("作业提交失败", response);
         }
+        return homeworkSubmit1;
     }
 
     /**
@@ -655,9 +657,10 @@ public class RemoteController {
      */
     @RequestMapping(value = "/user/getStudentList")
     @ResponseBody
-    public List<User> getStudentList(@RequestParam String teacherId,HttpServletResponse response) {
-        List<User> users=userActionService.getUserByTeacher(teacherId);
-        return users;
+    public OpenPage<UserAction> getStudentList(@FastJson OpenPage<Information> openPage,@RequestParam String teacherId,HttpServletResponse response) {
+        Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
+        Page<UserAction> users=userActionService.getUserByTeacher(pageAble,teacherId);
+        return PageConvert.convert(users);
     }
     /**
      * 统一异常处理

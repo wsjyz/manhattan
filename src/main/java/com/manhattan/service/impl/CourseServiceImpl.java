@@ -34,7 +34,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Page<Course> findCourses(Pageable pageAble) {
-        return courseDao.findAll(pageAble);
+        return loadTeachers(courseDao.findAll(pageAble));
     }
 
     @Override
@@ -50,7 +50,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Page<Course> findCoursesByFilter(Pageable pageAble,QueryParam qp) {
         Page<Course> courses=courseDao.findAll(Specifications.where(getWhereClause(qp)),pageAble);
-        return courses;
+        return loadTeachers(courses);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class CourseServiceImpl implements CourseService {
                 return predicate;
             }
         },pageAble);
-        return courses;
+        return loadTeachers(courses);
     }
 
     @Override
@@ -112,7 +112,7 @@ public class CourseServiceImpl implements CourseService {
                 return predicate;
             }
         },pageable);
-        return courses;
+        return loadTeachers(courses);
     }
 
     private Specification<Course> getWhereClause(final QueryParam qp) {
@@ -160,7 +160,6 @@ public class CourseServiceImpl implements CourseService {
      * @param page
      * @return
      */
-    @Deprecated
     private Page<Course> loadTeachers(Page<Course> page) {
         List<TeacherDetail> teacherDetails= ImmutableList.of();
         if (page != null) {

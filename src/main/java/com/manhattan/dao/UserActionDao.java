@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 /**
  * Created by Administrator on 2014/5/23 0023.
  */
-public interface UserActionDao extends JpaRepository<UserAction,String>,JpaSpecificationExecutor<Course> {
+public interface UserActionDao extends JpaRepository<UserAction,String>,JpaSpecificationExecutor<UserAction> {
 
     UserAction findByUserIdAndResourceIdAndActionType(String userId, String teacherId, String actionType);
 }
