@@ -580,9 +580,10 @@ public class RemoteController {
      * 获取指定学生的作业列表
      * @return
      */
-    @RequestMapping(value = "/homeWork/getHomeworksByUser")
+    @RequestMapping(value = "/homeWork/getHomeworksByUser/{userId}")
     @ResponseBody
-    public OpenPage<HomeWork> getHomeworksByUser(@FastJson OpenPage<Information> openPage,@RequestParam String userId,HttpServletResponse response) {
+    public OpenPage<HomeWork> getHomeworksByUser(@RequestBody OpenPage<Information> openPage,
+                                                 @PathVariable String userId,HttpServletResponse response) {
         Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
         Page<HomeWork> page = homeWorkService.getHomeworksByUser(pageAble,userId);
         return PageConvert.convert(page);
@@ -592,11 +593,13 @@ public class RemoteController {
      * 获取指定教师的作业列表
      * @return
      */
-    @RequestMapping(value = "/homeWork/getHomeworksByTeacher")
+    @RequestMapping(value = "/homeWork/getHomeworksByTeacher/{teacherId}")
     @ResponseBody
-    public List<HomeWork> getHomeworksByTeacher(@RequestParam String userId,HttpServletResponse response){
-        List<HomeWork> list = homeWorkService.getHomeworksByTeacher(userId);
-        return list;
+    public OpenPage<HomeWork> getHomeworksByTeacher(@RequestBody OpenPage<Information> openPage,
+                                                    @PathVariable String teacherId,HttpServletResponse response){
+        Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
+        Page<HomeWork> page = homeWorkService.getHomeworksByTeacher(pageAble,teacherId);
+        return PageConvert.convert(page);
     }
 
     /**

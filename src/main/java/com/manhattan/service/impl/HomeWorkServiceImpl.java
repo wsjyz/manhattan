@@ -20,12 +20,12 @@ public class HomeWorkServiceImpl implements HomeWorkService {
 
     @Override
     public Page<HomeWork> getHomeworksByUser(Pageable pageAble,String userId) {
-        return homeWorkDao.findByUserId(userId,pageAble);
+        return homeWorkDao.findByUserIdOrderByPostTimeDesc(userId,pageAble);
     }
 
     @Override
-    public List<HomeWork> getHomeworksByTeacher(String userId) {
-        return homeWorkDao.findByTeacherId(userId);
+    public Page<HomeWork> getHomeworksByTeacher(Pageable pageAble,String teacherId) {
+        return homeWorkDao.findByTeacherIdOrderByPostTimeDesc(pageAble,teacherId);
     }
 
     @Override

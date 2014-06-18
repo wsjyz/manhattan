@@ -12,7 +12,7 @@ import java.util.List;
 public interface HomeWorkService {
     Page<HomeWork> getHomeworksByUser(Pageable pageAble,String userId);
 
-    List<HomeWork> getHomeworksByTeacher(String userId);
+    Page<HomeWork> getHomeworksByTeacher(Pageable pageAble,String teacherId);
 
     HomeWork post(HomeWork homeWork);
 }

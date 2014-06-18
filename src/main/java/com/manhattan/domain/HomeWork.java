@@ -14,11 +14,20 @@ public class HomeWork {
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
-    @Column private String homeworkId;
-    @Column private String teacherId;
-    @Column private Timestamp postTime;
-    @Column private String homeworkFile;
-    @Column private String userId;
+    @Column (name="homework_id")private String homeworkId;
+    @Column (name="homework_title")private String homeworkTitle;
+    @Column (name="teacher_id")private String teacherId;
+    @Column (name="post_time")private String postTime;
+    @Column (name="homework_file")private String homeworkFile;
+    @Column (name="user_id")private String userId;
+
+    public String getHomeworkTitle() {
+        return homeworkTitle;
+    }
+
+    public void setHomeworkTitle(String homeworkTitle) {
+        this.homeworkTitle = homeworkTitle;
+    }
 
     public String getHomeworkId() {
         return homeworkId;
@@ -36,11 +45,11 @@ public class HomeWork {
         this.teacherId = teacherId;
     }
 
-    public Timestamp getPostTime() {
+    public String getPostTime() {
         return postTime;
     }
 
-    public void setPostTime(Timestamp postTime) {
+    public void setPostTime(String postTime) {
         this.postTime = postTime;
     }
 

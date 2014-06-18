@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface HomeWorkDao extends JpaRepository<HomeWork,String>,JpaSpecificationExecutor<HomeWork> {
 
-    Page<HomeWork> findByUserId(String userId,Pageable pageAble);
+    Page<HomeWork> findByUserIdOrderByPostTimeDesc(String userId,Pageable pageAble);
 
-    List<HomeWork> findByTeacherId(String userId);
+    Page<HomeWork> findByTeacherIdOrderByPostTimeDesc(Pageable pageAble,String teacherId);
 }
