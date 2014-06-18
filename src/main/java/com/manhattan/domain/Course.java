@@ -71,6 +71,7 @@ public class Course {
     @OneToMany(cascade=CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy="resourceId")
     private List<UserAction> userActions;
 //    @Type(type = "teacherDetailList")
+    @Transient
     private List<TeacherDetail> teacherDetailList;
 
     public String getCourseId() {
