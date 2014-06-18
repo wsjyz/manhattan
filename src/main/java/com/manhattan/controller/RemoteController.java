@@ -49,10 +49,7 @@ public class RemoteController {
     private CourseService courseService;
     @Autowired
     private InformationService informationService;
-    @Autowired
-    private HomeWorkService homeWorkService;
-    @Autowired
-    private HomeworkSubmitService homeworkSubmitService;
+
     /**
      * 登录
      * @param mobile
@@ -574,60 +571,6 @@ public class RemoteController {
         Pageable pageAble= new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
         Page<Information> page=informationService.getInformations(pageAble);
         return PageConvert.convert(page);
-    }
-
-    /**
-     * 获取指定学生的作业列表
-     * @return
-     */
-    @RequestMapping(value = "/homeWork/getHomeworksByUser/{userId}")
-    @ResponseBody
-    public OpenPage<HomeWork> getHomeworksByUser(@RequestBody OpenPage<Information> openPage,
-                                                 @PathVariable String userId,HttpServletResponse response) {
-        Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
-        Page<HomeWork> page = homeWorkService.getHomeworksByUser(pageAble,userId);
-        return PageConvert.convert(page);
-    }
-
-    /**
-     * 获取指定教师的作业列表
-     * @return
-     */
-    @RequestMapping(value = "/homeWork/getHomeworksByTeacher/{teacherId}")
-    @ResponseBody
-    public OpenPage<HomeWork> getHomeworksByTeacher(@RequestBody OpenPage<Information> openPage,
-                                                    @PathVariable String teacherId,HttpServletResponse response){
-        Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
-        Page<HomeWork> page = homeWorkService.getHomeworksByTeacher(pageAble,teacherId);
-        return PageConvert.convert(page);
-    }
-
-    /**
-     * 发布一个新的作业
-     * @param homeWork
-     */
-    @RequestMapping(value = "/homeWork/postHomeWork")
-    @ResponseBody
-    public HomeWork postHomeWork(@FastJson HomeWork homeWork,HttpServletResponse response) {
-        HomeWork homeWork1=homeWorkService.post(homeWork);
-        if (homeWork1==null) {
-            setResponse("作业发布失败", response);
-        }
-        return homeWork1;
-    }
-
-    /**
-     * 提交一个新的作业
-     * @param homeworkSubmit
-     */
-    @RequestMapping(value = "/homeWork/submitHomeWork")
-    @ResponseBody
-    public HomeworkSubmit submitHomeWork(@FastJson HomeworkSubmit homeworkSubmit,HttpServletResponse response){
-        HomeworkSubmit homeworkSubmit1=homeworkSubmitService.submit(homeworkSubmit);
-        if (homeworkSubmit1==null) {
-            setResponse("作业提交失败", response);
-        }
-        return homeworkSubmit1;
     }
 
     /**
