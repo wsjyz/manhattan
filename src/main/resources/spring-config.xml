@@ -23,13 +23,14 @@
             <list>
                 <value>classpath:c3p0.properties</value>
                 <value>classpath:jdbc.properties</value>
+                <value>classpath:conf.properties</value>
             </list>
         </property>
     </bean>
 
     <bean id="entityManagerFactory"
           class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-        <property name="dataSource" ref="dataSource" />
+        <property name="dataSource" ref="dataSourceProxool" />
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
                 <property name="generateDdl" value="false" />
