@@ -30,9 +30,8 @@ public class QuestionController extends BaseController{
      * @return
      */
     @RequestMapping(value = "/askQuestion")
-    public
     @ResponseBody
-    Boolean askQuestion(@FastJson Question question,HttpServletResponse response) {
+    public Boolean askQuestion(@FastJson Question question,HttpServletResponse response) {
         Question question1=questionService.saveQuestion(question);
         if (question1 == null || StringUtils.isEmpty(question1.getQuestionId())) {
             setResponse("保存提问失败", response);
@@ -47,9 +46,8 @@ public class QuestionController extends BaseController{
      * @return
      */
     @RequestMapping(value = "/answerQuestion")
-    public
     @ResponseBody
-    Boolean answerQuestion(@FastJson Question question,HttpServletResponse response) {
+    public Boolean answerQuestion(@FastJson Question question,HttpServletResponse response) {
         Question question1=questionService.saveQuestion(question);
         if (question1 == null || StringUtils.isEmpty(question1.getQuestionId())) {
             setResponse("保存提问失败", response);
@@ -83,10 +81,9 @@ public class QuestionController extends BaseController{
      * @return
      */
     @RequestMapping(value = "/myQuestions/{userId}")
-    public
     @ResponseBody
-    OpenPage<Question> myQuestions(@PathVariable String userId,
-                                   @RequestBody OpenPage<Question> openPage) {
+    public OpenPage<Question> myQuestions(@PathVariable String userId,
+                                   @FastJson OpenPage<Question> openPage) {
         Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
         Page result = questionService.findQuestionByPage(userId,pageAble);
         return PageConvert.convert(result);
@@ -103,7 +100,7 @@ public class QuestionController extends BaseController{
     @RequestMapping(value = "/needAnswerList/{userId}/{type}")
     @ResponseBody
     public OpenPage<Question> needAnswerList(@PathVariable String userId,
-                                      @RequestBody OpenPage<Question> openPage,
+                                      @FastJson OpenPage<Question> openPage,
                                       @PathVariable String type) {
         Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
         Page result = questionService.findQuestionByPage(userId,type,pageAble);

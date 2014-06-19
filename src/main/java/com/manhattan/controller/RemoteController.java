@@ -45,8 +45,7 @@ public class RemoteController {
     private SmsSendService smsSendService;
     @Autowired
     private CourseService courseService;
-    @Autowired
-    private InformationService informationService;
+
 
     /**
      * 登录
@@ -481,17 +480,7 @@ public class RemoteController {
         return PageConvert.convert(teachers);
     }
 
-    /**
-     * 获取资讯列表
-     * @return
-     */
-    @RequestMapping(value = "/info/getInformations")
-    @ResponseBody
-    public OpenPage<Information> getInformations(@FastJson OpenPage<Information> openPage,HttpServletResponse response) {
-        Pageable pageAble= new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
-        Page<Information> page=informationService.getInformations(pageAble);
-        return PageConvert.convert(page);
-    }
+
 
     /**
      * 上传附件

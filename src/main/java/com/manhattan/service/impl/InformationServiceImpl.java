@@ -24,4 +24,9 @@ public class InformationServiceImpl implements InformationService {
         Page<Information> page = informationDao.findAll(pageAble);
         return page;
     }
+
+    @Override
+    public Information findInformationByInformationId(String informationId) {
+        return informationDao.findInformationByInformationId(informationId);
+    }
 }

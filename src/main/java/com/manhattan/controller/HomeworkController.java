@@ -40,7 +40,7 @@ public class HomeworkController extends BaseController{
      */
     @RequestMapping(value = "/getHomeworksByUser/{userId}")
     @ResponseBody
-    public OpenPage<HomeWork> getHomeworksByUser(@RequestBody OpenPage<Information> openPage,
+    public OpenPage<HomeWork> getHomeworksByUser(@FastJson OpenPage<Information> openPage,
                                                  @PathVariable String userId,HttpServletResponse response) {
         Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
         Page<HomeWork> page = homeWorkService.getHomeworksByUser(pageAble,userId);
@@ -53,7 +53,7 @@ public class HomeworkController extends BaseController{
      */
     @RequestMapping(value = "/getHomeworksByTeacher/{teacherId}")
     @ResponseBody
-    public OpenPage<HomeWork> getHomeworksByTeacher(@RequestBody OpenPage<Information> openPage,
+    public OpenPage<HomeWork> getHomeworksByTeacher(@FastJson OpenPage<Information> openPage,
                                                     @PathVariable String teacherId,HttpServletResponse response){
         Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
         Page<HomeWork> page = homeWorkService.getHomeworksByTeacher(pageAble,teacherId);
