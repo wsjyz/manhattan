@@ -60,9 +60,9 @@ public class QuestionController extends BaseController{
      * 删除问题
      * @param questionId
      */
-    @RequestMapping(value = "/deleteQuestion/{questionId}")
+    @RequestMapping(value = "/deleteQuestion")
     @ResponseBody
-    public boolean deleteQuestion(@PathVariable String questionId) {
+    public boolean deleteQuestion(@RequestParam String questionId) {
         boolean result = true;
         try{
             questionService.deleteQuestion(questionId);
@@ -80,9 +80,9 @@ public class QuestionController extends BaseController{
      * @param openPage
      * @return
      */
-    @RequestMapping(value = "/myQuestions/{userId}")
+    @RequestMapping(value = "/myQuestions")
     @ResponseBody
-    public OpenPage<Question> myQuestions(@PathVariable String userId,
+    public OpenPage<Question> myQuestions(@RequestParam String userId,
                                    @FastJson OpenPage<Question> openPage) {
         Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
         Page result = questionService.findQuestionByPage(userId,pageAble);
@@ -97,11 +97,11 @@ public class QuestionController extends BaseController{
      * @param type 指定回答(ASSIGN)已回答(ANSWERED)未回答(UNANSWER)
      * @return page
      */
-    @RequestMapping(value = "/needAnswerList/{userId}/{type}")
+    @RequestMapping(value = "/needAnswerList")
     @ResponseBody
-    public OpenPage<Question> needAnswerList(@PathVariable String userId,
+    public OpenPage<Question> needAnswerList(@RequestParam String userId,
                                       @FastJson OpenPage<Question> openPage,
-                                      @PathVariable String type) {
+                                      @RequestParam String type) {
         Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
         Page result = questionService.findQuestionByPage(userId,type,pageAble);
         return PageConvert.convert(result);
