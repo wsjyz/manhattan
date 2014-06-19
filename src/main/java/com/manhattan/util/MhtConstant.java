@@ -21,7 +21,7 @@ public class MhtConstant {
      * 问题状态
      */
     public final static String QUESTION_STATUS_ANSWERED="ANSWERED";
-    public final static String QUESTION_STATUS_UNANSWERED="UNANSWERED";
+    public final static String QUESTION_STATUS_UNANSWERED="UNANSWER";
 
     //短信API
     public final static String SMS_URL="http://sms.uuvio.com:8001/sms.aspx";

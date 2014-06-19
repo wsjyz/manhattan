@@ -27,7 +27,7 @@ import java.io.IOException;
  */
 @Controller
 @RequestMapping("/homeWork")
-public class HomeworkController {
+public class HomeworkController extends BaseController{
     @Autowired
     private HomeWorkService homeWorkService;
     @Autowired
@@ -109,13 +109,5 @@ public class HomeworkController {
         return homeworkSubmit1;
     }
 
-    /**
-     * 设置错误消息
-     * @param msg
-     * @param response
-     * 获取方式：new String(conn.getHeaderField("ErrorMsg").getBytes("ISO-8859-1"), "UTF-8")
-     */
-    public void setResponse(String msg,HttpServletResponse response) {
-        response.addHeader("ErrorMsg" ,msg);
-    }
+
 }

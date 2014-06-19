@@ -42,8 +42,6 @@ public class RemoteController {
     @Autowired
     private UserActionService userActionService;
     @Autowired
-    private QuestionService questionService;
-    @Autowired
     private SmsSendService smsSendService;
     @Autowired
     private CourseService courseService;
@@ -289,84 +287,6 @@ public class RemoteController {
         }
     }
 
-    /**
-     * 提问
-     * @param question
-     * @return
-     */
-    @RequestMapping(value = "/question/askQuestion")
-    public
-    @ResponseBody
-    Boolean askQuestion(@FastJson Question question,HttpServletResponse response) {
-        Question question1=questionService.saveQuestion(question);
-        if (question1 == null || StringUtils.isEmpty(question1.getQuestionId())) {
-            setResponse("保存提问失败", response);
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * 回答问题
-     * @param question
-     * @return
-     */
-    @RequestMapping(value = "/question/answerQuestion")
-    public
-    @ResponseBody
-    Boolean answerQuestion(@FastJson Question question,HttpServletResponse response) {
-        Question question1=questionService.saveQuestion(question);
-        if (question1 == null || StringUtils.isEmpty(question1.getQuestionId())) {
-            setResponse("保存提问失败", response);
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * 删除问题
-     * @param questionId
-     */
-    @RequestMapping(value = "/question/deleteQuestion")
-    public void deleteQuestion(@RequestParam("questionId") String questionId) {
-        questionService.deleteQuestion(questionId);
-    }
-
-    /**
-     * 获取我的问题
-     *
-     * @param userId
-     * @param openPage
-     * @return
-     */
-    @RequestMapping(value = "/question/myQuestions")
-    public
-    @ResponseBody
-    OpenPage<Question> myQuestions(@RequestParam("userId") String userId,
-                               @FastJson OpenPage<Question> openPage) {
-        Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
-        Page result = questionService.findQuestionByPage(userId,pageAble);
-        return PageConvert.convert(result);
-    }
-
-    /**
-     * 获取我要回答列表
-     *
-     * @param userId
-     * @param openPage
-     * @param type 指定回答(ASSIGN)已回答(ANSWER)未回答(UNANSWER)
-     * @return page
-     */
-    @RequestMapping(value = "/question/needAnswerList")
-    public
-    @ResponseBody
-    OpenPage<Question> needAnswerList(@RequestParam("userId") String userId,
-                                  @FastJson OpenPage<Question> openPage,
-                                  @RequestParam("type") String type) {
-        Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
-        Page result = questionService.findQuestionByPage(userId,type,pageAble);
-        return PageConvert.convert(result);
-    }
 
     /**
      * 获取精品课程列表

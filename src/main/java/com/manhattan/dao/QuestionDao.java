@@ -11,11 +11,13 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface QuestionDao extends JpaRepository<Question,String> {
 
-    Page<Question> findByUserId(String userId, Pageable pageAble);
+    Page<Question> findByUserIdOrderByCreateTimeDesc(String userId, Pageable pageAble);
 
-    Page<Question> findByAssignTeacher(String userId, Pageable pageAble);
+    Question findByQuestionId(String questionId);
 
-    Page<Question> findByAssignTeacherAndStatus(String userId, String status, Pageable pageAble);
+    Page<Question> findByAssignTeacherOrderByCreateTimeDesc(String userId, Pageable pageAble);
 
-    Page<Question> findByStatus(String status, Pageable pageAble);
+    Page<Question> findByAssignTeacherAndStatusOrderByCreateTimeDesc(String userId, String status, Pageable pageAble);
+
+    Page<Question> findByStatusOrderByCreateTimeDesc(String status, Pageable pageAble);
 }
