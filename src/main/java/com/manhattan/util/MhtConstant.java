@@ -24,7 +24,7 @@ public class MhtConstant {
     public final static String QUESTION_STATUS_UNANSWERED="UNANSWERED";
 
     //短信API
-    public final static String SMS_URL="http://sms.uuvio.com:8001/sms.aspx";
+    public final static String SMS_URL="http://sms.uuvio.com:8001/sms.aspx?action=send&userid=8H&account=ccs804&password=ccs804&mobile=";
 
     public static final String ERROR_CODE = "ErrorMsg";
 

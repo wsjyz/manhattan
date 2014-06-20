@@ -106,7 +106,7 @@ public class RemoteController {
     public
     @ResponseBody
     String getAuthCode(@RequestParam("tel") String tel,HttpServletResponse response) {
-        String authCode = RandomStringUtils.randomAlphanumeric(6);
+        String authCode = StringUtils.upperCase(RandomStringUtils.randomAlphanumeric(6));
         User user=userService.findUserByMobile(tel);
         if(user==null){
         	user=new User();
@@ -117,6 +117,8 @@ public class RemoteController {
         User user1 = userService.save(user);
         if (user1 == null) {
             setResponse("验证码生成错误，请重新获取", response);
+        }else {
+            smsSendService.sendSms(tel, authCode);
         }
         return authCode;
     }
