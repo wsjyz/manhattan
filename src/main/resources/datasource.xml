@@ -42,4 +42,24 @@
         <!--每60秒检查所有连接池中的空闲连接。Default: 0 -->
         <property name="idleConnectionTestPeriod" value="${c3p0.idleConnectionTestPeriod}"/>
     </bean>
+
+    <bean id="dataSourceProxool"
+          class="org.logicalcobwebs.proxool.ProxoolDataSource">
+        <property name="driver">
+            <value>${jdbc.driverClassName}</value>
+        </property>
+        <property name="driverUrl">
+            <value>jdbc:mysql://203.195.131.34:3306/manhattan?characterEncoding=utf-8&amp;user=root&amp;password=8hinfoMysqlTest</value>
+        </property>
+        <property name="user" value="root" />
+        <property name="password" value="8hinfoMysqlTest" />
+        <property name="alias" value="Pool_dbname" />
+        <property name="houseKeepingSleepTime" value="90000" />
+        <property name="prototypeCount" value="0" />
+        <property name="maximumConnectionCount" value="50" />
+        <property name="minimumConnectionCount" value="2" />
+        <property name="simultaneousBuildThrottle" value="50" />
+        <property name="maximumConnectionLifetime" value="14400000" />
+        <property name="houseKeepingTestSql" value="select CURRENT_DATE" />
+    </bean>
 </beans>

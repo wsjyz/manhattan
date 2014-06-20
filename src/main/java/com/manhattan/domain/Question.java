@@ -1,5 +1,7 @@
 package com.manhattan.domain;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -11,7 +13,8 @@ import java.sql.Timestamp;
 public class Question {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
     @Column(name = "question_id")
     private String questionId;
     @Column(name = "question_title")
@@ -33,9 +36,9 @@ public class Question {
     @Column(name = "answer_pic")
     private String answerPic;
     @Column(name = "create_time")
-    private Timestamp createTime;
+    private String createTime;
     @Column(name = "answer_time")
-    private Timestamp answerTime;
+    private String answerTime;
 
     public String getQuestionId() {
         return questionId;
@@ -101,19 +104,19 @@ public class Question {
         this.answer = answer;
     }
 
-    public Timestamp getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Timestamp createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
-    public Timestamp getAnswerTime() {
+    public String getAnswerTime() {
         return answerTime;
     }
 
-    public void setAnswerTime(Timestamp answerTime) {
+    public void setAnswerTime(String answerTime) {
         this.answerTime = answerTime;
     }
 

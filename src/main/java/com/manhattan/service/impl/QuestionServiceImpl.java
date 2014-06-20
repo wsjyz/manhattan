@@ -5,10 +5,14 @@ import com.manhattan.domain.Question;
 import com.manhattan.service.QuestionService;
 import com.manhattan.util.MhtConstant;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Administrator on 2014/5/23 0023.
@@ -20,7 +24,20 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public Question saveQuestion(Question question) {
-        return questionDao.save(question);
+        Question oldQuestion = questionDao.findByQuestionId(question.getQuestionId());
+        SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        if(oldQuestion != null){
+            oldQuestion.setAnswerTime(sdf.format(new Date().getTime()));
+            oldQuestion.setStatus(MhtConstant.QUESTION_STATUS_ANSWERED);
+            BeanUtils.copyProperties(question,oldQuestion,"questionId","questionTitle","questionContent",
+                    "questionPic","userId","createTime","assignTeacher","status");
+            return questionDao.save(oldQuestion);
+        }else{
+            question.setCreateTime(sdf.format(new Date().getTime()));
+            question.setStatus(MhtConstant.QUESTION_STATUS_UNANSWERED);
+            return questionDao.save(question);
+        }
+
     }
 
     @Override
@@ -30,17 +47,17 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public Page<Question> findQuestionByPage(String userId, Pageable pageAble) {
-        return questionDao.findByUserId(userId,pageAble);
+        return questionDao.findByUserIdOrderByCreateTimeDesc(userId, pageAble);
     }
 
     @Override
     public Page<Question> findQuestionByPage(String userId, String type, Pageable pageAble) {
         if (StringUtils.equals(type, "ASSIGN")) {
-            return questionDao.findByAssignTeacher(userId,pageAble);
+            return questionDao.findByAssignTeacherOrderByCreateTimeDesc(userId, pageAble);
         }else if (StringUtils.equals(type, MhtConstant.QUESTION_STATUS_ANSWERED)) {
-            return questionDao.findByAssignTeacherAndStatus(userId, MhtConstant.QUESTION_STATUS_ANSWERED, pageAble);
+            return questionDao.findByAssignTeacherAndStatusOrderByCreateTimeDesc(userId, MhtConstant.QUESTION_STATUS_ANSWERED, pageAble);
         }else if (StringUtils.equals(type, MhtConstant.QUESTION_STATUS_UNANSWERED)) {
-            return questionDao.findByStatus(MhtConstant.QUESTION_STATUS_UNANSWERED, pageAble);
+            return questionDao.findByStatusOrderByCreateTimeDesc(MhtConstant.QUESTION_STATUS_UNANSWERED, pageAble);
         }
         return null;
     }

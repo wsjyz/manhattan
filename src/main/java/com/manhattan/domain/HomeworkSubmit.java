@@ -14,11 +14,13 @@ public class HomeworkSubmit {
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
-    @Column private String homeworkSubmitId;
-    @Column private String homeworkId;
-    @Column private String userId;
-    @Column private String submitFile;
-    @Column private Timestamp submitTime;
+    @Column(name="homework_submit_id") private String homeworkSubmitId;
+    @Column(name="homework_id") private String homeworkId;
+    @Column(name="user_id") private String userId;
+    @Column(name="homework_content") private String homeworkContent;
+    @Column(name="submit_file") private String submitFile;//服务器上存放的文件名
+    @Column(name="original_file_name")private String originalFileName;//原始文件名
+    @Column(name="submit_time") private String submitTime;
 
     public String getHomeworkSubmitId() {
         return homeworkSubmitId;
@@ -52,11 +54,27 @@ public class HomeworkSubmit {
         this.submitFile = submitFile;
     }
 
-    public Timestamp getSubmitTime() {
+    public String getSubmitTime() {
         return submitTime;
     }
 
-    public void setSubmitTime(Timestamp submitTime) {
+    public void setSubmitTime(String submitTime) {
         this.submitTime = submitTime;
+    }
+
+    public String getHomeworkContent() {
+        return homeworkContent;
+    }
+
+    public void setHomeworkContent(String homeworkContent) {
+        this.homeworkContent = homeworkContent;
+    }
+
+    public String getOriginalFileName() {
+        return originalFileName;
+    }
+
+    public void setOriginalFileName(String originalFileName) {
+        this.originalFileName = originalFileName;
     }
 }

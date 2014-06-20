@@ -2,6 +2,7 @@ package com.manhattan.service.impl;
 
 import com.manhattan.dao.UserDAO;
 import com.manhattan.domain.Course;
+import com.manhattan.domain.TeacherDetail;
 import com.manhattan.domain.User;
 import com.manhattan.domain.UserAction;
 import com.manhattan.service.UserService;
@@ -77,11 +78,15 @@ public class UserServiceImpl implements UserService {
             @Override
             public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
                 Predicate predicate = cb.conjunction();
+                Join<User,TeacherDetail> teacherDetailJoin=root.join(root.getModel().getSingularAttribute("teacherDetail",TeacherDetail.class),JoinType.INNER);
                 if (StringUtils.isNotBlank(searchKey)) {
                     predicate.getExpressions().add(
-                            cb.like(root.<String>get("userName"), "%"+StringUtils.trim(searchKey)+"%")
+                            cb.like(root.<String>get("userName"), "%" + StringUtils.trim(searchKey) + "%")
                     );
                 }
+                predicate.getExpressions().add(
+                        cb.equal(root.<String>get("type"), MhtConstant.USER_TYPE_TEACHER)
+                );
                 return predicate;
             }
         }, pageAble);

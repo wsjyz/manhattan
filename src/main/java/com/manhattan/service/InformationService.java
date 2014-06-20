@@ -13,4 +13,6 @@ import java.util.List;
 public interface InformationService {
 
     Page<Information> getInformations(Pageable pageAble);
+
+    Information findInformationByInformationId(String informationId);
 }
