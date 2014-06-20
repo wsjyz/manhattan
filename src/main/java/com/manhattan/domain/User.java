@@ -49,7 +49,9 @@ public class User {
 
 //    @OneToMany(cascade=CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy="postTeacher")
 //    private List<Course> courses;
-
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @PrimaryKeyJoinColumn
+    private TeacherDetail teacherDetail;
 
     public String getUserId() {
         return userId;
@@ -161,5 +163,14 @@ public class User {
 
     public void setEvaluation(String evaluation) {
         this.evaluation = evaluation;
+    }
+
+
+    public TeacherDetail getTeacherDetail() {
+        return teacherDetail;
+    }
+
+    public void setTeacherDetail(TeacherDetail teacherDetail) {
+        this.teacherDetail = teacherDetail;
     }
 }

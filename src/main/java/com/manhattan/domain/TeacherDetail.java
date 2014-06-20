@@ -1,6 +1,12 @@
 package com.manhattan.domain;
 
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.Parameter;
+
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.List;
 
 /**
@@ -10,7 +16,12 @@ import java.util.List;
 @Table(name = "t_mht_teacher_detail")
 public class TeacherDetail {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue (generator = "pkGenerator" )
+    @GenericGenerator (
+        name = "pkGenerator" ,
+        strategy = "foreign" ,
+        parameters=@Parameter(name = "property" , value = "user")
+    )
     @Column(name = "user_id")
     private String userId;
     @Column(name = "course_category")
@@ -66,8 +77,8 @@ public class TeacherDetail {
 //    private List<Course> courses;
     @OneToMany(cascade=CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy="userId")
     private List<UserAction> userActions;
-    @OneToOne
-    @JoinColumn(name="userId",insertable = false,updatable = false)
+
+    @OneToOne (mappedBy = "teacherDetail",fetch = FetchType.EAGER, optional = false)
     private User user;
 
     public String getUserId() {
@@ -270,13 +281,13 @@ public class TeacherDetail {
         this.studentMaxScoreCertificate = studentMaxScoreCertificate;
     }
 
-//    public List<Course> getCourses() {
-//        return courses;
-//    }
-//
-//    public void setCourses(List<Course> courses) {
-//        this.courses = courses;
-//    }
+    public List<UserAction> getUserActions() {
+        return userActions;
+    }
+
+    public void setUserActions(List<UserAction> userActions) {
+        this.userActions = userActions;
+    }
 
     public User getUser() {
         return user;
@@ -285,4 +296,12 @@ public class TeacherDetail {
     public void setUser(User user) {
         this.user = user;
     }
+    //    public List<Course> getCourses() {
+//        return courses;
+//    }
+//
+//    public void setCourses(List<Course> courses) {
+//        this.courses = courses;
+//    }
+
 }
