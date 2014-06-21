@@ -25,4 +25,7 @@ public class UUIDGen {
         }
         return sb.toString();
     }
+    public static String gen32UUID(){
+        return UUID.randomUUID().toString().replace("-","");
+    }
 }

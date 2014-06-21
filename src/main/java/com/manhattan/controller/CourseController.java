@@ -55,7 +55,8 @@ public class CourseController extends BaseController {
      */
     @RequestMapping(value = "/getCourseDetail")
     @ResponseBody
-    public Course getCourseDetail(@RequestParam String courseId) {
+    public Course getCourseDetail(@RequestParam String courseId,HttpServletResponse response) {
+        System.out.println(courseId);
         Course course = courseService.load(courseId);
         return course;
     }
