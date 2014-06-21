@@ -37,8 +37,8 @@ public class HomeworkController extends BaseController{
      */
     @RequestMapping(value = "/getHomeworksByUser")
     @ResponseBody
-    public OpenPage<HomeWork> getHomeworksByUser(@FastJson OpenPage<Information> openPage,
-                                                 @RequestParam String userId,HttpServletResponse response) {
+    public OpenPage<HomeWork> getHomeworksByUser(@FastJson OpenPage<HomeWork> openPage,
+                                                 @RequestParam String userId) {
         Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
         Page<HomeWork> page = homeWorkService.getHomeworksByUser(pageAble,userId);
         return PageConvert.convert(page);
@@ -50,8 +50,8 @@ public class HomeworkController extends BaseController{
      */
     @RequestMapping(value = "/getHomeworksByTeacher")
     @ResponseBody
-    public OpenPage<HomeWork> getHomeworksByTeacher(@FastJson OpenPage<Information> openPage,
-                                                    @RequestParam String teacherId,HttpServletResponse response){
+    public OpenPage<HomeWork> getHomeworksByTeacher(@FastJson OpenPage<HomeWork> openPage,
+                                                    @RequestParam String teacherId){
         Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
         Page<HomeWork> page = homeWorkService.getHomeworksByTeacher(pageAble,teacherId);
         return PageConvert.convert(page);
@@ -73,7 +73,7 @@ public class HomeworkController extends BaseController{
 
     /**
      * 提交一个新的作业
-     * @param homeworkSubmit
+     * @param
      */
     @RequestMapping(value = "/submitHomeWork")
     @ResponseBody

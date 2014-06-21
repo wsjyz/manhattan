@@ -39,7 +39,7 @@ public class CourseController extends BaseController {
      */
     @RequestMapping(value = "/getWorthCourses")
     @ResponseBody
-    public OpenPage<Course> getWorthCourses(@FastJson OpenPage<Question> openPage,HttpServletResponse response){
+    public OpenPage<Course> getWorthCourses(@FastJson OpenPage<Question> openPage){
         Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
         Page<Course> courses=courseService.findCourses(pageAble);
         return PageConvert.convert(courses);
@@ -79,11 +79,9 @@ public class CourseController extends BaseController {
     @RequestMapping(value = "/getOrderCourses")
     @ResponseBody
     public OpenPage<Course> getOrderCourses(@FastJson OpenPage<Course> openPage,
-                                            @FastJson QueryParam queryParam,
-                                            HttpServletResponse response) {
-        Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
-        Page<Course> courses = courseService.findCoursesByFilter(pageAble,queryParam);
-        return PageConvert.convert(courses);
+                                            @FastJson QueryParam queryParam) {
+        OpenPage<Course> courses = courseService.findCoursesByQueryParam(openPage, queryParam);
+        return courses;
     }
 
     /**
@@ -94,10 +92,13 @@ public class CourseController extends BaseController {
     @ResponseBody
     public List<Date> getSchedule(@RequestParam Date startTime,
                                   @RequestParam Date endTime,
-                                  @RequestParam String userId){
-        Page<Course> courses =courseService.findCoursesByUserId(null, userId, MhtConstant.USER_ACTION_APPOINTMENT_COURSE, startTime, endTime);
-        List<Date> date= ImmutableList.of();
-        for (Course course : courses.getContent()) {
+                                  @RequestParam String userId) {
+        OpenPage<Course> page = new OpenPage<Course>();
+        page.setAutoCount(false);
+        page.setAutoPaging(false);
+        page = courseService.findCoursesByUserId(null, userId, MhtConstant.USER_ACTION_APPOINTMENT_COURSE, startTime, endTime);
+        List<Date> date = ImmutableList.of();
+        for (Course course : page.getRows()) {
             date.add(course.getStartTime());
         }
         return date;
@@ -110,10 +111,9 @@ public class CourseController extends BaseController {
      */
     @RequestMapping(value = "/getOrderCoursesByUserId")
     @ResponseBody
-    public OpenPage<Course> getOrderCoursesByUserId(@FastJson OpenPage<Course> openPage,@RequestParam String userId,HttpServletResponse response){
-        Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
-        Page<Course> courses =courseService.findCoursesByUserId(pageAble,userId,MhtConstant.USER_ACTION_APPOINTMENT_COURSE);
-        return PageConvert.convert(courses);
+    public OpenPage<Course> getOrderCoursesByUserId(@FastJson OpenPage<Course> openPage,@RequestParam String userId){
+        openPage =courseService.findCoursesByUserId(openPage,userId,MhtConstant.USER_ACTION_APPOINTMENT_COURSE);
+        return openPage;
     }
 
     /**
@@ -122,10 +122,9 @@ public class CourseController extends BaseController {
      */
     @RequestMapping(value = "/getListenCoursesByUserId")
     @ResponseBody
-    public OpenPage<Course> getListenCoursesByUserId(@FastJson OpenPage<Course> openPage,@RequestParam String userId,HttpServletResponse response){
-        Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
-        Page<Course> courses =courseService.findCoursesByUserId(pageAble,userId,MhtConstant.USER_ACTION_LISTEN_COURSE);
-        return PageConvert.convert(courses);
+    public OpenPage<Course> getListenCoursesByUserId(@FastJson OpenPage<Course> openPage,@RequestParam String userId){
+        openPage =courseService.findCoursesByUserId(openPage,userId,MhtConstant.USER_ACTION_LISTEN_COURSE);
+        return openPage;
     }
 
     /**
@@ -134,10 +133,9 @@ public class CourseController extends BaseController {
      */
     @RequestMapping(value = "/getCollectCoursesByUserId")
     @ResponseBody
-    public OpenPage<Course> getCollectCoursesByUserId(@FastJson OpenPage<Course> openPage,@RequestParam String userId,HttpServletResponse response){
-        Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
-        Page<Course> courses =courseService.findCoursesByUserId(pageAble,userId,MhtConstant.USER_ACTION_COLLECT_COURSE);
-        return PageConvert.convert(courses);
+    public OpenPage<Course> getCollectCoursesByUserId(@FastJson OpenPage<Course> openPage,@RequestParam String userId){
+        openPage =courseService.findCoursesByUserId(openPage,userId,MhtConstant.USER_ACTION_COLLECT_COURSE);
+        return openPage;
     }
 
     /**
@@ -185,10 +183,9 @@ public class CourseController extends BaseController {
      */
     @RequestMapping(value = "/getOrderCoursesByTeacher")
     @ResponseBody
-    public OpenPage<Course> getOrderCoursesByTeacher(@FastJson OpenPage openPage,@RequestParam String userId,HttpServletResponse response){
-        Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
-        Page<Course> courses=courseService.getCoursesByTeacher(pageAble,userId, MhtConstant.USER_ACTION_APPOINTMENT_COURSE);
-        return PageConvert.convert(courses);
+    public OpenPage<Course> getOrderCoursesByTeacher(@FastJson OpenPage openPage,@RequestParam String userId){
+        openPage =courseService.getCoursesByTeacher(openPage,userId, MhtConstant.USER_ACTION_APPOINTMENT_COURSE);
+        return openPage;
     }
 
     /**
@@ -197,9 +194,8 @@ public class CourseController extends BaseController {
      */
     @RequestMapping(value = "/getListenCoursesByTeacher")
     @ResponseBody
-    public OpenPage<Course> getListenCoursesByTeacher(@FastJson OpenPage openPage,@RequestParam String userId,HttpServletResponse response){
-        Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
-        Page<Course> courses=courseService.getCoursesByTeacher(pageAble,userId, MhtConstant.USER_ACTION_LISTEN_COURSE);
-        return PageConvert.convert(courses);
+    public OpenPage<Course> getListenCoursesByTeacher(@FastJson OpenPage openPage,@RequestParam String userId){
+        openPage =courseService.getCoursesByTeacher(openPage,userId, MhtConstant.USER_ACTION_LISTEN_COURSE);
+        return openPage;
     }
 }

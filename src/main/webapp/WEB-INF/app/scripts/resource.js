@@ -2,7 +2,9 @@
 var baseUrl='/mhd',
 	resource={
 	'login':baseUrl+'/login',
-    'register':baseUrl+'/register'
+    'register':baseUrl+'/register',
+    'main':baseUrl+'/main'
+
 };
 
 $.fn.serializeJson=function(){
@@ -22,3 +24,7 @@ $.fn.serializeJson=function(){
     });
     return serializeObj;
 };
+
+$(function(){
+
+})

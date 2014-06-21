@@ -4,6 +4,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by lk.zh on 2014/6/12.
@@ -17,7 +18,7 @@ public class HomeWork {
     @Column (name="homework_id")private String homeworkId;
     @Column (name="homework_title")private String homeworkTitle;
     @Column (name="teacher_id")private String teacherId;
-    @Column (name="post_time")private String postTime;
+    @Column (name="post_time")private Date postTime;
     @Column (name="homework_file")private String homeworkFile;
     @Column (name="user_id")private String userId;
 
@@ -45,11 +46,11 @@ public class HomeWork {
         this.teacherId = teacherId;
     }
 
-    public String getPostTime() {
+    public Date getPostTime() {
         return postTime;
     }
 
-    public void setPostTime(String postTime) {
+    public void setPostTime(Date postTime) {
         this.postTime = postTime;
     }
 

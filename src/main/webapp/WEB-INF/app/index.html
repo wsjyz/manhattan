@@ -12,12 +12,13 @@
     <!-- build:css styles/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
+    <!--<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css" />-->
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-responsive.min.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,app}) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/app.css">
-    <link rel="stylesheet" href="styles/style.css">
     <!-- endbuild -->
   </head>
   <body ng-app="mhtApp">
@@ -25,10 +26,10 @@
     <div class="bs-docs-nav">
         <div class="container">
             <div class="pull-left title">
-                欢迎来到 <a ui-sref="index">曼哈顿英语</a> 请
-                <a ui-sref="login">登录</a>，
-                <a ui-sref="register">注册</a>
-                <image src="images/index/collect.png">收藏网站
+                欢迎来到 <a href="index">曼哈顿英语</a><span class="tip"> 请
+                <a href="#" class="login">登录</a>，
+                <a href="#" class="register">注册</a>
+                <image src="images/index/collect.png">收藏网站</span>
                 <span class="pull-right"></span>
             </div>
         </div>
@@ -37,29 +38,33 @@
         <div class="bs-header" id="content">
             <div class="container">
                 <ul class="nav nav-pills pull-right">
-                    <li><a ui-sref="#" class="data"></a></li>
-                    <li><a ui-sref="#" class="wallet"></a></li>
-                    <li><a ui-sref="#" class="appointment"></a></li>
-                    <li><a ui-sref="#" class="homework"></a></li>
-                    <li><a ui-sref="#" class="coursecourse"></a></li>
+                    <li><a href="#" class="data"></a></li>
+                    <li><a href="#" class="wallet"></a></li>
+                    <li><a href="#" class="appointment"></a></li>
+                    <li><a href="#" class="homework"></a></li>
+                    <li><a href="#" class="coursecourse"></a></li>
                 </ul>
             </div>
         </div>
         <section id="main-menu">
-            <div class="container menu" id="menu" style="width:100%;">
-                <ul>
-                    <li class="active"><a ui-sref="index">首页</a></li>
-                    <li><a ui-sref="course">曼哈顿课堂</a></li>
-                    <li><a ui-sref="teacher">我的名师</a></li>
-                    <li><a ui-sref="place">场地风采</a></li>
-                    <li><a ui-sref="appoint">我要预约</a></li>
-                    <li><a ui-sref="question">精彩问答</a></li>
-                </ul>
+            <div class="container" id="menu" style="width:100%;">
+                <div class="navbar navbar-inverse">
+                    <div class="navbar-inner menu">
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a href="index">首页</a></li>
+                            <li><a href="course">曼哈顿课堂</a></li>
+                            <li><a href="teacher">我的名师</a></li>
+                            <li><a href="place">场地风采</a></li>
+                            <li><a href="appoint">我要预约</a></li>
+                            <li><a href="question">精彩问答</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </section>
     </div>
     <!-- Add your site or application content here -->
-    <div id="main" class="container" ui-view></div>
+    <div id="main" class="container"></div>
 
     <!--[if lt IE 9]>
     <script src="bower_components/html5shiv/html5shiv.min.js"></script>
@@ -68,21 +73,19 @@
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
     <script src="bower_components/jquery/jquery.min.js"></script>
-    <script src="bower_components/angular/angular.min.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
-    <script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
-    <script src="bower_components/angular-route/angular-route.min.js"></script>
-    <script src="bower_components/angular-ui-router/angular-ui-router.min.js"></script>
-    <script src="bower_components/angular-animate/angular-animate.min.js"></script>
-    <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
-        <script src="scripts/app.js"></script>
-        <script src="scripts/controllers/main.js"></script>
         <script src="scripts/resource.js"></script>
         <!-- endbuild -->
 </body>
+<script>
+    $(function(){
+        $('.login,.register,.data').click(function(){
+            $('#main').html('').load('views/user/'+$(this).attr('class')+'.html');
+        });
+    })
+</script>
 </html>
