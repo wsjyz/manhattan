@@ -1,6 +1,7 @@
 package com.manhattan.service;
 
 import com.manhattan.domain.TeacherDetail;
+import com.manhattan.util.OpenPage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -10,5 +11,7 @@ import org.springframework.data.domain.Pageable;
 public interface TeacherDetailService {
     TeacherDetail findTeacherDetail(String userId);
 
-    Page<TeacherDetail> findTeachersByUserId(Pageable pageAble, String userId, String userAction);
+    OpenPage<TeacherDetail> findTeachersByUserId(OpenPage<TeacherDetail> page, String userId, String userAction);
+
+    OpenPage<TeacherDetail> findTeacherByPage(OpenPage<TeacherDetail> page, String searchKey);
 }

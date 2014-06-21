@@ -41,8 +41,8 @@ public class CourseDaoImpl extends BaseDAO implements ICourseDao {
             params.add(qp.getPlace());
         }
         if (qp.getAppointmentTime()!=null) {
-            sql.append(" and c.start_time<?");
-            sql.append(" and c.end_time<?");
+            sql.append(" and c.start_time<=?");
+            sql.append(" and c.end_time>=?");
             params.add(qp.getAppointmentTime());
             params.add(qp.getAppointmentTime());
         }
@@ -54,18 +54,18 @@ public class CourseDaoImpl extends BaseDAO implements ICourseDao {
             sql.append(" and c.tutoringWay=?");
             params.add(qp.getTutoringWay());
         }
+        List<Course> courseList = new ArrayList<Course>();
+        if (page.isAutoCount()) {
+            long count = getJdbcTemplate().queryForObject(selectSql.append("count(*) ").append(sql).toString(), params.toArray(),Long.class);
+            page.setTotal(count);
+            selectSql=new StringBuffer("select ");
+        }
         if (page.isAutoPaging()) {
             sql.append("limit ? offset ? ");
             params.add(page.getPageSize());
             params.add(page.getPageNo() - 1);
         }
-        List<Course> courseList = new ArrayList<Course>();
-        if (page.isAutoCount()) {
-            long count = getJdbcTemplate().queryForObject(selectSql.append("count(*) ").append(sql).toString(), params.toArray(),Long.class);
-            page.setTotal(count);
-            selectSql.delete(7, selectSql.length());
-        }
-        courseList=getJdbcTemplate().query(selectSql.append("*").append(sql).toString(), params.toArray(), new CourseRowMapper());
+        courseList=getJdbcTemplate().query(selectSql.append("c.*").append(sql).toString(), params.toArray(), new CourseRowMapper());
         page.setRows(courseList);
         return page;
     }
@@ -97,29 +97,29 @@ public class CourseDaoImpl extends BaseDAO implements ICourseDao {
             params.add(userAction.getActionType());
         }
         if (course.getStartTime()!=null) {
-            sql.append(" and c.start_time<?");
-            params.add(course.getStartTime());
-        }
-        if (course.getEndTime()!=null) {
-            sql.append(" and c.end_time>?");
+            sql.append(" and c.start_time<=?");
             params.add(course.getEndTime());
         }
+        if (course.getEndTime()!=null) {
+            sql.append(" and c.end_time>=?");
+            params.add(course.getStartTime());
+        }
         if (StringUtils.isNotBlank(course.getTeachers())) {
-            sql.append(" and c.teachers>?");
+            sql.append(" and c.teachers like %?%");
             params.add(course.getTeachers());
+        }
+        List<Course> courseList = new ArrayList<Course>();
+        if (page.isAutoCount()) {
+            long count = getJdbcTemplate().queryForObject(selectSql.append("count(*) ").append(sql).toString(), params.toArray(),Long.class);
+            page.setTotal(count);
+            selectSql=new StringBuffer("select ");
         }
         if (page.isAutoPaging()) {
             sql.append("limit ? offset ? ");
             params.add(page.getPageSize());
             params.add(page.getPageNo() - 1);
         }
-        List<Course> courseList = new ArrayList<Course>();
-        if (page.isAutoCount()) {
-            long count = getJdbcTemplate().queryForObject(selectSql.append("count(*) ").append(sql).toString(), params.toArray(),Long.class);
-            page.setTotal(count);
-            selectSql.delete(7, selectSql.length());
-        }
-        courseList=getJdbcTemplate().query(selectSql.append("*").append(sql).toString(), params.toArray(), new CourseRowMapper());
+        courseList=getJdbcTemplate().query(selectSql.append("c.*").append(sql).toString(), params.toArray(), new CourseRowMapper());
         page.setRows(courseList);
         return page;
     }

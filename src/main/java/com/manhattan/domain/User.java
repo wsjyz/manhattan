@@ -3,9 +3,8 @@ package com.manhattan.domain;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by lk.zh on 2014/5/19.
@@ -41,7 +40,7 @@ public class User {
     @Column(name = "credit")
     private Integer credits;
     @Column(name = "wallet")
-    private Integer wallet;
+    private BigDecimal wallet;
     @Column(name = "vip_end_time")
     private Date vipExpiredTime;
     @Column
@@ -49,8 +48,9 @@ public class User {
 
 //    @OneToMany(cascade=CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy="postTeacher")
 //    private List<Course> courses;
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @PrimaryKeyJoinColumn
+//    @OneToOne(fetch = FetchType.LAZY,optional = false)
+//    @PrimaryKeyJoinColumn
+    @Transient
     private TeacherDetail teacherDetail;
 
     public String getUserId() {
@@ -149,11 +149,11 @@ public class User {
         this.type = type;
     }
 
-    public Integer getWallet() {
+    public BigDecimal getWallet() {
         return wallet;
     }
 
-    public void setWallet(Integer wallet) {
+    public void setWallet(BigDecimal wallet) {
         this.wallet = wallet;
     }
 

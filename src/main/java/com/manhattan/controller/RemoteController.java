@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
@@ -198,12 +199,12 @@ public class RemoteController {
     @RequestMapping(value = "/wallet/getBalances")
     public
     @ResponseBody
-    int getBalances(@RequestParam("userId") String userId) {
+    BigDecimal getBalances(@RequestParam("userId") String userId) {
         if (StringUtils.isNotBlank(userId)) {
             User user=userService.load(userId);
-            return user.getWallet()!=null?user.getWallet():0;
+            return user.getWallet()!=null?user.getWallet():new BigDecimal(0);
         }
-        return 0;
+        return new BigDecimal(0);
     }
 
     /**
@@ -235,10 +236,9 @@ public class RemoteController {
     @RequestMapping(value = "/teacher/listPage")
     public
     @ResponseBody
-    OpenPage<User> listTeachers(@FastJson OpenPage<User> openPage,@RequestParam(value = "searchKey",required = false) String searchKey) {
-        Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
-        Page resultPage = userService.findTeacherByPage(pageAble,searchKey);
-        return PageConvert.convert(resultPage);
+    OpenPage<TeacherDetail> listTeachers(@FastJson OpenPage<TeacherDetail> openPage,@RequestParam(value = "searchKey",required = false) String searchKey) {
+        OpenPage<TeacherDetail> resultPage = teacherDetailService.findTeacherByPage(openPage,searchKey);
+        return resultPage;
     }
 
     /**
@@ -293,9 +293,8 @@ public class RemoteController {
     @RequestMapping(value = "/teacher/getOrderTeachersByUserId")
     @ResponseBody
     public OpenPage<TeacherDetail> getOrderTeachersByUserId(@FastJson OpenPage<TeacherDetail> openPage,@RequestParam String userId,HttpServletResponse response){
-        Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
-        Page<TeacherDetail> teachers =teacherDetailService.findTeachersByUserId(pageAble, userId, MhtConstant.USER_ACTION_APPOINTMENT_TEACHER);
-        return PageConvert.convert(teachers);
+        OpenPage<TeacherDetail> teachers =teacherDetailService.findTeachersByUserId(openPage, userId, MhtConstant.USER_ACTION_APPOINTMENT_TEACHER);
+        return teachers;
     }
 
     /**
@@ -305,9 +304,8 @@ public class RemoteController {
     @RequestMapping(value = "/teacher/getListenTeachersByUserId")
     @ResponseBody
     public OpenPage<TeacherDetail> getListenTeachersByUserId(@FastJson OpenPage<TeacherDetail> openPage,@RequestParam String userId,HttpServletResponse response){
-        Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
-        Page<TeacherDetail> teachers =teacherDetailService.findTeachersByUserId(pageAble, userId, MhtConstant.USER_ACTION_LISTEN_TEACHER);
-        return PageConvert.convert(teachers);
+        OpenPage<TeacherDetail> teachers =teacherDetailService.findTeachersByUserId(openPage, userId, MhtConstant.USER_ACTION_LISTEN_TEACHER);
+        return teachers;
     }
 
 
