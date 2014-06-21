@@ -98,8 +98,8 @@ public class HomeworkController extends BaseController{
         hs.setHomeworkId(request.getParameter("homeworkId"));
         hs.setHomeworkContent(request.getParameter("homeworkContent"));
         hs.setOriginalFileName(originalFilename);
-
-        HomeworkSubmit homeworkSubmit1=homeworkSubmitService.submit(hs);
+        HomeworkSubmit homeworkSubmit1 = null;
+        homeworkSubmit1=homeworkSubmitService.submit(hs);
         if (homeworkSubmit1==null) {
             setResponse("作业提交失败", response);
         }
