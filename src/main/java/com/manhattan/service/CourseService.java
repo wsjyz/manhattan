@@ -2,6 +2,7 @@ package com.manhattan.service;
 
 import com.manhattan.domain.Course;
 import com.manhattan.domain.QueryParam;
+import com.manhattan.util.OpenPage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -18,12 +19,11 @@ public interface CourseService {
 
     Course postCourse(Course course);
 
-    Page<Course> findCoursesByFilter(Pageable pageAble,QueryParam qp);
+    OpenPage<Course> findCoursesByQueryParam(OpenPage<Course> page, QueryParam qp);
 
-    Page<Course> findCoursesByUserId(Pageable pageAble,String userId,String action);
+    OpenPage<Course> findCoursesByUserId(OpenPage<Course> page,String userId,String action);
 
-    Page<Course> getCoursesByTeacher(Pageable pageAble,String userId,String action);
+    OpenPage<Course> getCoursesByTeacher(OpenPage<Course> page,String userId,String action);
 
-    Page<Course> findCoursesByUserId(Pageable pageable, String userId, String actionType, Date startTime, Date endTime);
-
+    OpenPage<Course> findCoursesByUserId(OpenPage<Course> page, String userId, String actionType, Date startTime, Date endTime);
 }

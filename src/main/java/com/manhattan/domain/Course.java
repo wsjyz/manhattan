@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.Email;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,9 +42,9 @@ public class Course {
     @Column(name = "class_no")
     private String classNo;
     @Column(name = "start_time")
-    private Timestamp startTime;
+    private Date startTime;
     @Column(name = "end_time")
-    private Timestamp endTime;
+    private Date endTime;
     @Column(name = "period")
     private BigDecimal period;
     @Column(name = "expense")
@@ -65,11 +66,9 @@ public class Course {
     @Column(name = "teaching_time")
     private String teachingTime;
 
-    @ManyToOne
-    @JoinColumn(name="post_teacher",insertable = false,updatable = false)
-    private TeacherDetail teacher;
-    @OneToMany(cascade=CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy="resourceId")
-    private List<UserAction> userActions;
+//    @ManyToOne(cascade=CascadeType.REFRESH,fetch=FetchType.LAZY)
+//    @JoinColumn(name="post_teacher",insertable = false,updatable = false)
+//    private TeacherDetail teacher;
 //    @Type(type = "teacherDetailList")
     @Transient
     private List<TeacherDetail> teacherDetailList;
@@ -98,19 +97,19 @@ public class Course {
         this.courseSubtitle = courseSubtitle;
     }
 
-    public Timestamp getStartTime() {
+    public Date getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Timestamp startTime) {
+    public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
 
-    public Timestamp getEndTime() {
+    public Date getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Timestamp endTime) {
+    public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
 
@@ -202,21 +201,13 @@ public class Course {
         this.teachingTime = teachingTime;
     }
 
-    public TeacherDetail getTeacher() {
-        return teacher;
-    }
-
-    public void setTeacher(TeacherDetail teacher) {
-        this.teacher = teacher;
-    }
-
-    public List<UserAction> getUserActions() {
-        return userActions;
-    }
-
-    public void setUserActions(List<UserAction> userActions) {
-        this.userActions = userActions;
-    }
+//    public TeacherDetail getTeacher() {
+//        return teacher;
+//    }
+//
+//    public void setTeacher(TeacherDetail teacher) {
+//        this.teacher = teacher;
+//    }
 
     public List<TeacherDetail> getTeacherDetailList() {
         return teacherDetailList;
@@ -233,4 +224,5 @@ public class Course {
     public void setClassNo(String classNo) {
         this.classNo = classNo;
     }
+
 }

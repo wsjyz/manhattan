@@ -16,4 +16,8 @@ public class BaseDAO {
     public JdbcTemplate getJdbcTemplate() {
         return jdbcTemplate;
     }
+
+    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 }

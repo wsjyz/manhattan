@@ -29,7 +29,7 @@ import java.util.List;
  * Created by dam on 14-6-20.
  */
 @Controller
-@RequestMapping("/homeWork")
+@RequestMapping("/course")
 public class CourseController extends BaseController {
     @Autowired
     private UserActionService userActionService;
@@ -39,9 +39,9 @@ public class CourseController extends BaseController {
      * 获取精品课程列表
      * @return
      */
-    @RequestMapping(value = "/course/getWorthCourses")
+    @RequestMapping(value = "/getWorthCourses")
     @ResponseBody
-    public OpenPage<Course> getWorthCourses(@FastJson OpenPage<Question> openPage,HttpServletResponse response){
+    public OpenPage<Course> getWorthCourses(@FastJson OpenPage<Question> openPage){
         Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
         Page<Course> courses=courseService.findCourses(pageAble);
         return PageConvert.convert(courses);
@@ -51,7 +51,7 @@ public class CourseController extends BaseController {
      * 获取详情
      * @return
      */
-    @RequestMapping(value = "/course/getCourseDetail")
+    @RequestMapping(value = "/getCourseDetail")
     @ResponseBody
     public Course getCourseDetail(@RequestParam String courseId) {
         Course course = courseService.load(courseId);
@@ -62,7 +62,7 @@ public class CourseController extends BaseController {
      * 发布课程
      * @return
      */
-    @RequestMapping(value = "/course/postCourses")
+    @RequestMapping(value = "/postCourses")
     @ResponseBody
     public Course postCourses(@FastJson Course course,HttpServletResponse response) {
         Course saved=courseService.postCourse(course);
@@ -77,28 +77,29 @@ public class CourseController extends BaseController {
      * 搜索条件包括分类，地点，预约日期，教师性别，教学方式
      * @return
      */
-    @RequestMapping(value = "/course/getOrderCourses")
+    @RequestMapping(value = "/getOrderCourses")
     @ResponseBody
     public OpenPage<Course> getOrderCourses(@FastJson OpenPage<Course> openPage,
-                                            @FastJson QueryParam queryParam,
-                                            HttpServletResponse response) {
-        Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
-        Page<Course> courses = courseService.findCoursesByFilter(pageAble,queryParam);
-        return PageConvert.convert(courses);
+                                            @FastJson QueryParam queryParam) {
+        OpenPage<Course> courses = courseService.findCoursesByQueryParam(openPage, queryParam);
+        return courses;
     }
 
     /**
      * 获取指定学生的课程日历表
      * @return
      */
-    @RequestMapping(value = "/course/getSchedule")
+    @RequestMapping(value = "/getSchedule")
     @ResponseBody
     public List<Date> getSchedule(@RequestParam Date startTime,
                                   @RequestParam Date endTime,
-                                  @RequestParam String userId){
-        Page<Course> courses =courseService.findCoursesByUserId(null, userId, MhtConstant.USER_ACTION_APPOINTMENT_COURSE, startTime, endTime);
-        List<Date> date= ImmutableList.of();
-        for (Course course : courses.getContent()) {
+                                  @RequestParam String userId) {
+        OpenPage<Course> page = new OpenPage<Course>();
+        page.setAutoCount(false);
+        page.setAutoPaging(false);
+        page = courseService.findCoursesByUserId(null, userId, MhtConstant.USER_ACTION_APPOINTMENT_COURSE, startTime, endTime);
+        List<Date> date = ImmutableList.of();
+        for (Course course : page.getRows()) {
             date.add(course.getStartTime());
         }
         return date;
@@ -109,43 +110,40 @@ public class CourseController extends BaseController {
      * 获取指定学生的预约课程列表
      * @return
      */
-    @RequestMapping(value = "/course/getOrderCoursesByUserId")
+    @RequestMapping(value = "/getOrderCoursesByUserId")
     @ResponseBody
-    public OpenPage<Course> getOrderCoursesByUserId(@FastJson OpenPage<Course> openPage,@RequestParam String userId,HttpServletResponse response){
-        Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
-        Page<Course> courses =courseService.findCoursesByUserId(pageAble,userId,MhtConstant.USER_ACTION_APPOINTMENT_COURSE);
-        return PageConvert.convert(courses);
+    public OpenPage<Course> getOrderCoursesByUserId(@FastJson OpenPage<Course> openPage,@RequestParam String userId){
+        openPage =courseService.findCoursesByUserId(openPage,userId,MhtConstant.USER_ACTION_APPOINTMENT_COURSE);
+        return openPage;
     }
 
     /**
      * 获取指定学生的试听课程列表
      * @return
      */
-    @RequestMapping(value = "/course/getListenCoursesByUserId")
+    @RequestMapping(value = "/getListenCoursesByUserId")
     @ResponseBody
-    public OpenPage<Course> getListenCoursesByUserId(@FastJson OpenPage<Course> openPage,@RequestParam String userId,HttpServletResponse response){
-        Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
-        Page<Course> courses =courseService.findCoursesByUserId(pageAble,userId,MhtConstant.USER_ACTION_LISTEN_COURSE);
-        return PageConvert.convert(courses);
+    public OpenPage<Course> getListenCoursesByUserId(@FastJson OpenPage<Course> openPage,@RequestParam String userId){
+        openPage =courseService.findCoursesByUserId(openPage,userId,MhtConstant.USER_ACTION_LISTEN_COURSE);
+        return openPage;
     }
 
     /**
      * 获取指定学生的收藏课程列表
      * @return
      */
-    @RequestMapping(value = "/course/getCollectCoursesByUserId")
+    @RequestMapping(value = "/getCollectCoursesByUserId")
     @ResponseBody
-    public OpenPage<Course> getCollectCoursesByUserId(@FastJson OpenPage<Course> openPage,@RequestParam String userId,HttpServletResponse response){
-        Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
-        Page<Course> courses =courseService.findCoursesByUserId(pageAble,userId,MhtConstant.USER_ACTION_COLLECT_COURSE);
-        return PageConvert.convert(courses);
+    public OpenPage<Course> getCollectCoursesByUserId(@FastJson OpenPage<Course> openPage,@RequestParam String userId){
+        openPage =courseService.findCoursesByUserId(openPage,userId,MhtConstant.USER_ACTION_COLLECT_COURSE);
+        return openPage;
     }
 
     /**
      * 添加预约课程记录
      * @return
      */
-    @RequestMapping(value = "/course/addAppointment")
+    @RequestMapping(value = "/addAppointment")
     @ResponseBody
     public void addAppointment(@RequestParam String userId,@RequestParam String courseId,HttpServletResponse response) {
         UserAction userAction=userActionService.save(userId, courseId, MhtConstant.USER_ACTION_APPOINTMENT_COURSE);
@@ -158,7 +156,7 @@ public class CourseController extends BaseController {
      * 添加试听课程记录
      * @return
      */
-    @RequestMapping(value = "/course/addListen")
+    @RequestMapping(value = "/addListen")
     @ResponseBody
     public void addListen(@RequestParam String userId,@RequestParam String courseId,HttpServletResponse response){
         UserAction userAction=userActionService.save(userId, courseId, MhtConstant.USER_ACTION_LISTEN_COURSE);
@@ -171,7 +169,7 @@ public class CourseController extends BaseController {
      * 收藏试听课程记录
      * @return
      */
-    @RequestMapping(value = "/course/addCollect")
+    @RequestMapping(value = "/addCollect")
     @ResponseBody
     public void addCollect(@RequestParam String userId,@RequestParam String courseId,HttpServletResponse response){
         UserAction userAction=userActionService.save(userId, courseId, MhtConstant.USER_ACTION_COLLECT_COURSE);
@@ -184,23 +182,21 @@ public class CourseController extends BaseController {
      * 获取指定教师的预约课程列表
      * @return
      */
-    @RequestMapping(value = "/course/getOrderCoursesByTeacher")
+    @RequestMapping(value = "/getOrderCoursesByTeacher")
     @ResponseBody
-    public OpenPage<Course> getOrderCoursesByTeacher(@FastJson OpenPage openPage,@RequestParam String userId,HttpServletResponse response){
-        Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
-        Page<Course> courses=courseService.getCoursesByTeacher(pageAble,userId, MhtConstant.USER_ACTION_APPOINTMENT_COURSE);
-        return PageConvert.convert(courses);
+    public OpenPage<Course> getOrderCoursesByTeacher(@FastJson OpenPage openPage,@RequestParam String userId){
+        openPage =courseService.getCoursesByTeacher(openPage,userId, MhtConstant.USER_ACTION_APPOINTMENT_COURSE);
+        return openPage;
     }
 
     /**
      * 获取指定教师的试听课程列表
      * @return
      */
-    @RequestMapping(value = "/course/getListenCoursesByTeacher")
+    @RequestMapping(value = "/getListenCoursesByTeacher")
     @ResponseBody
-    public OpenPage<Course> getListenCoursesByTeacher(@FastJson OpenPage openPage,@RequestParam String userId,HttpServletResponse response){
-        Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
-        Page<Course> courses=courseService.getCoursesByTeacher(pageAble,userId, MhtConstant.USER_ACTION_LISTEN_COURSE);
-        return PageConvert.convert(courses);
+    public OpenPage<Course> getListenCoursesByTeacher(@FastJson OpenPage openPage,@RequestParam String userId){
+        openPage =courseService.getCoursesByTeacher(openPage,userId, MhtConstant.USER_ACTION_LISTEN_COURSE);
+        return openPage;
     }
 }

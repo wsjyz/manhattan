@@ -21,7 +21,7 @@ public class CommonController {
     @RequestMapping("/authCode")
     public @ResponseBody String getAuthCode(@RequestParam String mobile) {
         String authCode = StringUtils.upperCase(RandomStringUtils.randomAlphanumeric(6));
-        Boolean res = smsSendService.sendSms(mobile, "");
+        Boolean res = smsSendService.sendSms(mobile, authCode);
         return authCode;
     }
 }

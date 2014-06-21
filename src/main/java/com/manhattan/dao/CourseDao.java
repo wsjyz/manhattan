@@ -1,7 +1,12 @@
 package com.manhattan.dao;
 
 import com.manhattan.domain.Course;
+import com.manhattan.domain.QueryParam;
+import com.manhattan.util.OpenPage;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
