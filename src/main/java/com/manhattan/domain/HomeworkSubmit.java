@@ -4,6 +4,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by lk.zh on 2014/6/12.
@@ -20,7 +21,7 @@ public class HomeworkSubmit {
     @Column(name="homework_content") private String homeworkContent;
     @Column(name="submit_file") private String submitFile;//服务器上存放的文件名
     @Column(name="original_file_name")private String originalFileName;//原始文件名
-    @Column(name="submit_time") private String submitTime;
+    @Column(name="submit_time") private Date submitTime;
 
     public String getHomeworkSubmitId() {
         return homeworkSubmitId;
@@ -54,11 +55,11 @@ public class HomeworkSubmit {
         this.submitFile = submitFile;
     }
 
-    public String getSubmitTime() {
+    public Date getSubmitTime() {
         return submitTime;
     }
 
-    public void setSubmitTime(String submitTime) {
+    public void setSubmitTime(Date submitTime) {
         this.submitTime = submitTime;
     }
 
