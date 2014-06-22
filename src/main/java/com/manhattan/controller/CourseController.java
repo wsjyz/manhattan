@@ -1,10 +1,8 @@
 package com.manhattan.controller;
 
 import com.google.common.collect.ImmutableList;
-import com.manhattan.domain.Course;
-import com.manhattan.domain.QueryParam;
-import com.manhattan.domain.Question;
-import com.manhattan.domain.UserAction;
+import com.manhattan.domain.*;
+import com.manhattan.service.AppointmentService;
 import com.manhattan.service.CourseService;
 import com.manhattan.service.UserActionService;
 import com.manhattan.util.FastJson;
@@ -38,6 +36,8 @@ public class CourseController extends BaseController {
     private UserActionService userActionService;
     @Autowired
     private CourseService courseService;
+    @Autowired
+    private AppointmentService appointmentService;
     /**
      * 获取精品课程列表
      * @return
@@ -160,29 +160,24 @@ public class CourseController extends BaseController {
     }
 
     /**
-     * 添加预约课程记录
+     * 添加预约\试听课程记录
+     * 当resourceType为APPOINTMENT_COURSE为预约课程
+     * 当resourceType为LISTEN_COURSE为试听课程
      * @return
      */
     @RequestMapping(value = "/addAppointment")
     @ResponseBody
-    public void addAppointment(@RequestParam String userId,@RequestParam String courseId,HttpServletResponse response) {
-        UserAction userAction=userActionService.save(userId, courseId, MhtConstant.USER_ACTION_APPOINTMENT_COURSE);
-        if (userAction == null) {
-            setResponse("预约课程失败", response);
+    public Appointment addAppointment(@FastJson Appointment appointment,HttpServletResponse response) {
+        if(appointment != null){
+            appointment.setResourceType(MhtConstant.USER_ACTION_APPOINTMENT_COURSE);
+            SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            appointment.setAppointmentTime(sdf.format(new Date()));
+            Appointment app = appointmentService.save(appointment);
+            return app;
         }
-    }
+        //UserAction userAction=userActionService.save(userId, courseId, MhtConstant.USER_ACTION_APPOINTMENT_COURSE);
 
-    /**
-     * 添加试听课程记录
-     * @return
-     */
-    @RequestMapping(value = "/addListen")
-    @ResponseBody
-    public void addListen(@RequestParam String userId,@RequestParam String courseId,HttpServletResponse response){
-        UserAction userAction=userActionService.save(userId, courseId, MhtConstant.USER_ACTION_LISTEN_COURSE);
-        if (userAction == null) {
-            setResponse("试听课程记录保存失败", response);
-        }
+        return null;
     }
 
     /**

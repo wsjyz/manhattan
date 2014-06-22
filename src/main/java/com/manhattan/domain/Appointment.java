@@ -2,14 +2,14 @@ package com.manhattan.domain;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
  * Created by lk.zh on 2014/5/20.
  */
+@Entity
+@Table(name = "t_mht_appointment")
 public class Appointment {
     @Id
     @GeneratedValue(generator = "system-uuid")
@@ -27,7 +27,7 @@ public class Appointment {
     @Column(name = "phone") private String phone;
     @Column(name = "qq") private String qq;
     @Column(name = "address") private String address;
-    @Column(name = "appointment_time") private Date appointmentTime;
+    @Column(name = "appointment_time") private String appointmentTime;
     @Column(name = "resource_type") private String resourceType;
     @Column(name = "resource_id")private String resourceId;
     @Column(name = "payment")private String payment;
@@ -72,7 +72,7 @@ public class Appointment {
         this.area = area;
     }
 
-    public void setAppointmentTime(Date appointmentTime) {
+    public void setAppointmentTime(String appointmentTime) {
         this.appointmentTime = appointmentTime;
     }
 
@@ -132,7 +132,7 @@ public class Appointment {
         this.address = address;
     }
 
-    public Date getAppointmentTime() {
+    public String getAppointmentTime() {
         return appointmentTime;
     }
 
