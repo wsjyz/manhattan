@@ -118,12 +118,12 @@ public class CourseDaoImpl extends BaseDAO implements ICourseDao {
         }
         List<Course> courseList = new ArrayList<Course>();
         if (page.isAutoCount()) {
-            long count = getJdbcTemplate().queryForObject((selectSql.append("count(*) ").append(sql)).toString(), params.toArray(),Long.class);
+            long count = getJdbcTemplate().queryForObject(selectSql.append("count(*) ").append(sql).toString(), params.toArray(),Long.class);
             page.setTotal(count);
             selectSql=new StringBuffer("select ");
         }
         if (page.isAutoPaging()) {
-            sql.append("limit ? offset ? ");
+            sql.append(" limit ? offset ? ");
             params.add(page.getPageSize());
             params.add(page.getPageNo() - 1);
         }
