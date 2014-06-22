@@ -16,8 +16,7 @@
 
     <mvc:annotation-driven>
         <mvc:argument-resolvers>
-            <bean class="com.manhattan.util.RequestJsonParamMethodArgumentResolver"/>
-            <bean class="com.manhattan.util.FormModelMethodArgumentResolver"/>
+            <bean class="com.manhattan.util.FastJsonArgumentResolver"/>
         </mvc:argument-resolvers>
     </mvc:annotation-driven>
 

@@ -20,6 +20,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -61,12 +62,19 @@ public class RequestJsonParamMethodArgumentResolver extends AbstractNamedValueMe
 	@Override
 	protected NamedValueInfo createNamedValueInfo(MethodParameter parameter) {
 	    FastJson annotation = parameter.getParameterAnnotation(FastJson.class);
-		return new RequestJsonParamNamedValueInfo(annotation); 
+		return new RequestJsonParamNamedValueInfo();
 				
 	}
 
 	@Override
 	protected Object resolveName(String name, MethodParameter parameter, NativeWebRequest webRequest) throws Exception {
+        Iterator<String> iter = webRequest.getParameterNames();
+        System.out.println(iter);
+        while(iter.hasNext()){
+            System.out.println(iter.next());
+            System.out.println(webRequest.getParameter(iter.next()));
+        }
+        System.out.println("-----"+webRequest.getParameter(name));
 		String[] paramValues = webRequest.getParameterValues(name);
 		Class<?> paramType = parameter.getParameterType();
         if (paramValues == null) {
@@ -129,9 +137,9 @@ public class RequestJsonParamMethodArgumentResolver extends AbstractNamedValueMe
 			super("", false, null);
 		}
 		
-		private RequestJsonParamNamedValueInfo(FastJson annotation) {
-			super(annotation.value(), annotation.required(), null);
-		}
+//		private RequestJsonParamNamedValueInfo(FastJson annotation) {
+//			super(annotation.value(), annotation.required(), null);
+//		}
 	}
 
 	/**

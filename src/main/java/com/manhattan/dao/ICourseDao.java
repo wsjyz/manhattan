@@ -11,6 +11,8 @@ import java.util.Date;
  */
 public interface ICourseDao {
 
+    Course findCourseById(String courseId);
+
     OpenPage<Course> findCourseByQueryParam(QueryParam qp, OpenPage<Course> page);
 
     OpenPage<Course> findCourseByUserId(OpenPage<Course> page,String userId,String actionType,Date startTime,Date endTime);
