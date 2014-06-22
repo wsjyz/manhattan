@@ -1,6 +1,12 @@
 package com.manhattan.controller;
 
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by dam on 14-6-19.
@@ -14,5 +20,12 @@ public class BaseController {
      */
     public void setResponse(String msg,HttpServletResponse response) {
         response.addHeader("ErrorMsg" ,msg);
+    }
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat.setLenient(false);
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
     }
 }

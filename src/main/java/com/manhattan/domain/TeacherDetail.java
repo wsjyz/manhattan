@@ -1,10 +1,7 @@
 package com.manhattan.domain;
 
-import org.hibernate.annotations.*;
-import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.util.List;
@@ -16,16 +13,10 @@ import java.util.List;
 @Table(name = "t_mht_teacher_detail")
 public class TeacherDetail {
     @Id
-    @GeneratedValue (generator = "pkGenerator" )
-    @GenericGenerator (
-        name = "pkGenerator" ,
-        strategy = "foreign" ,
-        parameters=@Parameter(name = "property" , value = "user")
-    )
     @Column(name = "user_id")
     private String userId;
     @Column(name = "course_category")
-    private String course_category;
+    private String courseCategory;
     @Column(name = "authentication")
     private String authentication;
     @Column(name = "credit_rate")
@@ -75,10 +66,11 @@ public class TeacherDetail {
 
 //    @OneToMany(cascade=CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy="postTeacher")
 //    private List<Course> courses;
-    @OneToMany(cascade=CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy="userId")
+    @Transient
     private List<UserAction> userActions;
 
-    @OneToOne (mappedBy = "teacherDetail",fetch = FetchType.EAGER, optional = false)
+//    @OneToOne (mappedBy = "teacherDetail",fetch = FetchType.LAZY, optional = false)
+    @Transient
     private User user;
 
     public String getUserId() {
@@ -89,12 +81,12 @@ public class TeacherDetail {
         this.userId = userId;
     }
 
-    public String getCourse_category() {
-        return course_category;
+    public String getCourseCategory() {
+        return courseCategory;
     }
 
-    public void setCourse_category(String course_category) {
-        this.course_category = course_category;
+    public void setCourseCategory(String course_category) {
+        this.courseCategory = course_category;
     }
 
     public String getAuthentication() {

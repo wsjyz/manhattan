@@ -9,9 +9,9 @@ import java.sql.SQLException;
 /**
  * Created by Administrator on 2014/6/21 0021.
  */
-public class CourseRowMapper implements RowMapper {
+public class CourseRowMapper implements RowMapper<Course> {
     @Override
-    public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+    public Course mapRow(ResultSet rs, int rowNum) throws SQLException {
         Course course=new Course();
         course.setCourseId(rs.getString("course_id"));
         course.setCourseTitle(rs.getString("course_title"));

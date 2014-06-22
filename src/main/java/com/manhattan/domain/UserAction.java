@@ -24,12 +24,14 @@ public class UserAction {
     @Column(name = "status")
     private String status;
 
-    @ManyToOne(cascade=CascadeType.REFRESH,fetch = FetchType.LAZY)
-    @JoinColumn(name="courseId")
+//    @ManyToOne(cascade=CascadeType.REFRESH,fetch = FetchType.LAZY)
+//    @JoinColumn(name="courseId")
+    @Transient
     private Course course;
 
-    @OneToOne
-    @JoinColumn(name="userId")
+//    @OneToOne
+//    @JoinColumn(name="userId")
+    @Transient
     private User user;
 
     public String getActionId() {
