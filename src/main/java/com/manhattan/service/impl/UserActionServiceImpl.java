@@ -31,7 +31,7 @@ public class UserActionServiceImpl implements UserActionService {
     public UserAction CollectTeacher(String userId, String teacherId) {
         UserAction userAction=new UserAction();
         userAction.setUserId(userId);
-        userAction.setActionType(MhtConstant.ACTION_COLLECT);
+        userAction.setActionType(MhtConstant.USER_ACTION_COLLECT_TEACHER);
         userAction.setResourceId(teacherId);
         userAction.setActionTime(new Timestamp((new Date()).getTime()));
         return userActionDao.save(userAction);
@@ -39,7 +39,7 @@ public class UserActionServiceImpl implements UserActionService {
 
     @Override
     public int CancelCollectTeacher(String userId, String teacherId) {
-        UserAction userAction=userActionDao.findByUserIdAndResourceIdAndActionType(userId,teacherId,MhtConstant.ACTION_COLLECT);
+        UserAction userAction=userActionDao.findByUserIdAndResourceIdAndActionType(userId,teacherId,MhtConstant.USER_ACTION_COLLECT_TEACHER);
         userActionDao.delete(userAction.getActionId());
         return userAction!=null?1:0;
     }
@@ -54,27 +54,4 @@ public class UserActionServiceImpl implements UserActionService {
         return userActionDao.save(userAction);
     }
 
-    @Override
-    public List<Course> getListenCoursesByTeacher(String userId) {
-
-        return null;
-    }
-
-    @Override
-    public Page<UserAction> getUserByTeacher(Pageable pageable,final String teacherId) {
-        return userActionDao.findAll(new Specification<UserAction>() {
-            @Override
-            public Predicate toPredicate(Root<UserAction> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                Predicate predicate = cb.conjunction();
-                Join<UserAction,User> userJoin =
-                        root.join(root.getModel().getSingularAttribute("userId",User.class),JoinType.LEFT);
-                if (StringUtils.isNotBlank(teacherId)) {
-                    predicate.getExpressions().add(
-                            cb.equal(root.<String>get("resourceId"), StringUtils.trim(teacherId))
-                    );
-                }
-                return predicate;
-            }
-        },pageable);
-    }
 }

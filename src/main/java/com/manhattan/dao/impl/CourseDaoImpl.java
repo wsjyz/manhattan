@@ -8,12 +8,8 @@ import com.manhattan.domain.UserAction;
 import com.manhattan.domain.rowMapper.CourseRowMapper;
 import com.manhattan.util.OpenPage;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.jdbc.core.RowCallbackHandler;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,7 +17,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2014/6/21 0021.
  */
-@Service("iCourseDao")
+@Repository("iCourseDao")
 public class CourseDaoImpl extends BaseDAO implements ICourseDao {
 
     @Override

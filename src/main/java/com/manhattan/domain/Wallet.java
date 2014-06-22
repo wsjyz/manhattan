@@ -1,6 +1,9 @@
 package com.manhattan.domain;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 /**
@@ -11,13 +14,14 @@ import java.sql.Timestamp;
 public class Wallet {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
     @Column(name = "wallet_id")
     private String walletId;
     @Column(name = "user_id")
     private String userId;
     @Column(name = "money")
-    private Float money;
+    private BigDecimal money;
     @Column(name = "pay_status")
     private String payStatus;
     @Column(name = "opt_time")
@@ -39,11 +43,11 @@ public class Wallet {
         this.userId = userId;
     }
 
-    public Float getMoney() {
+    public BigDecimal getMoney() {
         return money;
     }
 
-    public void setMoney(Float money) {
+    public void setMoney(BigDecimal money) {
         this.money = money;
     }
 

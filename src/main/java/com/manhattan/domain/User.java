@@ -165,7 +165,6 @@ public class User {
         this.evaluation = evaluation;
     }
 
-
     public TeacherDetail getTeacherDetail() {
         return teacherDetail;
     }

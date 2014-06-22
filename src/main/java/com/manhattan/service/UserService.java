@@ -1,7 +1,9 @@
 package com.manhattan.service;
 
 
+import com.manhattan.domain.Information;
 import com.manhattan.domain.User;
+import com.manhattan.util.OpenPage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -32,7 +34,5 @@ public interface UserService {
 
     int register(String userId, String password,String type);
 
-    Page<User> getTeachersByName(Pageable pageAble,String searchKey);
-
-    Page<User> findTeacherByPage(Pageable pageAble,String searchKey);
+    OpenPage<User> findUserByTeacherId(OpenPage<User> openPage, String teacherId, String actionType);
 }

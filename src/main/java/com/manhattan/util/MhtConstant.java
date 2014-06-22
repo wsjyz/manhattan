@@ -5,17 +5,12 @@ package com.manhattan.util;
  */
 public class MhtConstant {
     
-    
     /**
      * user type
      */
     public final static String USER_TYPE_TEACHER = "TEACHER";
     public final static String USER_TYPE_STUDENT = "STUDENT";
     public final static String USER_TYPE_VIPSTUDENT = "VIPSTUDENT";
-    /**
-     * user action code
-     */
-    public final static String ACTION_COLLECT="ACTION_COLLECT";
 
     /**
      * 问题状态
@@ -29,15 +24,19 @@ public class MhtConstant {
     public static final String ERROR_CODE = "ErrorMsg";
 
     /**
-     * 用户动作
+     * 用户动作(预约、试听、收藏)
      */
-    //预约课程
+    //课程
     public static final String USER_ACTION_APPOINTMENT_COURSE = "APPOINTMENT_COURSE";
     public static final String USER_ACTION_LISTEN_COURSE = "LISTEN_COURSE";
     public static final String USER_ACTION_COLLECT_COURSE = "COLLECT_COURSE";
 
-    //预约教师
+    //教师
     public static final String USER_ACTION_APPOINTMENT_TEACHER = "APPOINTMENT_TEACHER";
     public static final String USER_ACTION_LISTEN_TEACHER = "LISTEN_TEACHER";
     public static final String USER_ACTION_COLLECT_TEACHER = "COLLECT_TEACHER";
+
+    //充值成功
+    public static final String PAY_STATUS_SUCCESS = "SUCCESS";
+
 }

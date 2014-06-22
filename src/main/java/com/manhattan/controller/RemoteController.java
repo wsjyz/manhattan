@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -236,24 +237,9 @@ public class RemoteController {
     @RequestMapping(value = "/teacher/listPage")
     public
     @ResponseBody
-    OpenPage<TeacherDetail> listTeachers(@FastJson OpenPage<TeacherDetail> openPage,@RequestParam(value = "searchKey",required = false) String searchKey) {
+    OpenPage<TeacherDetail> listTeachers(@FastJson OpenPage<TeacherDetail> openPage,@FastJson String searchKey) {
         OpenPage<TeacherDetail> resultPage = teacherDetailService.findTeacherByPage(openPage,searchKey);
         return resultPage;
-    }
-
-    /**
-     * 搜索教师
-     *
-     * @param searchKey
-     * @return String[]
-     */
-    @RequestMapping(value = "/teacher/listByName")
-    public
-    @ResponseBody
-    OpenPage<User> listTeachersByName(@FastJson OpenPage<User> openPage,@RequestParam("searchKey") String searchKey) {
-        Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
-        Page<User> resultPage=userService.getTeachersByName(pageAble,searchKey);
-        return PageConvert.convert(resultPage);
     }
 
     /**
@@ -337,10 +323,23 @@ public class RemoteController {
      */
     @RequestMapping(value = "/user/getStudentList")
     @ResponseBody
-    public OpenPage<UserAction> getStudentList(@FastJson OpenPage<Information> openPage,@RequestParam String teacherId,HttpServletResponse response) {
-        Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
-        Page<UserAction> users=userActionService.getUserByTeacher(pageAble,teacherId);
-        return PageConvert.convert(users);
+    public OpenPage<User> getStudentList(@FastJson OpenPage<User> openPage,@RequestParam String teacherId) {
+        OpenPage<User> users=userService.findUserByTeacherId(openPage, teacherId, MhtConstant.USER_ACTION_LISTEN_TEACHER);
+        return users;
+    }
+
+    /**
+     * 充值回调
+     * @param userId
+     * @param money
+     * @return
+     */
+    @RequestMapping(value = "/charge/callback")
+    @ResponseBody
+    public Wallet chargeCallback(@RequestParam String userId,@RequestParam BigDecimal money) {
+        Assert.notNull(money);
+        Wallet wallet = walletService.saveWallet(userId,money);
+        return wallet;
     }
     /**
      * 统一异常处理

@@ -18,7 +18,7 @@ public interface UserActionService {
 
     UserAction save(String userId, String courseId, String userActionAppointment);
 
-    List<Course> getListenCoursesByTeacher(String userId);
+//    List<Course> getListenCoursesByTeacher(String userId);
 
-    Page<UserAction> getUserByTeacher(Pageable pageAble,String teacherId);
+//    Page<UserAction> getUserByTeacher(Pageable pageAble,String teacherId);
 }
