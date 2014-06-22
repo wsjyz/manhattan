@@ -1,5 +1,7 @@
 package com.manhattan.domain;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -10,7 +12,8 @@ import java.sql.Timestamp;
 @Table(name = "t_mht_user_action")
 public class UserAction {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
     @Column(name = "action_id")
     private String actionId;
     @Column(name = "user_id")

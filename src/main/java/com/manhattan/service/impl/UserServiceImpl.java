@@ -1,12 +1,11 @@
 package com.manhattan.service.impl;
 
+import com.manhattan.dao.IUserDAO;
 import com.manhattan.dao.UserDAO;
-import com.manhattan.domain.Course;
-import com.manhattan.domain.TeacherDetail;
-import com.manhattan.domain.User;
-import com.manhattan.domain.UserAction;
+import com.manhattan.domain.*;
 import com.manhattan.service.UserService;
 import com.manhattan.util.MhtConstant;
+import com.manhattan.util.OpenPage;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,6 +24,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDAO userDAO;
+    @Autowired
+    private IUserDAO iUserDAO;
 
     @Override
     public User findUserById(String userId) {
@@ -68,27 +69,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<User> getTeachersByName(Pageable pageAble,String searchKey) {
-        return userDAO.findByUserNameLikeAndType(searchKey, MhtConstant.USER_TYPE_TEACHER,pageAble);
+    public OpenPage<User> findUserByTeacherId(OpenPage<User> openPage, String teacherId, String actionType) {
+        return iUserDAO.findUserByTeacherId(openPage,teacherId,actionType);
     }
 
-    @Override
-    public Page<User> findTeacherByPage(Pageable pageAble,final String searchKey) {
-        return userDAO.findAll(new Specification<User>() {
-            @Override
-            public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                Predicate predicate = cb.conjunction();
-                Join<User,TeacherDetail> teacherDetailJoin=root.join(root.getModel().getSingularAttribute("teacherDetail",TeacherDetail.class),JoinType.INNER);
-                if (StringUtils.isNotBlank(searchKey)) {
-                    predicate.getExpressions().add(
-                            cb.like(root.<String>get("userName"), "%" + StringUtils.trim(searchKey) + "%")
-                    );
-                }
-                predicate.getExpressions().add(
-                        cb.equal(root.<String>get("type"), MhtConstant.USER_TYPE_TEACHER)
-                );
-                return predicate;
-            }
-        }, pageAble);
-    }
+
 }

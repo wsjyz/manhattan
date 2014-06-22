@@ -11,6 +11,7 @@ import com.manhattan.util.MhtConstant;
 import com.manhattan.util.OpenPage;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ import java.util.List;
 /**
  * Created by lk.zh on 2014/6/21 0021.
  */
-@Service("iTeacherDetailDao")
+@Repository("iTeacherDetailDao")
 public class ITeacherDetailDaoImpl extends BaseDAO implements ITeacherDetailDao  {
     @Autowired
     private UserDAO userDAO;
