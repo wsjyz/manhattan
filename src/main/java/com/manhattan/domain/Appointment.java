@@ -5,6 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.util.Date;
 
 /**
  * Created by lk.zh on 2014/5/20.
@@ -13,17 +14,20 @@ public class Appointment {
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
-    @Column
+    @Column(name="appointment_id")
     private String appointmentId;
-    @Column private String actionId;
-    @Column private String courseCategory;
-    @Column private String tutoringWay;
-    @Column private String otherContent;
-    @Column private String mobile;
-    @Column private String phone;
-    @Column private String qq;
-    @Column private String address;
-    @Column private String appointmentTime;
+    @Column(name="user_id") private String userId;
+    @Column(name="user_name") private String userName;
+    @Column(name = "sex") private String sex;
+    @Column(name = "course_category") private String courseCategory;
+    @Column(name = "tutoring_way") private String tutoringWay;
+    @Column(name = "area") private String area;
+    @Column(name = "other_content") private String otherContent;
+    @Column(name = "mobile") private String mobile;
+    @Column(name = "phone") private String phone;
+    @Column(name = "qq") private String qq;
+    @Column(name = "address") private String address;
+    @Column(name = "appointment_time") private Date appointmentTime;
 
     public String getAppointmentId() {
         return appointmentId;
@@ -33,12 +37,40 @@ public class Appointment {
         this.appointmentId = appointmentId;
     }
 
-    public String getActionId() {
-        return actionId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setActionId(String actionId) {
-        this.actionId = actionId;
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+
+    public void setAppointmentTime(Date appointmentTime) {
+        this.appointmentTime = appointmentTime;
     }
 
     public String getCourseCategory() {
@@ -97,11 +129,7 @@ public class Appointment {
         this.address = address;
     }
 
-    public String getAppointmentTime() {
+    public Date getAppointmentTime() {
         return appointmentTime;
-    }
-
-    public void setAppointmentTime(String appointmentTime) {
-        this.appointmentTime = appointmentTime;
     }
 }
