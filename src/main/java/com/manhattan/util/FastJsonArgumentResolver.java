@@ -9,6 +9,8 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
+import java.util.Enumeration;
+import java.util.Iterator;
 
 public class FastJsonArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
@@ -24,25 +26,17 @@ public class FastJsonArgumentResolver implements HandlerMethodArgumentResolver {
 
         HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
         // content-type不是json的不处理
-        if (!request.getContentType().contains("application/json")) {
-            return null;
-        }
+//        if (!request.getContentType().contains("application/json")) {
+//            return null;
+//        }
 
-        // 把reqeust的body读取到StringBuilder
-        BufferedReader reader = request.getReader();
-        StringBuilder sb = new StringBuilder();
-
-        char[] buf = new char[1024];
-        int rd;
-        while((rd = reader.read(buf)) != -1){
-            sb.append(buf, 0, rd);
-        }
-
+        String value = request.getParameter(parameter.getParameterName());
         // 利用fastjson转换为对应的类型
         if(JSONObjectWrapper.class.isAssignableFrom(parameter.getParameterType())){
-            return new JSONObjectWrapper(JSON.parseObject(sb.toString()));
+            return new JSONObjectWrapper(JSON.parseObject(value));
         } else {
-            return JSON.parseObject(sb.toString(), parameter.getParameterType());
+            return JSON.parseObject(value, parameter.getParameterType());
         }
     }
+
 }

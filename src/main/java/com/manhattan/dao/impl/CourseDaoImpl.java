@@ -25,6 +25,17 @@ import java.util.List;
 public class CourseDaoImpl extends BaseDAO implements ICourseDao {
 
     @Override
+    public Course findCourseById(String courseId) {
+        StringBuilder sql = new StringBuilder("select * from t_mht_course where course_id = ?");
+        List<Course> list = getJdbcTemplate().query(sql.toString(),new String[]{courseId},new CourseRowMapper());
+        Course course = new Course();
+        if(!list.isEmpty()){
+            course = list.get(0);
+        }
+        return course;
+    }
+
+    @Override
     public OpenPage<Course> findCourseByQueryParam(QueryParam qp, OpenPage<Course> page) {
         StringBuffer selectSql = new StringBuffer("select ");
         StringBuffer sql = new StringBuffer("");

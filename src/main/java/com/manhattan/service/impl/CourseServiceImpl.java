@@ -43,7 +43,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Course load(String courseId) {
-        return courseDao.getOne(courseId);
+        return iCourseDao.findCourseById(courseId);
     }
 
     @Override
