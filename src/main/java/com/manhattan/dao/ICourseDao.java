@@ -18,4 +18,6 @@ public interface ICourseDao {
     OpenPage<Course> findCourseByUserId(OpenPage<Course> page,String userId,String actionType,Date startTime,Date endTime);
 
     OpenPage<Course> finCoursesByTeacher(OpenPage<Course> page, String userId, String action);
+
+    OpenPage<Course> findCollectByUserId(OpenPage<Course> page, String userId, String resourceType);
 }

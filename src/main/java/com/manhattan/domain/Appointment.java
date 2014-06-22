@@ -2,14 +2,14 @@ package com.manhattan.domain;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
  * Created by lk.zh on 2014/5/20.
  */
+@Entity
+@Table(name = "t_mht_appointment")
 public class Appointment {
     @Id
     @GeneratedValue(generator = "system-uuid")

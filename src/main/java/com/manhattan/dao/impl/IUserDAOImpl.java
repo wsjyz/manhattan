@@ -23,7 +23,7 @@ public class IUserDAOImpl extends BaseDAO implements IUserDAO {
     public OpenPage<User> findUserByTeacherId(OpenPage<User> page, String teacherId, String actionType) {
         StringBuffer selectSql = new StringBuffer("select ");
         StringBuffer sql = new StringBuffer("");
-        sql.append(" from t_mht_user t left join t_mht_user_action ua ");
+        sql.append(" from t_mht_user t left join t_mht_appointment ua ");
         sql.append("on t.user_id=ua.user_id ")
                 .append(" where 1=1 ");
         List<Object> params = new ArrayList<Object>();
@@ -32,7 +32,7 @@ public class IUserDAOImpl extends BaseDAO implements IUserDAO {
             params.add(teacherId);
         }
         if (StringUtils.isNotBlank(actionType)) {
-            sql.append(" and ua.action_type=? ");
+            sql.append(" and ua.resource_type=? ");
             params.add(actionType);
         }
         List<User> users = new ArrayList<User>();

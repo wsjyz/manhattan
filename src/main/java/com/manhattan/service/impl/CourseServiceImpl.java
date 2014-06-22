@@ -68,9 +68,14 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public OpenPage<Course> findCoursesByUserId(OpenPage<Course> page,String userId,String actionType,Date startTime,Date endTime) {
+    public OpenPage<Course> findCoursesByUserId(OpenPage<Course> page, String userId, String actionType, Date startTime, Date endTime) {
         page=iCourseDao.findCourseByUserId(page, userId, actionType, startTime, endTime);
         return page;
+    }
+
+    @Override
+    public OpenPage<Course> findCollectByUserId(OpenPage<Course> openPage, String userId, String userActionCollectCourse) {
+        return iCourseDao.findCollectByUserId(openPage, userId, userActionCollectCourse);
     }
 
 }

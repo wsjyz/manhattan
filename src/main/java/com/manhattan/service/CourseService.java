@@ -26,4 +26,7 @@ public interface CourseService {
     OpenPage<Course> getCoursesByTeacher(OpenPage<Course> page,String userId,String action);
 
     OpenPage<Course> findCoursesByUserId(OpenPage<Course> page, String userId, String actionType, Date startTime, Date endTime);
+
+    OpenPage<Course> findCollectByUserId(OpenPage<Course> openPage, String userId, String userActionCollectCourse);
+
 }
