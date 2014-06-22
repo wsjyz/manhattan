@@ -3,6 +3,7 @@ package com.manhattan.domain;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 /**
@@ -20,7 +21,7 @@ public class Wallet {
     @Column(name = "user_id")
     private String userId;
     @Column(name = "money")
-    private Float money;
+    private BigDecimal money;
     @Column(name = "pay_status")
     private String payStatus;
     @Column(name = "opt_time")
@@ -42,11 +43,11 @@ public class Wallet {
         this.userId = userId;
     }
 
-    public Float getMoney() {
+    public BigDecimal getMoney() {
         return money;
     }
 
-    public void setMoney(Float money) {
+    public void setMoney(BigDecimal money) {
         this.money = money;
     }
 

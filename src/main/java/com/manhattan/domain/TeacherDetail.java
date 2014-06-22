@@ -272,19 +272,15 @@ public class TeacherDetail {
     public void setStudentMaxScoreCertificate(String studentMaxScoreCertificate) {
         this.studentMaxScoreCertificate = studentMaxScoreCertificate;
     }
-
     public List<UserAction> getUserActions() {
         return userActions;
     }
-
     public void setUserActions(List<UserAction> userActions) {
         this.userActions = userActions;
     }
-
     public User getUser() {
         return user;
     }
-
     public void setUser(User user) {
         this.user = user;
     }

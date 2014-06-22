@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -241,7 +242,6 @@ public class RemoteController {
         return resultPage;
     }
 
-
     /**
      * 收藏教师
      *
@@ -324,8 +324,22 @@ public class RemoteController {
     @RequestMapping(value = "/user/getStudentList")
     @ResponseBody
     public OpenPage<User> getStudentList(@FastJson OpenPage<User> openPage,@RequestParam String teacherId) {
-        OpenPage<User> users=userService.findUserByTeacherId(openPage,teacherId,MhtConstant.USER_ACTION_LISTEN_TEACHER);
+        OpenPage<User> users=userService.findUserByTeacherId(openPage, teacherId, MhtConstant.USER_ACTION_LISTEN_TEACHER);
         return users;
+    }
+
+    /**
+     * 充值回调
+     * @param userId
+     * @param money
+     * @return
+     */
+    @RequestMapping(value = "/charge/callback")
+    @ResponseBody
+    public Wallet chargeCallback(@RequestParam String userId,@RequestParam BigDecimal money) {
+        Assert.notNull(money);
+        Wallet wallet = walletService.saveWallet(userId,money);
+        return wallet;
     }
     /**
      * 统一异常处理

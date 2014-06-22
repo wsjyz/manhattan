@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User load(String userId) {
-        return userDAO.findOne(userId);
+        return iUserDAO.load(userId);
     }
 
     @Override

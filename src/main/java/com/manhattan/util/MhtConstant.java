@@ -35,4 +35,8 @@ public class MhtConstant {
     public static final String USER_ACTION_APPOINTMENT_TEACHER = "APPOINTMENT_TEACHER";
     public static final String USER_ACTION_LISTEN_TEACHER = "LISTEN_TEACHER";
     public static final String USER_ACTION_COLLECT_TEACHER = "COLLECT_TEACHER";
+
+    //充值成功
+    public static final String PAY_STATUS_SUCCESS = "SUCCESS";
+
 }

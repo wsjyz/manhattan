@@ -28,6 +28,9 @@ public class Appointment {
     @Column(name = "qq") private String qq;
     @Column(name = "address") private String address;
     @Column(name = "appointment_time") private Date appointmentTime;
+    @Column(name = "resource_type") private String resourceType;
+    @Column(name = "resource_id")private String resourceId;
+    @Column(name = "payment")private String payment;
 
     public String getAppointmentId() {
         return appointmentId;
@@ -131,5 +134,29 @@ public class Appointment {
 
     public Date getAppointmentTime() {
         return appointmentTime;
+    }
+
+    public String getResourceType() {
+        return resourceType;
+    }
+
+    public void setResourceType(String resourceType) {
+        this.resourceType = resourceType;
+    }
+
+    public String getResourceId() {
+        return resourceId;
+    }
+
+    public void setResourceId(String resourceId) {
+        this.resourceId = resourceId;
+    }
+
+    public String getPayment() {
+        return payment;
+    }
+
+    public void setPayment(String payment) {
+        this.payment = payment;
     }
 }

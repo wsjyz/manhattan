@@ -10,4 +10,6 @@ import org.springframework.stereotype.Service;
 public interface IUserDAO {
     OpenPage<User> findUserByTeacherId(OpenPage<User> openPage, String teacherId, String actionType);
 
+    User load(String userId);
+
 }

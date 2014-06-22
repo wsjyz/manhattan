@@ -24,7 +24,7 @@ public class IUserDAOImpl extends BaseDAO implements IUserDAO {
         StringBuffer selectSql = new StringBuffer("select ");
         StringBuffer sql = new StringBuffer("");
         sql.append(" from t_mht_user t left join t_mht_user_action ua ");
-        sql.append("on t.user_id=ua.resource_id ")
+        sql.append("on t.user_id=ua.user_id ")
                 .append(" where 1=1 ");
         List<Object> params = new ArrayList<Object>();
         if (StringUtils.isNotBlank(teacherId)) {
@@ -50,4 +50,11 @@ public class IUserDAOImpl extends BaseDAO implements IUserDAO {
         page.setRows(users);
         return page;
     }
+
+    @Override
+    public User load(String userId) {
+        User user=getJdbcTemplate().queryForObject("select * from t_mht_user where user_id=? ",new Object[]{userId},new UserRowMapper());
+        return user;
+    }
+
 }
