@@ -2,9 +2,10 @@ package com.manhattan.dao.impl;
 
 import com.manhattan.dao.BaseDAO;
 import com.manhattan.dao.ICourseDao;
+import com.manhattan.domain.Appointment;
 import com.manhattan.domain.Course;
 import com.manhattan.domain.QueryParam;
-import com.manhattan.domain.UserAction;
+import com.manhattan.domain.Appointment;
 import com.manhattan.domain.rowMapper.CourseRowMapper;
 import com.manhattan.util.OpenPage;
 import org.apache.commons.lang3.StringUtils;
@@ -82,26 +83,26 @@ public class CourseDaoImpl extends BaseDAO implements ICourseDao {
         Course course = new Course();
         course.setStartTime(startTime);
         course.setEndTime(endTime);
-        UserAction userAction=new UserAction();
-        userAction.setUserId(userId);
-        userAction.setActionType(actionType);
-        return findCourseByUserId(page, course, userAction);
+        Appointment appointment=new Appointment();
+        appointment.setUserId(userId);
+        appointment.setResourceType(actionType);
+        return findCourseByUserId(page, course, appointment);
     }
 
-    public OpenPage<Course> findCourseByUserId(OpenPage<Course> page, Course course,UserAction userAction) {
+    public OpenPage<Course> findCourseByUserId(OpenPage<Course> page, Course course,Appointment appointment) {
         StringBuffer selectSql = new StringBuffer("select ");
         StringBuffer sql = new StringBuffer("");
-        sql.append(" from t_mht_course c left join t_mht_user_action ua ");
+        sql.append(" from t_mht_course c inner join t_mht_appointment ua ");
         sql.append("on c.course_id=ua.resource_id ")
                 .append(" where 1=1 ");
         List<Object> params = new ArrayList<Object>();
-        if (StringUtils.isNotBlank(userAction.getUserId())) {
+        if (StringUtils.isNotBlank(appointment.getUserId())) {
             sql.append(" and ua.user_id=?");
-            params.add(userAction.getUserId());
+            params.add(appointment.getUserId());
         }
-        if (StringUtils.isNotBlank(userAction.getActionType())) {
-            sql.append(" and ua.action_type=?");
-            params.add(userAction.getActionType());
+        if (StringUtils.isNotBlank(appointment.getResourceType())) {
+            sql.append(" and ua.resource_type=?");
+            params.add(appointment.getResourceType());
         }
         if (course.getStartTime()!=null) {
             sql.append(" and c.start_time<=?");
@@ -112,13 +113,12 @@ public class CourseDaoImpl extends BaseDAO implements ICourseDao {
             params.add(course.getStartTime());
         }
         if (StringUtils.isNotBlank(course.getTeachers())) {
-            sql.append(" and c.teachers like %?%");
-            params.add(course.getTeachers());
+            sql.append(" and c.teachers like ? ");
+            params.add("%"+course.getTeachers()+"%");
         }
         List<Course> courseList = new ArrayList<Course>();
         if (page.isAutoCount()) {
-
-            long count = getJdbcTemplate().queryForObject(selectSql.append(" count(*) ").append(sql).toString(), params.toArray(),Long.class);
+            long count = getJdbcTemplate().queryForObject(selectSql.append("count(*) ").append(sql).toString(), params.toArray(),Long.class);
             page.setTotal(count);
             selectSql=new StringBuffer("select ");
         }
@@ -135,10 +135,42 @@ public class CourseDaoImpl extends BaseDAO implements ICourseDao {
     @Override
     public OpenPage<Course> finCoursesByTeacher(OpenPage<Course> page, String userId, String action) {
         Course course = new Course();
-        UserAction userAction=new UserAction();
-        userAction.setUserId(userId);
-        userAction.setActionType(action);
-        return findCourseByUserId(page, course, userAction);
+        course.setTeachers(userId);
+        Appointment appointment=new Appointment();
+        appointment.setResourceType(action);
+        return findCourseByUserId(page, course, appointment);
+    }
+
+    @Override
+    public OpenPage<Course> findCollectByUserId(OpenPage<Course> page, String userId, String resourceType) {
+        StringBuffer selectSql = new StringBuffer("select ");
+        StringBuffer sql = new StringBuffer("");
+        sql.append(" from t_mht_course c inner join t_mht_user_action ua ");
+        sql.append("on c.course_id=ua.resource_id ")
+                .append(" where 1=1 ");
+        List<Object> params = new ArrayList<Object>();
+        if (StringUtils.isNotBlank(userId)) {
+            sql.append(" and ua.user_id=?");
+            params.add(userId);
+        }
+        if (StringUtils.isNotBlank(resourceType)) {
+            sql.append(" and ua.action_type=?");
+            params.add(resourceType);
+        }
+        List<Course> courseList = new ArrayList<Course>();
+        if (page.isAutoCount()) {
+            long count = getJdbcTemplate().queryForObject(selectSql.append("count(*) ").append(sql).toString(), params.toArray(),Long.class);
+            page.setTotal(count);
+            selectSql=new StringBuffer("select ");
+        }
+        if (page.isAutoPaging()) {
+            sql.append("limit ? offset ? ");
+            params.add(page.getPageSize());
+            params.add(page.getPageNo() - 1);
+        }
+        courseList=getJdbcTemplate().query(selectSql.append("c.*").append(sql).toString(), params.toArray(), new CourseRowMapper());
+        page.setRows(courseList);
+        return page;
     }
 
 }

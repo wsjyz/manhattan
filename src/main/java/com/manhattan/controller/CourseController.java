@@ -103,14 +103,19 @@ public class CourseController extends BaseController {
         page.setAutoPaging(false);
         page = courseService.findCoursesByUserId(page, userId, MhtConstant.USER_ACTION_APPOINTMENT_COURSE, startTime, endTime);
         List<String> dates = new ArrayList<String>();
-        long startlimit=startTime.getTime();
-        long endlimit=endTime.getTime();
+        long startlimit=0,endlimit=0;
+        if (startTime != null) {
+            startlimit=startTime.getTime();
+        }
+        if (endTime != null) {
+            endlimit=endTime.getTime();
+        }
         for (Course course : page.getRows()) {
             long start=course.getStartTime().getTime();
             long end=course.getEndTime().getTime();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             while (start <= end) {
-                if (start > endlimit || start < startlimit) {
+                if (startlimit!=0&endlimit!=0&(start> endlimit||start<startlimit)) {
                     start+=3600*24*1000;
                     continue;
                 }
@@ -155,7 +160,7 @@ public class CourseController extends BaseController {
     @RequestMapping(value = "/getCollectCoursesByUserId")
     @ResponseBody
     public OpenPage<Course> getCollectCoursesByUserId(@FastJson OpenPage<Course> openPage,@RequestParam String userId){
-        openPage =courseService.findCoursesByUserId(openPage,userId,MhtConstant.USER_ACTION_COLLECT_COURSE);
+        openPage =courseService.findCollectByUserId(openPage, userId, MhtConstant.USER_ACTION_COLLECT_COURSE);
         return openPage;
     }
 

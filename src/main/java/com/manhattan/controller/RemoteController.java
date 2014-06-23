@@ -324,6 +324,26 @@ public class RemoteController {
     @RequestMapping(value = "/user/getStudentList")
     @ResponseBody
     public OpenPage<User> getStudentList(@FastJson OpenPage<User> openPage,@RequestParam String teacherId) {
+        OpenPage<User> users=userService.findUserByTeacherId(openPage, teacherId,"");
+        return users;
+    }
+    /**
+     * 根据教师Id获取预约学生列表信息
+     * @param teacherId
+     */
+    @RequestMapping(value = "/user/getOrderStudentList")
+    @ResponseBody
+    public OpenPage<User> getOrderStudentList(@FastJson OpenPage<User> openPage,@RequestParam String teacherId) {
+        OpenPage<User> users=userService.findUserByTeacherId(openPage, teacherId, MhtConstant.USER_ACTION_APPOINTMENT_TEACHER);
+        return users;
+    }
+    /**
+     * 根据教师Id获取试听学生列表信息
+     * @param teacherId
+     */
+    @RequestMapping(value = "/user/getListenStudentList")
+    @ResponseBody
+    public OpenPage<User> getListenStudentList(@FastJson OpenPage<User> openPage,@RequestParam String teacherId) {
         OpenPage<User> users=userService.findUserByTeacherId(openPage, teacherId, MhtConstant.USER_ACTION_LISTEN_TEACHER);
         return users;
     }
