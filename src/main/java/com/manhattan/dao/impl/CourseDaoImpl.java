@@ -40,12 +40,12 @@ public class CourseDaoImpl extends BaseDAO implements ICourseDao {
                 .append(" where 1=1 ");
         List<Object> params = new ArrayList<Object>();
         if (StringUtils.isNotBlank(qp.getCourseCategory())) {
-            sql.append(" and c.course_category=?");
-            params.add(qp.getCourseCategory());
+            sql.append(" and c.course_category in (?)");
+            params.add(com.manhattan.util.StringUtils.formatInStr(qp.getCourseCategory()));
         }
         if (StringUtils.isNotBlank(qp.getPlace())) {
-            sql.append(" and c.place=?");
-            params.add(qp.getPlace());
+            sql.append(" and c.place in(?)");
+            params.add(com.manhattan.util.StringUtils.formatInStr(qp.getPlace()));
         }
         if (qp.getAppointmentTime()!=null) {
             sql.append(" and c.start_time<=?");
