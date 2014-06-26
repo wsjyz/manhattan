@@ -209,6 +209,19 @@ public class RemoteController {
     }
 
     /**
+     * 获取教师信息
+     *
+     * @param userId
+     * @return TeacherDetail
+     */
+    @RequestMapping(value ="/teacher/getTeacherDetailById")
+    @ResponseBody
+    public TeacherDetail getTeacherDetailById(@RequestParam("userId") String userId){
+        TeacherDetail teacherDetail=teacherDetailService.findTeacherDetail(userId);
+        return teacherDetail;
+    }
+
+    /**
      * 教师认证信息
      *
      * @param userId
@@ -294,7 +307,16 @@ public class RemoteController {
         return teachers;
     }
 
-
+    /**
+     * 获取指定学生的收藏教师列表
+     * @return
+     */
+    @RequestMapping(value = "/teacher/getCollectTeachersByUserId")
+    @ResponseBody
+    public OpenPage<TeacherDetail> getCollectTeachersByUserId(@FastJson OpenPage<TeacherDetail> openPage,@RequestParam String userId,HttpServletResponse response){
+        OpenPage<TeacherDetail> teachers =teacherDetailService.findTeachersByUserId(openPage, userId, MhtConstant.USER_ACTION_COLLECT_TEACHER);
+        return teachers;
+    }
 
     /**
      * 上传附件

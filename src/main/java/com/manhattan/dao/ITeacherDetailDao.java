@@ -9,7 +9,9 @@ import com.manhattan.util.OpenPage;
 public interface ITeacherDetailDao {
     OpenPage<TeacherDetail> findTeachers(OpenPage<TeacherDetail> page, String searchKey);
 
-    OpenPage<TeacherDetail> findTeachersByUserId(OpenPage<TeacherDetail> page, String userId, String userAction);
+    OpenPage<TeacherDetail> findTeachersByUserId(OpenPage<TeacherDetail> page, String userId, String resourceType);
 
     TeacherDetail findByUserId(String userId);
+
+    OpenPage<TeacherDetail> findTeachersByUserIdAndAction(OpenPage<TeacherDetail> page, String userId, String userAction);
 }

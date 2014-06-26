@@ -95,14 +95,14 @@ public class CourseController extends BaseController {
      */
     @RequestMapping(value = "/getSchedule")
     @ResponseBody
-    public List<String> getSchedule(@RequestParam(required = false) Date startTime,
+    public List<Date> getSchedule(@RequestParam(required = false) Date startTime,
                                   @RequestParam(required = false) Date endTime,
                                   @RequestParam String userId) {
         OpenPage<Course> page = new OpenPage<Course>();
         page.setAutoCount(false);
         page.setAutoPaging(false);
         page = courseService.findCoursesByUserId(page, userId, MhtConstant.USER_ACTION_APPOINTMENT_COURSE, startTime, endTime);
-        List<String> dates = new ArrayList<String>();
+        List<Date> dates = new ArrayList<Date>();
         long startlimit=0,endlimit=0;
         if (startTime != null) {
             startlimit=startTime.getTime();
@@ -122,7 +122,7 @@ public class CourseController extends BaseController {
                 Date d = new Date();
                 d.setTime(start);
                 if (!dates.contains(d)) {
-                    dates.add(sdf.format(d));
+                    dates.add(d);
                 }
                 start+=3600*24*1000;
             }

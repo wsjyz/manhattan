@@ -83,9 +83,12 @@
 </body>
 <script>
     $(function(){
-        $('.login,.register,.data').click(function(){
+        $('.login,.register').click(function(){
             $('#main').html('').load('views/user/'+$(this).attr('class')+'.html');
         });
+        $('.data').click(function(){
+            $('#main').html('').load(baseUrl+'/user/data?userId=t1');
+        })
     })
 </script>
 </html>

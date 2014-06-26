@@ -37,6 +37,8 @@ public class TeacherDetail {
     private String teachingArea;
     @Column(name = "tutoring_way")
     private String tutoringWay;
+    @Column(name = "student_level")
+    private String studentLevel;
     @Column(name = "class_fees")
     private String classFees;
     @Column(name = "teaching_time")
@@ -284,6 +286,15 @@ public class TeacherDetail {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public String getStudentLevel() {
+        return studentLevel;
+    }
+
+    public void setStudentLevel(String studentLevel) {
+        this.studentLevel = studentLevel;
+    }
+
     //    public List<Course> getCourses() {
 //        return courses;
 //    }

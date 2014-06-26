@@ -4,6 +4,7 @@ import com.manhattan.domain.User;
 import com.manhattan.service.UserService;
 import com.manhattan.util.FastJson;
 import com.manhattan.util.JsonResult;
+import com.manhattan.util.MhtConstant;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class MainController {
@@ -27,9 +30,12 @@ public class MainController {
     }
 
     @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public @ResponseBody JsonResult login(@RequestParam String mobile,@RequestParam String password) {
+    public @ResponseBody JsonResult login(@RequestParam String mobile,@RequestParam String password,HttpSession session) {
         String passwordMd5= DigestUtils.md5Hex(password);
         User user=userService.findUserIdByFilter(mobile, passwordMd5);
+        if (user != null) {
+            session.setAttribute(MhtConstant.SEESION_USER_ID,user.getUserId());
+        }
         JsonResult jsonResult=new JsonResult();
         jsonResult.setSuccess(user!=null);
         jsonResult.setData(user);

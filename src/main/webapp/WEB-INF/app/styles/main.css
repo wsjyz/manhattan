@@ -2,9 +2,13 @@
     width: 100%;
     height: 100%;
     font-size: 13px;
-    font-family: Verdana,"Helvetica Neue", Helvetica, "微软雅黑 ","宋体","Trebuchet MS",Arial,sans-serif;
+    /*font-family: "微软雅黑 ","宋体","Trebuchet MS",Arial,Helvetica,sans-serif;*/
+    font-family: "ff-tisa-web-pro-1","ff-tisa-web-pro-2","Lucida Grande","Helvetica Neue",Helvetica,Arial,"Hiragino Sans GB","Hiragino Sans GB W3","Microsoft YaHei UI","Microsoft YaHei","WenQuanYi Micro Hei",sans-serif;
 }
 
+div{
+    vertical-align:middle;
+}
 /*
   Header
 */
@@ -108,4 +112,17 @@
     font-size: 14px;
     background: #DBEAF8 url(../images/index/bg.png) no-repeat left top;
     background-position: center;
+}
+
+.bred{
+    background-color: #FE4141;color:#ccc;
+}
+
+.border-red{
+    border:solid 1px;border-color:#FE4141;padding:0px 0px;
+}
+
+
+.user-data .control-label{
+    width:60px;
 }

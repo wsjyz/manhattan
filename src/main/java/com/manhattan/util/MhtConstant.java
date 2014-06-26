@@ -39,4 +39,5 @@ public class MhtConstant {
     //充值成功
     public static final String PAY_STATUS_SUCCESS = "SUCCESS";
 
+    public static final String SEESION_USER_ID = "userId";
 }

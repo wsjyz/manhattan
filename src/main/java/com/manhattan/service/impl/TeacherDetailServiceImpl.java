@@ -52,7 +52,10 @@ public class TeacherDetailServiceImpl implements TeacherDetailService {
 //                return predicate;
 //            }
 //        },pageAble);
-        return iTeacherDetailDao.findTeachersByUserId(page,userId,userAction);
+        if (userAction.equals(MhtConstant.USER_ACTION_COLLECT_TEACHER)) {
+            return iTeacherDetailDao.findTeachersByUserIdAndAction(page, userId, userAction);
+        }
+        return iTeacherDetailDao.findTeachersByUserId(page, userId, userAction);
     }
 
     @Override
