@@ -20,8 +20,7 @@ public class UserInterceptor implements HandlerInterceptor {
         HttpSession session = request.getSession();
         String userId = (String) session.getAttribute(MhtConstant.SEESION_USER_ID);
         if (StringUtils.isEmpty(userId)) {
-            //被拦截，重定向到login界面
-            response.sendRedirect(contextPath+"/user/login");
+            response.sendRedirect(contextPath+"/users/login");
             return false;
         }
         return true;

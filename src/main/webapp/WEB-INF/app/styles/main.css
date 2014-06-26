@@ -9,6 +9,10 @@
 div{
     vertical-align:middle;
 }
+
+a:hover{
+    text-decoration: none;
+}
 /*
   Header
 */
@@ -63,6 +67,21 @@ div{
 }
 .bs-header .coursecourse{
     background-position:101% 0%;
+}
+
+.navbar-inverse .navbar-inner {
+    background: #FE4141;
+    background-image: -webkit-linear-gradient(top, #FE4141, #FE4141);
+}
+.navbar .nav > li > a {
+    color: #DDD;
+}
+.navbar .nav .active > a, .navbar .nav .active > a:hover {
+    background-color: #FE4141;
+}
+
+.navbar-inner .brand{
+    color: #fff;
 }
 
 #main-menu .menu{

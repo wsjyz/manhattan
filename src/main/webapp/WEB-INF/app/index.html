@@ -12,13 +12,13 @@
     <!-- build:css styles/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
-    <!--<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css" />-->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-responsive.min.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,app}) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/app.css">
+    <!--<link rel="stylesheet" href="styles/font-awesome.min.css">-->
     <!-- endbuild -->
   </head>
   <body ng-app="mhtApp">
@@ -87,7 +87,7 @@
             $('#main').html('').load('views/user/'+$(this).attr('class')+'.html');
         });
         $('.data').click(function(){
-            $('#main').html('').load(baseUrl+'/user/data?userId=t1');
+            $('#main').html('').load(baseUrl+'/users/data?userId=t1');
         })
     })
 </script>

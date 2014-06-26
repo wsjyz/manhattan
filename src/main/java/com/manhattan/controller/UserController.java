@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
  * Created by lk.zh on 2014/6/24 0024.
  */
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired

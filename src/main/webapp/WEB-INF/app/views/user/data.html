@@ -1,6 +1,6 @@
 <style>
     .controls{margin-top:5px;}
-    .row table tbody tr td a{color: #000}
+    /*.row table tbody tr td a{color: #000}*/
 </style>
 <div class="row">
     <div class="span3 offset2 border-red">
@@ -38,12 +38,12 @@ $(function(){
 function myhandle(e){
     e.preventDefault();
     var page=$(e.target).attr('class');
-    $('#data-content').html('').load('${ctx!}/mhd/user/data/'+page+'?userId=${user.userId}');
+    $('#data-content').html('').load('${ctx!}/mhd/users/data/'+page+'?userId=${user.userId}');
 }
 
 function loadBaseInfo(e) {
     e.preventDefault();
-    $('#data-content').html('').load('${ctx!}/mhd/user/data/baseInfo?userId=${user.userId}');
+    $('#data-content').html('').load('${ctx!}/mhd/users/data/baseInfo?userId=${user.userId}');
 }
 
 </script>
