@@ -28,7 +28,7 @@ public class StringUtils {
         StringBuilder strb = new StringBuilder("");
         for(String str:arr){
             if(!str.equals("")){
-                strb.append("'").append(str).append("',");
+                strb.append(str).append(",");
             }
         }
         return deleteComma(strb.toString());
