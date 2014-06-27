@@ -8,6 +8,8 @@ import com.manhattan.domain.Wallet;
 import com.manhattan.service.WalletService;
 import com.manhattan.util.MhtConstant;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -48,5 +50,11 @@ public class WalletServiceImpl implements WalletService {
         user.setWallet(walletMoney.add(money));
         userDao.save(user);
         return wallet1;
+    }
+
+    @Override
+    public Page<Wallet> getRecordList(Pageable pageAble, String userId) {
+        return  walletDao.findByUserId(userId,pageAble);
+
     }
 }

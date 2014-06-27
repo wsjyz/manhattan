@@ -40,6 +40,14 @@ public class Question {
     @Column(name = "answer_time")
     private String answerTime;
 
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "user_id",insertable = false,updatable = false)
+    private User askUser;
+
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "reply_user",insertable = false,updatable = false)
+    private User repUser;
+
     public String getQuestionId() {
         return questionId;
     }
@@ -134,5 +142,21 @@ public class Question {
 
     public void setAnswerPic(String answerPic) {
         this.answerPic = answerPic;
+    }
+
+    public User getAskUser() {
+        return askUser;
+    }
+
+    public void setAskUser(User askUser) {
+        this.askUser = askUser;
+    }
+
+    public User getRepUser() {
+        return repUser;
+    }
+
+    public void setRepUser(User repUser) {
+        this.repUser = repUser;
     }
 }

@@ -371,6 +371,21 @@ public class RemoteController {
     }
 
     /**
+     * 充值记录分页查询
+     * @param openPage
+     * @param userId
+     * @return
+     */
+    @RequestMapping(value = "/charge/getRecordList")
+    @ResponseBody
+    public OpenPage<Wallet> getRecordList(@FastJson OpenPage<Wallet> openPage,@RequestParam String userId) {
+        Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
+        Page<Wallet> wallets = walletService.getRecordList(pageAble,userId);
+        return PageConvert.convert(wallets);
+    }
+
+    /**
+     * todo:待修改
      * 充值回调
      * @param userId
      * @param money
