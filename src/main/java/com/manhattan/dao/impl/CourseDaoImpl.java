@@ -1,14 +1,15 @@
 package com.manhattan.dao.impl;
 
+import com.google.common.collect.ImmutableList;
 import com.manhattan.dao.BaseDAO;
 import com.manhattan.dao.ICourseDao;
-import com.manhattan.domain.Appointment;
-import com.manhattan.domain.Course;
-import com.manhattan.domain.QueryParam;
+import com.manhattan.dao.ITeacherDetailDao;
+import com.manhattan.domain.*;
 import com.manhattan.domain.Appointment;
 import com.manhattan.domain.rowMapper.CourseRowMapper;
 import com.manhattan.util.OpenPage;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -21,6 +22,9 @@ import java.util.List;
 @Repository("iCourseDao")
 public class CourseDaoImpl extends BaseDAO implements ICourseDao {
 
+    @Autowired
+    private ITeacherDetailDao iTeacherDetailDao;
+
     @Override
     public Course findCourseById(String courseId) {
         StringBuilder sql = new StringBuilder("select * from t_mht_course where course_id = ?");
@@ -28,6 +32,13 @@ public class CourseDaoImpl extends BaseDAO implements ICourseDao {
         Course course = new Course();
         if(!list.isEmpty()){
             course = list.get(0);
+            String teacherIds[] = course.getTeachers().split(",");
+            List<TeacherDetail> teacherDetails = new ArrayList<TeacherDetail>();
+            for (String teacherId : teacherIds) {
+                TeacherDetail detail=iTeacherDetailDao.findByUserId(teacherId);
+                teacherDetails.add(detail);
+            }
+            course.setTeacherDetailList(teacherDetails);
         }
         return course;
     }

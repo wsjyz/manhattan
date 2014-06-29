@@ -1,10 +1,11 @@
+<#include "/common/webUtils.ftl">
 <div class="span6">
     <h4 class="text-info pull-left" style="color: #FE4141;">
         钱包
     </h4>
 </div>
 <div style="width:90%;height:1px; background:#E0E0E0;"></div>
-<div class="span6">
+<div class="span8">
     <fieldset>
         <legend style="font-size: 14px;width:80%;">
             <div>
@@ -13,11 +14,19 @@
                 </h3>
             </div>
         </legend>
-        <ul class="list-inline">
-            <li>yshefksejflsfjas;lfkjlkL</li>
-            <li>Item 2</li>
-            <li>Item 3</li>
-        </ul>
-
+        <div class="span6" style="margin-left: 0px;">
+            <@pagination id="records"/>
+        </div>
     </fieldset>
 </div>
+<script>
+    $(function() {
+        $('#records').data('param', {
+            url:'${ctx!}/mhd/users/data/list/walletRecords',
+            param:{userId:'${user.userId!}'},
+            pageSize:'${page.pageSize!}',
+            pageNo:'${page.pageNo!}'
+        });
+        $('#records').trigger('init');
+    } );
+</script>

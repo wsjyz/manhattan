@@ -1,0 +1,37 @@
+<#include "/common/webUtils.ftl">
+    <style>
+        img.avatar{height:100px;margin-right:10px;}
+        ul.thumbnail li .thumbnail .caption{
+            vertical-align: middle;
+        }
+    </style>
+    <div id="listenList" class="container">
+        <div class="row">
+            <div class="span8">
+                <ul class="thumbnails">
+                    <#list page.rows as row>
+                        <li class="span7 clearfix">
+                            <div class="thumbnail clearfix">
+                                <img src="${ctx!}/mhd/upload/039f17d0ff3611e3bede52540077b0c2.jpg" class="pull-left span2 clearfix avatar">
+                                <div class="caption" class="pull-left">
+                                    <div class="span2 pull-right" style="padding-right: 40px;margin-top:20px;">
+                                        <div class="span2">
+                                            <a href="#" data-id="" class="btn btn-primary icon pull-right">查看详情</a>
+                                        </div>
+                                        <a href="#" class="pull-right">删除</a>
+                                    </div>
+                                    <h4>
+                                        <a href="#" >${row.user.userName}</a>
+                                    </h4>
+                                    <small><b>教授课程: </b>${row.courseCategory}</small>
+                                    <br/>
+                                    <small><b>信用等级: </b>${ROW.creditRate}</small>
+                                </div>
+                            </div>
+                        </li>
+                    </#list>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <@pageInfo/>

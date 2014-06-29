@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -47,5 +48,18 @@ public class InformationsController {
     public Information findInfoById(@RequestParam String infoId){
         Information information = informationService.findInformationByInformationId(infoId);
         return information;
+    }
+
+    /**
+     * 查看资讯详情
+     * @return
+     */
+    @RequestMapping(value = "/viewDetail")
+    public ModelAndView viewDetail(@RequestParam String informationId) {
+        ModelAndView mv = new ModelAndView();
+        Information information = informationService.findInformationByInformationId(informationId);
+        mv.addObject("information", information);
+        mv.setViewName("views/info/infoDetail");
+        return mv;
     }
 }

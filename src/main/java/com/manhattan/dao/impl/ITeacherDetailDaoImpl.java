@@ -52,10 +52,7 @@ public class ITeacherDetailDaoImpl extends BaseDAO implements ITeacherDetailDao 
             params.add(page.getPageNo() - 1);
         }
         teacherDetails=getJdbcTemplate().query(selectSql.append("*").append(sql).toString(), params.toArray(), new TeacherDetailRowMapper());
-        for (TeacherDetail teacherDetail : teacherDetails) {
-            User user=getJdbcTemplate().queryForObject("select * from t_mht_user where user_id=? ",new Object[]{teacherDetail.getUserId()},new UserRowMapper());
-            teacherDetail.setUser(user);
-        }
+        setUsers(teacherDetails);
         page.setRows(teacherDetails);
         return page;
     }
@@ -88,6 +85,7 @@ public class ITeacherDetailDaoImpl extends BaseDAO implements ITeacherDetailDao 
             params.add(page.getPageNo() - 1);
         }
         teacherDetails=getJdbcTemplate().query(selectSql.append("t.*").append(sql).toString(), params.toArray(), new TeacherDetailRowMapper());
+        setUsers(teacherDetails);
         page.setRows(teacherDetails);
         return page;
     }
@@ -96,10 +94,7 @@ public class ITeacherDetailDaoImpl extends BaseDAO implements ITeacherDetailDao 
     public TeacherDetail findByUserId(String userId) {
         List<TeacherDetail> teacherDetails=getJdbcTemplate().query("select * from t_mht_teacher_detail where user_id=? ", new Object[]{userId}, new TeacherDetailRowMapper());
         if (!CollectionUtils.isEmpty(teacherDetails)) {
-            for (TeacherDetail teacherDetail : teacherDetails) {
-                User user=getJdbcTemplate().queryForObject("select * from t_mht_user where user_id=? ",new Object[]{teacherDetail.getUserId()},new UserRowMapper());
-                teacherDetail.setUser(user);
-            }
+            setUsers(teacherDetails);
             return teacherDetails.get(0);
         }
         return new TeacherDetail();
@@ -135,5 +130,14 @@ public class ITeacherDetailDaoImpl extends BaseDAO implements ITeacherDetailDao 
         teacherDetails=getJdbcTemplate().query(selectSql.append("t.*").append(sql).toString(), params.toArray(), new TeacherDetailRowMapper());
         page.setRows(teacherDetails);
         return page;
+    }
+
+    private void setUsers(List<TeacherDetail> teacherDetails){
+        if (!CollectionUtils.isEmpty(teacherDetails)) {
+            for (TeacherDetail teacherDetail : teacherDetails) {
+                User user=getJdbcTemplate().queryForObject("select * from t_mht_user where user_id=? ",new Object[]{teacherDetail.getUserId()},new UserRowMapper());
+                teacherDetail.setUser(user);
+            }
+        }
     }
 }

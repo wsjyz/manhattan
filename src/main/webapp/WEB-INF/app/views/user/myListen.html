@@ -1,0 +1,23 @@
+<#include "/common/webUtils.ftl">
+<div class="span6">
+    <h4 class="text-info pull-left" style="color: #FE4141;">
+        我的试听
+    </h4>
+</div>
+<div style="width:90%;height:1px; background:#E0E0E0;"></div>
+<div class="span6">
+    <div class="span6" style="margin-left: 0px;">
+        <@pagination id="listenList"/>
+    </div>
+</div>
+<script>
+    $(function() {
+        $('#listenList').data('param', {
+            url:'${ctx!}/mhd/users/data/list/listenList',
+            param:{userId:'${user.userId!}'},
+            pageSize:'${page.pageSize!}',
+            pageNo:'${page.pageNo!}'
+        });
+        $('#listenList').trigger('init');
+    } );
+</script>

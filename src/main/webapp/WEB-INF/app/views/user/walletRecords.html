@@ -1,0 +1,14 @@
+<#include "/common/webUtils.ftl">
+<table id="records" class="span6 table table-striped table-bordered table-hover">
+    <thead>
+    <th class="span3">充值记录</th>
+    <th class="span2">操作时间</th>
+    </thead>
+    <#list page.rows as item>
+        <tr>
+            <td>您消费了${item.money}RMB</td>
+            <td>${item.optTime}</td>
+        </tr>
+    </#list>
+</table>
+<@pageInfo/>

@@ -1,0 +1,27 @@
+<#include "/common/webUtils.ftl">
+<!DOCTYPE html>
+<html>
+<head>
+    <title>资讯详情</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="/mhd/bower_components/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/mhd/bower_components/bootstrap/dist/css/bootstrap-responsive.min.css" />
+</head>
+<body>
+<div class="container">
+    <div id="content" class="well">
+        <p class="pull-right">${getTime(information.postTime)}</p>
+        <h1 style="text-align: center;">${information.title}</h1>
+        <p>${information.content}</p>
+    </div>
+</div>
+</body>
+</html>
+<style>
+    #content {
+        font-size: 14px;
+        /*font-family: "微软雅黑 ","宋体","Trebuchet MS",Arial,Helvetica,sans-serif;*/
+        font-family: "ff-tisa-web-pro-1","ff-tisa-web-pro-2","Lucida Grande","Helvetica Neue",Helvetica,Arial,"Hiragino Sans GB","Hiragino Sans GB W3","Microsoft YaHei UI","Microsoft YaHei","WenQuanYi Micro Hei",sans-serif;
+    }
+</style>
