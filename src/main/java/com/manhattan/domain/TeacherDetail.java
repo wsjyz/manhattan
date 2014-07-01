@@ -5,6 +5,7 @@ import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2014/5/21 0021.
@@ -74,6 +75,9 @@ public class TeacherDetail {
 //    @OneToOne (mappedBy = "teacherDetail",fetch = FetchType.LAZY, optional = false)
     @Transient
     private User user;
+
+    @Transient
+    private Map<String,Object> extMap;
 
     public String getUserId() {
         return userId;
@@ -293,6 +297,14 @@ public class TeacherDetail {
 
     public void setStudentLevel(String studentLevel) {
         this.studentLevel = studentLevel;
+    }
+
+    public Map<String, Object> getExtMap() {
+        return extMap;
+    }
+
+    public void setExtMap(Map<String, Object> extMap) {
+        this.extMap = extMap;
     }
 
     //    public List<Course> getCourses() {

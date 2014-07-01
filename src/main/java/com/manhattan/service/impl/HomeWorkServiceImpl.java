@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,6 +31,7 @@ public class HomeWorkServiceImpl implements HomeWorkService {
 
     @Override
     public HomeWork post(HomeWork homeWork) {
+        homeWork.setPostTime(new Date());
         return homeWorkDao.saveAndFlush(homeWork);
     }
 }

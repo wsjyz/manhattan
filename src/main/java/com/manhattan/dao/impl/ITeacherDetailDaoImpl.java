@@ -12,11 +12,12 @@ import com.manhattan.util.OpenPage;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by lk.zh on 2014/6/21 0021.
@@ -95,7 +96,16 @@ public class ITeacherDetailDaoImpl extends BaseDAO implements ITeacherDetailDao 
         List<TeacherDetail> teacherDetails=getJdbcTemplate().query("select * from t_mht_teacher_detail where user_id=? ", new Object[]{userId}, new TeacherDetailRowMapper());
         if (!CollectionUtils.isEmpty(teacherDetails)) {
             setUsers(teacherDetails);
-            return teacherDetails.get(0);
+            TeacherDetail detail = teacherDetails.get(0);
+            Map<String, Object> extMap = new HashMap<String, Object>();
+            OpenPage<TeacherDetail> page = new OpenPage<TeacherDetail>();
+            page.setAutoCount(true);
+            page.setAutoPaging(true);
+            extMap.put("followCount", findTeachersByUserIdAndAction(page, userId, MhtConstant.USER_ACTION_FOLLOW_TEACHER).getTotal());
+            extMap.put("commentCount", findTeachersByUserIdAndAction(page, userId, MhtConstant.USER_ACTION_COMMENT_TEACHER).getTotal());
+            extMap.put("collectCount", findTeachersByUserIdAndAction(page, userId, MhtConstant.USER_ACTION_COLLECT_TEACHER).getTotal());
+            detail.setExtMap(extMap);
+            return detail;
         }
         return new TeacherDetail();
     }

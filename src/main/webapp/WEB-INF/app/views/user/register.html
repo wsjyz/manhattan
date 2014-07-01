@@ -1,109 +1,111 @@
-<div class="offset1">
+<div class="col-md-offset-1">
     <ul class="nav nav-tabs">
-        <li class="active"><a href="#student" data-toggle="tab">注册为学生</a></li>
-        <li><a href="#teacher" data-toggle="tab">注册为教师</a></li>
+        <li class="active"><a href="#student" data-toggle="tab">注册为学生</a>
+        </li>
+        <li><a href="#teacher" data-toggle="tab">注册为教师</a>
+        </li>
     </ul>
     <div class="tab-content">
         <div class="tab-pane active" id="student">
             <div class="row">
-                <div class="span6">
+                <div class="col-md-6">
                     <form id="studentRegister" class="form-horizontal" role="form">
-                        <input name="type" type="hidden" value="STUDENT"/>
-                        <div class="control-group">
-                            <label for="inputEmail3" class="control-label">手机号</label>
-                            <div class="controls">
-                                <input type="text" id="inputEmail3" name="mobile" placeholder="Phone">
+                        <input name="type" type="hidden" value="STUDENT" />
+                        <div class="form-group">
+                            <label for="inputEmail3" class="control-label col-md-3">手机号</label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control" id="inputEmail3" name="mobile" placeholder="Phone"
+                                        />
                             </div>
                         </div>
-                        <div class="control-group">
-                            <label for="inputPassword3" class="control-label">密码</label>
-
-                            <div class="controls">
-                                <input type="password"  id="inputPassword3" name="password"
-                                       placeholder="Password">
+                        <div class="form-group">
+                            <label for="inputPassword3" class="control-label col-md-3">密码</label>
+                            <div class="col-md-7">
+                                <input type="password" class="form-control" id="inputPassword3" name="password" placeholder="Password"
+                                        />
                             </div>
                         </div>
-                        <div class="control-group">
-                            <label for="inputPassword31" class="control-label">确认密码</label>
-
-                            <div class="controls">
-                                <input type="password"  id="inputPassword31" placeholder="Password">
+                        <div class="form-group">
+                            <label for="inputPassword31" class="control-label col-md-3">确认密码</label>
+                            <div class="col-md-7">
+                                <input type="password" class="form-control" id="inputPassword31" placeholder="Password" />
                             </div>
                         </div>
-                        <div class="control-group">
-                            <label for="authCode" class="control-label">验证码</label>
-
-                            <div class="controls">
-                                <input type="text" id="authCode" name="authCode" placeholder="AuthCode">
-                                <button class="btn btn-info" onclick="mbtime(this)"><i class="icon-envelope"></i>获取验证码</button>
+                        <div class="form-group">
+                            <label for="authCode" class="control-label col-md-3">验证码</label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control" id="authCode" name="authCode" placeholder="AuthCode"
+                                        />
+                                <button class="btn btn-info" style="margin-top:10px;" onclick="mbtime(this)">
+                                    <span class="glyphicon glyphicon-envelope"></span> 获取验证码</button>
                             </div>
                         </div>
-                        <div class="control-group">
-                            <div class="controls">
+                        <div class="form-group">
+                            <div class="col-md-offset-4 col-md-7">
                                 <button type="submit" class="btn btn-warning" id="studentRegisterBtn">立即注册</button>
                             </div>
                         </div>
-
                     </form>
                 </div>
-                <div class="span4"><br/>
-                    想更进一步？
+                <div class="col-md-6">
+                    <br />想更进一步？
                     <button type="submit" class="btn btn-warning">成为VIP</button>
                 </div>
             </div>
         </div>
         <div class="tab-pane" id="teacher">
             <div class="row">
-                <div class="span6">
-                    <form id="teacherRegister" class="form-horizontal span10" role="form">
-                        <input name="type" type="hidden" value="TEACHER"/>
-                        <div class="control-group">
-                            <label for="tinputEmail3" class="control-label">手机号</label>
-
-                            <div class="controls">
-                                <input type="text" id="tinputEmail3" name="mobile"
-                                       placeholder="Phone">
+                <div class="col-md-6">
+                    <form id="teacherRegister" class="form-horizontal" role="form">
+                        <input name="type" type="hidden" value="TEACHER" />
+                        <div class="form-group">
+                            <label for="tinputEmail3" class="control-label col-md-3">手机号</label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control" id="tinputEmail3" name="mobile" placeholder="Phone"
+                                        />
                             </div>
                         </div>
-                        <div class="control-group">
-                            <label for="tinputPassword3" class="control-label">密码</label>
-
-                            <div class="controls">
-                                <input type="password"  id="tinputPassword3"
-                                       name="password"
-                                       placeholder="Password">
+                        <div class="form-group">
+                            <label for="tinputPassword3" class="control-label col-md-3">密码</label>
+                            <div class="col-md-7">
+                                <input type="password" class="form-control" id="tinputPassword3" name="password" placeholder="Password"
+                                        />
                             </div>
                         </div>
-                        <div class="control-group">
-                            <label for="tinputPassword31" class="control-label">确认密码</label>
-
-                            <div class="controls">
-                                <input type="password"  id="tinputPassword31" placeholder="Password">
+                        <div class="form-group">
+                            <label for="tinputPassword31" class="control-label col-md-3">确认密码</label>
+                            <div class="col-md-7">
+                                <input type="password" class="form-control" id="tinputPassword31" placeholder="Password" />
                             </div>
                         </div>
-                        <div class="control-group">
-                            <label for="tauthCode" class="control-label">验证码</label>
-
-                            <div class="controls">
-                                <input type="text"  id="tauthCode" name="authCode" placeholder="AuthCode">
+                        <div class="form-group">
+                            <label for="tauthCode" class="control-label col-md-3">验证码</label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control" id="tauthCode" name="authCode" placeholder="AuthCode"
+                                        />
                             </div>
                         </div>
-                        <div class="control-group">
-                            <div class="controls">
+                        <div class="form-group">
+                            <div class="col-md-offset-4 col-md-7">
                                 <button type="submit" class="btn btn-warning">立即注册</button>
                             </div>
                         </div>
                     </form>
                 </div>
-                <div class="span4">
-                    <p color="red">教师请注意</p>
-                    <p color="red">只有认证后</p>
-                    <p color="red">才能激活账号</p>
+                <div class="col-md-6">
+                    <p class="text-danger">教师请注意</p>
+                    <p class="text-danger">只有认证后</p>
+                    <p class="text-danger">才能激活账号</p>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<style>
+    .tab-pane{
+        padding:10px 10px;
+    }
+</style>
 <script>
     var authCode;
     $('#studentRegister,#teacherRegister').submit(function(e){

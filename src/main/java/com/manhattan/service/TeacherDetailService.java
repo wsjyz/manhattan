@@ -14,4 +14,6 @@ public interface TeacherDetailService {
     OpenPage<TeacherDetail> findTeachersByUserId(OpenPage<TeacherDetail> page, String userId, String userAction);
 
     OpenPage<TeacherDetail> findTeacherByPage(OpenPage<TeacherDetail> page, String searchKey);
+
+    TeacherDetail postCourse(TeacherDetail teacherDetail);
 }

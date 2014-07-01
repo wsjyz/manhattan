@@ -1,54 +1,36 @@
-<div class="span6">
-    <h4 class="text-info pull-left" style="color: #FE4141;">
-        基本信息
-    </h4>
-</div>
-<div style="width:90%;height:1px; background:#E0E0E0;"></div>
-<div class="span8">
-    <form class="form-horizontal">
-        <fieldset>
-            <legend style="font-size: 14px;width:80%;">基本资料<a class="pull-right" href="#">编辑<i class="icon-edit"></i></a></legend>
-            <div class="control-group">
-                <label class="control-label" for="mobile">手机号：</label>
-                <div class="controls">
-                    <span id="mobile">${user.mobile!}</span>
+<div class="row">
+    <div class="col-md-12 toppad">
+        <div class="panel panel-info" style="margin-bottom: 0px;">
+            <div class="panel-heading">
+                <h3 class="panel-title">基本信息</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-user-information">
+                            <tbody>
+                            <tr>
+                                <td colspan="2" style="border-top-width: 0px;">
+                                    <span class="badge pull-left"><h5>基本资料：</h5></span>
+                                    <a class="pull-right" href="#" style="margin-top: 20px;">编辑</a>
+                                </td>
+                            </tr>
+                            <tr><td>手机号：</td><td>${user.mobile!}</td></tr>
+                            <tr><td>姓名：</td><td>${user.userName!}</td></tr>
+                            <tr><td>邮箱：</td><td><a href="mailto:${user.email!}">${user.email!}</a></td></tr>
+                            <tr><td>地址：</td><td>${user.address!}</td></tr>
+                            <tr>
+                                <td colspan="2" style="border-top-width: 0px;">
+                                    <span class="badge pull-left"><h5>其他信息：</h5></span>
+                                </td>
+                            </tr>
+                            <tr><td>积分：</td><td>${user.credit!}</td></tr>
+                            <tr><td>VIP到期时间：</td><td>${user.vipExpiredTime!}</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-            <div style="width:80%;margin:10px 0px;border-top:1px dotted #C0C0C0;"></div>
-            <div class="control-group">
-                <label class="control-label" for="userName">姓名：</label>
-                <div class="controls">
-                    <span id="userName">${user.userName!}</span>
-                </div>
-            </div>
-            <div style="width:80%;margin:10px 0px;border-top:1px dotted #C0C0C0;"></div>
-            <div class="control-group">
-                <label class="control-label" for="email">邮箱：</label>
-                <div class="controls">
-                    <span id="email">${user.email!}</span>
-                </div>
-            </div>
-            <div style="width:80%;margin:10px 0px;border-top:1px dotted #C0C0C0;"></div>
-            <div class="control-group">
-                <label class="control-label" for="address">地址：</label>
-                <div class="controls">
-                    <span id="address">${user.address!}</span>
-                </div>
-            </div>
-            <legend style="font-size: 14px;width:80%;">其他信息</legend>
-            <div class="control-group">
-                <label class="control-label" for="credit">积分：</label>
-                <div class="controls">
-                    <span id="credit">${user.credit!}</span>
-                </div>
-            </div>
-            <div style="width:80%;margin:10px 0px;border-top:1px dotted #C0C0C0;"></div>
-            <div class="control-group">
-                <label class="control-label" for="vipExpiredTime" style="width:100px;">VIP到期时间：</label>
-                <div class="controls">
-                    <span id="vipExpiredTime">${user.vipExpiredTime!}</span>
-                </div>
-            </div>
-        </fieldset>
-    </form>
+        </div>
+    </div>
 </div>

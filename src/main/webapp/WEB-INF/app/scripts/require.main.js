@@ -1,7 +1,4 @@
-/**
- * @Zelipe
- * 2012-04-08
- */
+
 if (!window.console) {
     window.console = {
         log:function (msg) {

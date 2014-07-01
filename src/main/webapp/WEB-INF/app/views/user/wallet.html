@@ -1,32 +1,46 @@
 <#include "/common/webUtils.ftl">
-<div class="span6">
-    <h4 class="text-info pull-left" style="color: #FE4141;">
-        钱包
-    </h4>
-</div>
-<div style="width:90%;height:1px; background:#E0E0E0;"></div>
-<div class="span8">
-    <fieldset>
-        <legend style="font-size: 14px;width:80%;">
-            <div>
-                <h3>当前余额：<span style="color:#FE4141;">${user.wallet!}RMB</span>
-                <a href="#" class="btn btn-primary btn-danger"><i class="icon-gift"></i> 充值</a>
-                </h3>
+<div class="row">
+    <div class="col-md-12 toppad">
+        <div class="panel panel-info" style="margin-bottom: 0px;">
+            <div class="panel-heading">
+                <h3 class="panel-title">钱包</h3>
             </div>
-        </legend>
-        <div class="span6" style="margin-left: 0px;">
-            <@pagination id="records"/>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                    <fieldset>
+                        <legend style="font-size: 14px;width:80%;">
+                            <div>
+                                <h3>当前余额：<span style="color:#FE4141;">${user.wallet!}RMB</span>
+                                <a href="#" class="btn btn-primary btn-danger"><i class="icon-gift"></i> 充值</a>
+                                </h3>
+                            </div>
+                        </legend>
+                    </fieldset>
+                        <div id="myGrid"></div>
+                        <div class="col-md-12" style="margin-left: 0px;">
+                            <@pagination id="records"/>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
         </div>
-    </fieldset>
+    </div>
 </div>
 <script>
     $(function() {
-        $('#records').data('param', {
-            url:'${ctx!}/mhd/users/data/list/walletRecords',
-            param:{userId:'${user.userId!}'},
-            pageSize:'${page.pageSize!}',
-            pageNo:'${page.pageNo!}'
+        $('#myGrid').load('',function(){
+
         });
-        $('#records').trigger('init');
+        var dataSource={column:[]};
+        $('#MyGrid').datagrid({ dataSource: dataSource, stretchHeight: true })
+//        $('#records').data('param', {
+//            url:'${ctx!}/mhd/users/data/list/walletRecords',
+//            param:{userId:'${user.userId!}'},
+//            pageSize:'${page.pageSize!}',
+//            pageNo:'${page.pageNo!}'
+//        });
+//        $('#records').trigger('init');
     } );
 </script>

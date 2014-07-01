@@ -54,4 +54,9 @@ public class UserActionServiceImpl implements UserActionService {
         return userActionDao.save(userAction);
     }
 
+    @Override
+    public UserAction findUserAction(String userId,String resourceId,String type){
+        return userActionDao.findByUserIdAndResourceIdAndActionType(userId,resourceId,type);
+    }
+
 }

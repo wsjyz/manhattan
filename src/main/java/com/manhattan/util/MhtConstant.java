@@ -36,8 +36,13 @@ public class MhtConstant {
     public static final String USER_ACTION_LISTEN_TEACHER = "LISTEN_TEACHER";
     public static final String USER_ACTION_COLLECT_TEACHER = "COLLECT_TEACHER";
 
+    //关注、评论
+    public static final String USER_ACTION_FOLLOW_TEACHER ="FOLLOW_TEACHER";
+    public static final String USER_ACTION_COMMENT_TEACHER ="COMMENT_TEACHER";
+
     //充值成功
     public static final String PAY_STATUS_SUCCESS = "SUCCESS";
+
 
     public static final String SEESION_USER_ID = "userId";
 }

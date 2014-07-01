@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.manhattan.domain.*;
 import com.manhattan.service.AppointmentService;
 import com.manhattan.service.CourseService;
+import com.manhattan.service.TeacherDetailService;
 import com.manhattan.service.UserActionService;
 import com.manhattan.util.FastJson;
 import com.manhattan.util.MhtConstant;
@@ -38,6 +39,8 @@ public class CourseController extends BaseController {
     private CourseService courseService;
     @Autowired
     private AppointmentService appointmentService;
+    @Autowired
+    private TeacherDetailService teacherDetailService;
     /**
      * 获取精品课程列表
      * @return
@@ -68,10 +71,10 @@ public class CourseController extends BaseController {
      */
     @RequestMapping(value = "/postCourses")
     @ResponseBody
-    public Course postCourses(@FastJson Course course,HttpServletResponse response) {
-        Course saved=courseService.postCourse(course);
-        if (StringUtils.isEmpty(saved.getCourseId())) {
-            setResponse("保存课程失败", response);
+    public TeacherDetail postCourses(@FastJson TeacherDetail teacherDetail,HttpServletResponse response) {
+        TeacherDetail saved=teacherDetailService.postCourse(teacherDetail);
+        if (saved!=null) {
+            setResponse("发布课程失败", response);
         }
         return saved;
     }

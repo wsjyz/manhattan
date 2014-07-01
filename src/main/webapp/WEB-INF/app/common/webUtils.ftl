@@ -175,13 +175,27 @@ hasEmpty=false emptyKey="" emptyText="全部" disabled=false onchange="" onclick
 </#macro>
 
 <#macro pageInfo>
-<div class="pagination pagination-right" style="margin-top: 3px;">
+<div class="pull-right">
     <input type='hidden' class='pagination_totalCount' value='#{page.totalCount}'/>
     <input type='hidden' class='pagination_totalPage' value='#{page.totalPage}'/>
     <input type='hidden' class='pagination_pageNo' value='#{page.pageNo}'/>
+    <div class="col-md-6">
+        <span>
+        共计 <font color="red"><b>#{page.total}</b></font> 条记录<#rt>
+            <font color="red"> <b>#{page.totalPages}</b></font> 页&nbsp;每页&nbsp;
+            <#local pageSizeList=[{"value":10,"text":10}
+            ,{"value":20,"text":20}
+            ,{"value":50,"text":50}
+            ,{"value":100,"text":100}]>
+            <#local jumpFnc = "T.jump('"+(page.id!)+"' ,1)">
+            <@select id="pageSize" list=pageSizeList onchange=jumpFnc value=page.pageSize
+            style="width:50px;height:22px;padding:0px;margin:2px 0px 4px;" />
+            &nbsp;&nbsp;条记录
+        </span>
+    </div>
 
-    <div style='float:right;text-align:left;'>
-        <ul>
+    <div class="col-md-6">
+        <ul class="pagination">
             <li <#if page.pageNo == 1> class="active" </#if>><a href="javascript:void(0);"
                                                                 <#if (page.pageNo > 1)>onclick="T.jump('${page.id!}',1);"</#if> >首页</a>
             </li>
@@ -210,20 +224,6 @@ hasEmpty=false emptyKey="" emptyText="全部" disabled=false onchange="" onclick
                    <#if (page.pageNo < page.totalPage && page.totalPage > 0 )>onclick="T.jump('${page.id!}',#{page.totalPage});"</#if> >末页</a>
             </li>
         </ul>
-    </div>
-    <div class="pull-right" style="float:right;text-align: right;margin-right:10px;">
-		<span>
-			共计 <font color="red"><b>#{page.total}</b></font> 条记录<#rt>
-            <font color="red"> <b>#{page.totalPages}</b></font> 页&nbsp;每页&nbsp;
-            <#local pageSizeList=[{"value":10,"text":10}
-            ,{"value":20,"text":20}
-            ,{"value":50,"text":50}
-            ,{"value":100,"text":100}]>
-            <#local jumpFnc = "T.jump('"+(page.id!)+"' ,1)">
-            <@select id="pageSize" list=pageSizeList onchange=jumpFnc value=page.pageSize
-            style="width:50px;height:22px;padding:0px;margin:2px 0px 4px;" />
-            &nbsp;&nbsp;条记录
-		</span>
     </div>
 </div>
 <div class="clear"></div>

@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -265,9 +266,12 @@ public class RemoteController {
     public void collectTeacher(@RequestParam("userId") String userId,
                                @RequestParam("teacherId") String teacherId
                                 ,HttpServletResponse response) {
-        UserAction userAction=userActionService.CollectTeacher(userId,teacherId);
-        if (userAction == null||StringUtils.isEmpty(userAction.getActionId())) {
-            setResponse("收藏教师失败", response);
+        UserAction action = userActionService.findUserAction(userId, teacherId, MhtConstant.USER_ACTION_COLLECT_TEACHER);
+        if (action == null) {
+            UserAction userAction = userActionService.CollectTeacher(userId, teacherId);
+            if (userAction == null || StringUtils.isEmpty(userAction.getActionId())) {
+                setResponse("收藏教师失败", response);
+            }
         }
     }
 
@@ -326,19 +330,26 @@ public class RemoteController {
     @ResponseBody
     public String uploadAnnex(@RequestParam MultipartFile file,HttpServletRequest request,HttpServletResponse response){
         String path = request.getSession().getServletContext().getRealPath("upload");
-        String fileName = file.getOriginalFilename();
-        File targetFile = new File(path, fileName);
-        if(!targetFile.exists()){
-            targetFile.mkdirs();
+        String originalfileName = file.getOriginalFilename();
+        String suffix=originalfileName.substring(originalfileName.lastIndexOf(".")+1);
+
+        String dirname = new SimpleDateFormat("yyyyMMdd").format(new Date());
+        String fileName = UUID.randomUUID().toString().replace("-", "")+"."+suffix;
+
+        File dir = new File(path, dirname);
+        if(!dir.exists()){
+            dir.mkdirs();
         }
+        File targetFile = new File(dir, fileName);
         try {
             file.transferTo(targetFile);
         } catch (Exception e) {
             e.printStackTrace();
             setResponse("上传附件失败", response);
         }
-        return request.getContextPath()+"/upload/"+fileName;
+        return "/upload/"+dirname+"/"+fileName;
     }
+
     /**
      * 根据教师Id获取学生列表信息
      * @param teacherId

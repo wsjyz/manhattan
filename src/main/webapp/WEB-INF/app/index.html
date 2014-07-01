@@ -7,19 +7,22 @@
     <meta charset="utf-8">
     <title>曼哈顿英语</title>
     <meta name="description" content="">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- build:css styles/vendor.css -->
-    <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-responsive.min.css" />
-    <!-- endbower -->
-    <!-- endbuild -->
-    <!-- build:css({.tmp,app}) styles/main.css -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="bower_components/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="bower_components/fuelux/fuelux.min.css" />
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="bower_components/html5shiv/html5shiv.min.js"></script>
+    <script src="bower_components/respond/respond.min.js"></script>
+    <![endif]-->
+
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/app.css">
-    <!--<link rel="stylesheet" href="styles/font-awesome.min.css">-->
-    <!-- endbuild -->
+
   </head>
   <body ng-app="mhtApp">
 
@@ -46,10 +49,10 @@
                 </ul>
             </div>
         </div>
-        <section id="main-menu">
-            <div class="container" id="menu" style="width:100%;">
-                <div class="navbar navbar-inverse">
-                    <div class="navbar-inner menu">
+        <div id="main-menu">
+            <div class="container" style="width:100%;">
+                <div class="navbar navbar-inverse menu">
+                    <div class="navbar-inner col-md-offset-2">
                         <ul class="nav navbar-nav">
                             <li class="active"><a href="index">首页</a></li>
                             <li><a href="course">曼哈顿课堂</a></li>
@@ -61,7 +64,7 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
     </div>
     <!-- Add your site or application content here -->
     <div id="main" class="container"></div>
@@ -73,7 +76,7 @@
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
     <script src="bower_components/jquery/jquery.min.js"></script>
-    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" data-main="scripts/require.main.js" src="bower_components/RequireJS/require.js"></script>
     <!-- endbower -->
     <!-- endbuild -->

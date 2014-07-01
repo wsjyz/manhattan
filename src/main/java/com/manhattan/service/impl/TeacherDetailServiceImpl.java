@@ -9,6 +9,7 @@ import com.manhattan.service.TeacherDetailService;
 import com.manhattan.util.MhtConstant;
 import com.manhattan.util.OpenPage;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -62,5 +63,15 @@ public class TeacherDetailServiceImpl implements TeacherDetailService {
     public OpenPage<TeacherDetail> findTeacherByPage(OpenPage<TeacherDetail> page,final String searchKey) {
         OpenPage<TeacherDetail> teacherDetailOpenPage = iTeacherDetailDao.findTeachers(page, searchKey);
         return teacherDetailOpenPage;
+    }
+
+    @Override
+    public TeacherDetail postCourse(TeacherDetail teacherDetail) {
+        if(StringUtils.isNotBlank(teacherDetail.getUserId())) {
+            TeacherDetail detail=findTeacherDetail(teacherDetail.getUserId());
+            BeanUtils.copyProperties(teacherDetail,detail,"userId");
+            return teacherDetailDao.saveAndFlush(detail);
+        }
+        return null;
     }
 }

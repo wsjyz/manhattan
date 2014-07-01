@@ -18,6 +18,8 @@ public interface UserActionService {
 
     UserAction save(String userId, String courseId, String userActionAppointment);
 
+    UserAction findUserAction(String userId, String resourceId, String type);
+
 //    List<Course> getListenCoursesByTeacher(String userId);
 
 //    Page<UserAction> getUserByTeacher(Pageable pageAble,String teacherId);
