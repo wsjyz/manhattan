@@ -1,26 +1,20 @@
+<#assign ctx=request.contextPath>
 <style>
     .controls{margin-top:5px;}
-    /*.row table tbody tr td a{color: #000}*/
 </style>
 <div class="row">
-    <div class="col-md-3 col-md-offset-1 border-red">
-        <table class="table table-striped table-bordered table-hover">
-            <thead>
-            <tr>
-                <th class="bred">个人信息</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr><td><a href="#" class="baseInfo">基本信息</a></td></tr>
-            <tr><td><a href="#" class="wallet">钱包</a></td></tr>
-            <tr><td><a href="#" class="myListen">我的试听</a></td></tr>
-            <tr><td><a href="#" class="myAppointment">我的预约</a></td></tr>
-            <tr><td><a href="#" class="myHomework">我的作业</a></td></tr>
-            <tr><td><a href="#" class="myCollect">我的收藏</a></td></tr>
-            <tr><td><a href="#" class="systemInfo">系统信息</a></td></tr>
-            <tr><td><a href="#" class="setPass">修改密码</a></td></tr>
-            </tbody>
-        </table>
+    <div class="panel panel-danger col-md-2 col-md-offset-2 border-red">
+        <div class="panel-heading">个人信息</div>
+        <ul class="list-group">
+            <li class="list-group-item"><a href="#" class="baseInfo"><i class="fa fa-user fa-fw"></i> 基本信息</a></li>
+            <li class="list-group-item"><a href="#" class="wallet"><i class="fa fa-database fa-fw"></i> 钱包</a></li>
+            <li class="list-group-item"><a href="#" class="myListen"><i class="fa fa-headphones fa-fw"></i> 我的试听</a></li>
+            <li class="list-group-item"><a href="#" class="myAppointment"><i class="fa fa-phone fa-fw"></i> 我的预约</a></li>
+            <li class="list-group-item"><a href="#" class="myHomework"><i class="fa fa-pencil-square-o fa-fw"></i> 我的作业</a></li>
+            <li class="list-group-item"><a href="#" class="myCollect"><i class="fa fa-heart fa-fw"></i> 我的收藏</a></li>
+            <li class="list-group-item"><a href="#" class="systemInfo"><i class="fa fa-list fa-fw"></i> 系统信息</a></li>
+            <li class="list-group-item"><a href="#" class="setPass"><i class="fa fa-gear fa-fw"></i> 修改密码</a></li>
+        </ul>
     </div>
     <div id="data-content" class="col-md-6 border-red user-data"></div>
 </div>
@@ -39,12 +33,12 @@ $(function(){
 function myhandle(e){
     e.preventDefault();
     var page=$(e.target).attr('class');
-    $('#data-content').html('').load('${ctx!}/mhd/users/data/'+page+'?userId=${user.userId}');
+    $('#data-content').html('').load('${ctx!}/users/data/'+page+'?userId=${user.userId}');
 }
 
 function loadBaseInfo(e) {
     e.preventDefault();
-    $('#data-content').html('').load('${ctx!}/mhd/users/data/baseInfo?userId=${user.userId}');
+    $('#data-content').html('').load('${ctx!}/users/data/baseInfo?userId=${user.userId}');
 }
 
 </script>

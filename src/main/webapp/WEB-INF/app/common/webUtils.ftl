@@ -175,56 +175,74 @@ hasEmpty=false emptyKey="" emptyText="全部" disabled=false onchange="" onclick
 </#macro>
 
 <#macro pageInfo>
-<div class="pull-right">
-    <input type='hidden' class='pagination_totalCount' value='#{page.totalCount}'/>
-    <input type='hidden' class='pagination_totalPage' value='#{page.totalPage}'/>
+<div class="pagination pagination-right" style="margin-top: 3px;">
+    <input type='hidden' class='pagination_totalCount' value='#{page.total}'/>
+    <input type='hidden' class='pagination_totalPage' value='#{page.totalPages}'/>
     <input type='hidden' class='pagination_pageNo' value='#{page.pageNo}'/>
-    <div class="col-md-6">
-        <span>
-        共计 <font color="red"><b>#{page.total}</b></font> 条记录<#rt>
-            <font color="red"> <b>#{page.totalPages}</b></font> 页&nbsp;每页&nbsp;
-            <#local pageSizeList=[{"value":10,"text":10}
-            ,{"value":20,"text":20}
-            ,{"value":50,"text":50}
-            ,{"value":100,"text":100}]>
-            <#local jumpFnc = "T.jump('"+(page.id!)+"' ,1)">
-            <@select id="pageSize" list=pageSizeList onchange=jumpFnc value=page.pageSize
-            style="width:50px;height:22px;padding:0px;margin:2px 0px 4px;" />
-            &nbsp;&nbsp;条记录
-        </span>
-    </div>
 
-    <div class="col-md-6">
-        <ul class="pagination">
+    <div style='float:right;text-align:left;'>
+        <ul>
             <li <#if page.pageNo == 1> class="active" </#if>><a href="javascript:void(0);"
-                                                                <#if (page.pageNo > 1)>onclick="T.jump('${page.id!}',1);"</#if> >首页</a>
+																<#if (page.pageNo > 1)>onclick="T.jump('${page.id!}',1);"</#if> >首页</a>
             </li>
             <li <#if page.pageNo == 1> class="active" </#if>><a href="javascript:void(0);"
-                                                                <#if (page.pageNo > 1)>onclick="T.jump('${page.id!}',#{page.pageNo - 1});"</#if> >上一页</a>
+																<#if (page.pageNo > 1)>onclick="T.jump('${page.id!}',#{page.pageNo - 1});"</#if> >上一页</a>
             </li>
-            <#if (page.totalPage > 0)>
-                <#list 1..page.totalPage as i>
-                    <#if i==page.pageNo>
+			<#if (page.totalPage > 0)>
+				<#list 1..page.totalPage as i>
+					<#if i==page.pageNo>
                         <li class="active"><a href="javascript:void(0);">${i}</a></li>
-                    <#else>
-                        <#if i==1|| i==2||i==page.totalPage||i==page.totalPage-1 || i==page.pageNo+1||i==page.pageNo+2||i==page.pageNo-1||i==page.pageNo-2 >
+					<#else>
+						<#if i==1|| i==2||i==page.totalPage||i==page.totalPage-1 || i==page.pageNo+1||i==page.pageNo+2||i==page.pageNo-1||i==page.pageNo-2 >
                             <li><a href="javascript:void(0);" onclick="T.jump('${page.id!}',#{i});">${i}</a></li>
-                        <#elseif i == page.pageNo - 3 || i == page.pageNo + 3>
+						<#elseif i == page.pageNo - 3 || i == page.pageNo + 3>
                             <li class="active"><a href="javascript:void(0);">...</a></li>
-                        </#if>
-                    </#if>
-                </#list>
-            </#if>
+						</#if>
+					</#if>
+				</#list>
+			</#if>
             <li <#if (page.pageNo == page.totalPage || page.totalPage == 0) > class="active" </#if>>
                 <a href="javascript:void(0);"
-                   <#if (page.pageNo < page.totalPage && page.totalPage > 0 )>onclick="T.jump('${page.id!}',#{page.pageNo + 1});"</#if> >下一页</a>
+				   <#if (page.pageNo < page.totalPage && page.totalPage > 0 )>onclick="T.jump('${page.id!}',#{page.pageNo + 1});"</#if> >下一页</a>
             </li>
             <li <#if (page.pageNo == page.totalPage || page.totalPage == 0) > class="active" </#if>>
                 <a href="javascript:void(0);"
-                   <#if (page.pageNo < page.totalPage && page.totalPage > 0 )>onclick="T.jump('${page.id!}',#{page.totalPage});"</#if> >末页</a>
+				   <#if (page.pageNo < page.totalPage && page.totalPage > 0 )>onclick="T.jump('${page.id!}',#{page.totalPage});"</#if> >末页</a>
             </li>
         </ul>
     </div>
+    <div style="float:right;text-align: right;margin-right:10px;">
+		<span>
+			共计 <font color="red"><b>#{page.totalCount}</b></font> 条记录<#rt>
+            <font color="red"> <b>#{page.totalPage}</b></font> 页&nbsp;每页&nbsp;
+			<#local pageSizeList=[{"value":10,"text":10}
+			,{"value":20,"text":20}
+			,{"value":50,"text":50}
+			,{"value":100,"text":100}]>
+			<#local jumpFnc = "T.jump('"+(page.id!)+"' ,1)">
+			<@select id="pageSize" list=pageSizeList onchange=jumpFnc value=page.pageSize
+			style="width:50px;height:22px;padding:0px;margin:2px 0px 4px;" />
+            &nbsp;&nbsp;条记录
+		</span>
+    </div>
 </div>
 <div class="clear"></div>
+</#macro>
+
+
+<#macro pageParam>
+<input type='hidden' id="pageTotal" value='${page.total}'/>
+<input type='hidden' id="totalPages" value='${page.totalPages}'/>
+<input type='hidden' id="pageNo" value='${page.pageNo}'/>
+<input type='hidden' id="pageSize" value='${page.pageSize}'/>
+</#macro>
+
+
+<#macro emptyPage page msg="暂无数据">
+    <#if (page.rows![])?size == 0>
+    <div class="alert alert-warning alert-dismissible" role="alert" style="margin-top: 20px;">
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <strong>${msg}!</strong>
+    </div>
+    </#if>
 </#macro>

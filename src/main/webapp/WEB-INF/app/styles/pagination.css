@@ -1,0 +1,72 @@
+.pagination {
+    margin:20px 0;
+}
+
+.pagination ul {
+    display:inline-block;
+    margin-bottom:0;
+    margin-left:0;
+    *display:inline;
+    /* IE7 inline-block hack */
+    *zoom:1;
+}
+
+.pagination ul > li {
+    display:inline;
+}
+
+.pagination ul > li > a {
+    float:left;
+    margin-right:3px;
+    padding:5px 10px;
+    min-width:10px;
+    -webkit-border-radius:2px;
+    -moz-border-radius:2px;
+    border-radius:2px;
+    background-color:#FFF;
+    color:#919599;
+    text-align:center;
+    text-decoration:none;
+    line-height:20px;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.pagination ul > li > a:hover {
+    background-color:#FF833D;
+    color:#fff;
+}
+
+.pagination ul > .active > a {
+    background-color:#FF6B45;
+    color:#fff;
+    cursor:default;
+}
+
+.pagination ul > li:first-child > a {
+    border-left-width:1px;
+    -webkit-border-top-left-radius:4px;
+    -moz-border-radius-topleft:4px;
+    border-top-left-radius:4px;
+    -webkit-border-bottom-left-radius:4px;
+    -moz-border-radius-bottomleft:4px;
+    border-bottom-left-radius:4px;
+}
+
+.pagination ul > li:last-child > a {
+    -webkit-border-top-right-radius:4px;
+    -moz-border-radius-topright:4px;
+    border-top-right-radius:4px;
+    -webkit-border-bottom-right-radius:4px;
+    -moz-border-radius-bottomright:4px;
+    border-bottom-right-radius:4px;
+}
+
+.pagination>.active>a,.pagination>.active>a:hover,.pagination>.active>a:focus {
+    z-index: 2;
+    color: #fff;
+    cursor: default;
+    background-color: #FF6B45;
+    border-color: #FF6B45
+}

@@ -1,23 +1,35 @@
-<#include "/common/webUtils.ftl">
-<div class="span6">
-    <h4 class="text-info pull-left" style="color: #FE4141;">
-        我的试听
-    </h4>
-</div>
-<div style="width:90%;height:1px; background:#E0E0E0;"></div>
-<div class="span6">
-    <div class="span6" style="margin-left: 0px;">
-        <@pagination id="listenList"/>
+<#assign ctx=request.contextPath>
+<div class="row">
+    <div class="col-md-12 toppad">
+        <div class="panel panel-info" style="margin-bottom: 0px;">
+            <div class="panel-heading">
+                <h3 class="panel-title">我的试听</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="listenList" class="list-group">
+                        </div>
+                        <div class="pagination pull-right"><ul id="pagination"class="pagination-sm pull-right"></ul></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <script>
     $(function() {
-        $('#listenList').data('param', {
-            url:'${ctx!}/mhd/users/data/list/listenList',
-            param:{userId:'${user.userId!}'},
-            pageSize:'${page.pageSize!}',
-            pageNo:'${page.pageNo!}'
+        var pageUrl = '${ctx!}/users/data/list/listenList';
+        $('#listenList').load(pageUrl,{userId:'${user.userId}'},function(){
+            var totalPages=parseInt($('#totalPages').val());
+            var pageSize=parseInt($('#pageSize').val());
+            $('#pagination').twbsPagination({
+                totalPages: totalPages,
+                visiblePages: totalPages%5,
+                onPageClick: function (event, page) {
+                    $('#myGrid').load(pageUrl,{userId:'${user.userId}',"page.pageSize":pageSize,"page.pageNo":page});
+                }
+            });
         });
-        $('#listenList').trigger('init');
-    } );
+    });
 </script>

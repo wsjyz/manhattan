@@ -1,7 +1,9 @@
 package com.manhattan.controller;
 
+import com.manhattan.domain.HomeWork;
 import com.manhattan.domain.TeacherDetail;
 import com.manhattan.domain.Wallet;
+import com.manhattan.service.HomeWorkService;
 import com.manhattan.service.TeacherDetailService;
 import com.manhattan.service.UserService;
 import com.manhattan.service.WalletService;
@@ -34,6 +36,8 @@ public class UserController {
     WalletService walletService;
     @Autowired
     TeacherDetailService teacherDetailService;
+    @Autowired
+    HomeWorkService homeWorkService;
 
     @RequestMapping(value = "/data")
     public ModelAndView getUserData(@RequestParam String userId) {
@@ -56,20 +60,25 @@ public class UserController {
     }
 
     @RequestMapping(value = "/data/list/{list}")
-    public ModelAndView getRecords(@RequestParam String userId,@PathVariable String list,@ModelAttribute OpenPage page1) {
+    public ModelAndView getRecords(@RequestParam String userId,@PathVariable String list,@ModelAttribute OpenPage page) {
         ModelAndView view = new ModelAndView();
         if (StringUtils.isNotEmpty(userId)) {
-            Pageable pageAble = new PageRequest(page1.getPageNo()-1, page1.getPageSize());
+            Pageable pageAble = new PageRequest(page.getPageNo()-1, page.getPageSize());
             if (list.equals("walletRecords")) {
                 Page<Wallet> wallets = walletService.getRecordList(pageAble,userId);
-                OpenPage<Wallet> page = PageConvert.convert(wallets);
-                view.addObject("page", page);
+                view.addObject("page", PageConvert.convert(wallets));
             }else if (list.equals("listenList")) {
-                OpenPage<TeacherDetail> teachers =teacherDetailService.findTeachersByUserId(page1, userId, MhtConstant.USER_ACTION_LISTEN_TEACHER);
+                OpenPage<TeacherDetail> teachers =teacherDetailService.findTeachersByUserId(page, userId, MhtConstant.USER_ACTION_LISTEN_TEACHER);
                 view.addObject("page", teachers);
             }else if (list.equals("myAppointmentList")) {
-                OpenPage<TeacherDetail> teachers = teacherDetailService.findTeachersByUserId(page1, userId, MhtConstant.USER_ACTION_APPOINTMENT_TEACHER);
+                OpenPage<TeacherDetail> teachers = teacherDetailService.findTeachersByUserId(page, userId, MhtConstant.USER_ACTION_APPOINTMENT_TEACHER);
                 view.addObject("page", teachers);
+            }else if (list.equals("collectList")) {
+                OpenPage<TeacherDetail> teachers = teacherDetailService.findTeachersByUserId(page, userId, MhtConstant.USER_ACTION_COLLECT_TEACHER);
+                view.addObject("page", teachers);
+            }else if (list.equals("homeworkList")) {
+                Page<HomeWork> homeWorks = homeWorkService.getHomeworksByUser(pageAble, userId);
+                view.addObject("page", PageConvert.convert(homeWorks));
             }
         }
         view.setViewName("views/user/"+list);

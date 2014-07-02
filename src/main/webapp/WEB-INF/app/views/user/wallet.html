@@ -1,4 +1,4 @@
-<#include "/common/webUtils.ftl">
+<#assign ctx=request.contextPath>
 <div class="row">
     <div class="col-md-12 toppad">
         <div class="panel panel-info" style="margin-bottom: 0px;">
@@ -9,7 +9,7 @@
                 <div class="row">
                     <div class="col-md-12">
                     <fieldset>
-                        <legend style="font-size: 14px;width:80%;">
+                        <legend style="font-size: 14px;">
                             <div>
                                 <h3>当前余额：<span style="color:#FE4141;">${user.wallet!}RMB</span>
                                 <a href="#" class="btn btn-primary btn-danger"><i class="icon-gift"></i> 充值</a>
@@ -17,11 +17,8 @@
                             </div>
                         </legend>
                     </fieldset>
-                        <div id="myGrid"></div>
-                        <div class="col-md-12" style="margin-left: 0px;">
-                            <@pagination id="records"/>
-                        </div>
-
+                    <div id="myGrid"></div>
+                    <div class="pagination pull-right"><ul id="pagination"class="pagination-sm pull-right"></ul></div>
                     </div>
                 </div>
             </div>
@@ -30,17 +27,17 @@
 </div>
 <script>
     $(function() {
-        $('#myGrid').load('',function(){
-
+        var pageUrl = '${ctx!}/users/data/list/walletRecords';
+        $('#myGrid').load(pageUrl,{userId:'${user.userId}'},function(){
+            var totalPages=parseInt($('#totalPages').val());
+            var pageSize=parseInt($('#pageSize').val());
+            $('#pagination').twbsPagination({
+                totalPages: totalPages,
+                visiblePages: totalPages%5,
+                onPageClick: function (event, page) {
+                    $('#myGrid').load(pageUrl,{userId:'${user.userId}',"page.pageSize":pageSize,"page.pageNo":page});
+                }
+            });
         });
-        var dataSource={column:[]};
-        $('#MyGrid').datagrid({ dataSource: dataSource, stretchHeight: true })
-//        $('#records').data('param', {
-//            url:'${ctx!}/mhd/users/data/list/walletRecords',
-//            param:{userId:'${user.userId!}'},
-//            pageSize:'${page.pageSize!}',
-//            pageNo:'${page.pageNo!}'
-//        });
-//        $('#records').trigger('init');
-    } );
+    });
 </script>

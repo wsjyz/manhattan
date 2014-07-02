@@ -1,10 +1,35 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+<#assign ctx=request.contextPath>
+<div class="row">
+    <div class="col-md-12 toppad">
+        <div class="panel panel-info" style="margin-bottom: 0px;">
+            <div class="panel-heading">
+                <h3 class="panel-title">我的作业</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="homeworkList" class="panel-group" id="accordion">
+                        </div>
+                        <div class="pagination pull-right"><ul id="pagination" class="pagination-sm pull-right"></ul></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function() {
+        var pageUrl = '${ctx!}/users/data/list/homeworkList';
+        $('#homeworkList').load(pageUrl,{userId:'${user.userId}'},function(){
+            var totalPages=parseInt($('#totalPages').val());
+            var pageSize=parseInt($('#pageSize').val());
+            $('#pagination').twbsPagination({
+                totalPages: totalPages,
+                visiblePages: totalPages%5,
+                onPageClick: function (event, page) {
+                    $('#myGrid').load(pageUrl,{userId:'${user.userId}',"page.pageSize":pageSize,"page.pageNo":page});
+                }
+            });
+        });
+    });
+</script>

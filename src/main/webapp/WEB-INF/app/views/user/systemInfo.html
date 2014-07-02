@@ -1,0 +1,34 @@
+<#assign ctx=request.contextPath>
+<div class="row">
+    <div class="col-md-12 toppad">
+        <div class="panel panel-info" style="margin-bottom: 0px;">
+            <div class="panel-heading">
+                <h3 class="panel-title">系统信息</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="myGrid"></div>
+                        <div class="pagination pull-right"><ul id="pagination"class="pagination-sm pull-right"></ul></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function() {
+        var pageUrl = '${ctx!}/users/data/list/systemRecords';
+        $('#myGrid').load(pageUrl,{userId:'${user.userId}'},function(){
+            var totalPages=parseInt($('#totalPages').val());
+            var pageSize=parseInt($('#pageSize').val());
+            $('#pagination').twbsPagination({
+                totalPages: totalPages,
+                visiblePages: totalPages%5,
+                onPageClick: function (event, page) {
+                    $('#myGrid').load(pageUrl,{userId:'${user.userId}',"page.pageSize":pageSize,"page.pageNo":page});
+                }
+            });
+        });
+    });
+</script>

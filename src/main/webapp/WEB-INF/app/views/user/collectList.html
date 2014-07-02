@@ -1,4 +1,5 @@
 <#include "/common/webUtils.ftl">
+<#assign ctx=request.contextPath>
 <style>
     img.avatar{
         height:100px;
@@ -15,7 +16,7 @@
     <a href="#" class="list-group-item">
         <div class="media col-md-3">
             <div class="pull-left">
-                <img class="media-object img-rounded img-responsive avatar"  src="${ctx!}/mhd/upload/039f17d0ff3611e3bede52540077b0c2.jpg" alt="placehold.it/350x250" >
+                <img class="media-object img-rounded img-responsive avatar"  src="${ctx!}/upload/039f17d0ff3611e3bede52540077b0c2.jpg" alt="placehold.it/350x250" >
             </div>
         </div>
         <div class="col-md-6">
@@ -35,4 +36,5 @@
         </div>
     </a>
 </#list>
+<@emptyPage page=page msg="还没有收藏教师"/>
 <@pageParam/>
