@@ -40,10 +40,11 @@ public class UserController {
     HomeWorkService homeWorkService;
 
     @RequestMapping(value = "/data")
-    public ModelAndView getUserData(@RequestParam String userId) {
+    public ModelAndView getUserData(@RequestParam String userId,@RequestParam(required = false) String item) {
         ModelAndView view = new ModelAndView();
-        if (StringUtils.isNotEmpty(userId)) {
-            view.addObject("user", userService.load(userId));
+        view.addObject("user", userService.load(userId));
+        if (StringUtils.isNotEmpty(item)) {
+            view.addObject("item", item);
         }
         view.setViewName("views/user/data");
         return view;

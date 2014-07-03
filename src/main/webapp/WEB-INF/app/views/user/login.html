@@ -28,7 +28,7 @@
             var user=$('#loginForm').serializeJson();
             $.post(resource.login,user,function(result){
                 if(result&&result.success) {
-                    $('.tip').text(","+result.data.userName);
+                    $('.tip').text("，"+result.data.userName);
                     $('#main').html('').load('main/',{userId:result.data.userId});
                 }else{
                     $('#alertMsg').show();

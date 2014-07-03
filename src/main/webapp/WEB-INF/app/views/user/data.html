@@ -28,6 +28,9 @@ $(function(){
 
     $(els).on('click',function(){myhandle(event)});
 
+    <#if item??>
+        $('.${item}').trigger('click');
+    </#if>
 
 })
 function myhandle(e){

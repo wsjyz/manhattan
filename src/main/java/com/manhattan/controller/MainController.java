@@ -22,11 +22,15 @@ public class MainController {
     private UserService userService;
 
     @RequestMapping(value={"/","/index"})
-	public String index(@RequestParam(required = false) String userId) {
-        if (StringUtils.isNotEmpty(userId)) {
-            User user = userService.findUserById(userId);
+	public ModelAndView index(HttpSession session) {
+        ModelAndView view = new ModelAndView();
+        Object userId=session.getAttribute(MhtConstant.SEESION_USER_ID);
+        if (userId!=null) {
+            User user = userService.findUserById(userId.toString());
+            view.addObject("user", user);
         }
-        return "index";
+        view.setViewName("index");
+        return view;
     }
 
     @RequestMapping(value = "/login",method = RequestMethod.POST)

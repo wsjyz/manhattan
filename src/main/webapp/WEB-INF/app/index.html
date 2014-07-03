@@ -32,10 +32,15 @@
     <div class="bs-docs-nav">
         <div class="container">
             <div class="pull-left title">
-                欢迎来到 <a href="index">曼哈顿英语</a><span class="tip"> 请
-                <a href="#" class="login">登录</a>，
-                <a href="#" class="register">注册</a>
-                <image src="images/index/collect.png">收藏网站</span>
+                欢迎来到 <a href="index">曼哈顿英语</a>
+                <#if user??>
+                   ， ${user.userName}
+                <#else>
+                    <span class="tip"> 请
+                    <a href="#" class="login">登录</a>，
+                    <a href="#" class="register">注册</a>
+                    <image src="images/index/collect.png">收藏网站</span>
+                </#if>
                 <span class="pull-right"></span>
             </div>
         </div>
@@ -44,11 +49,11 @@
         <div class="bs-header" id="content">
             <div class="container">
                 <ul class="nav nav-pills pull-right">
-                    <li><a href="#" class="data"></a></li>
+                    <li><a href="#" class="baseInfo"></a></li>
                     <li><a href="#" class="wallet"></a></li>
-                    <li><a href="#" class="appointment"></a></li>
-                    <li><a href="#" class="homework"></a></li>
-                    <li><a href="#" class="coursecourse"></a></li>
+                    <li><a href="#" class="myAppointment"></a></li>
+                    <li><a href="#" class="myHomework"></a></li>
+                    <li><a href="#" class="course"></a></li>
                 </ul>
             </div>
         </div>
@@ -94,8 +99,9 @@
         $('.login,.register').click(function(){
             $('#main').html('').load('views/user/'+$(this).attr('class')+'.html');
         });
-        $('.data').click(function(){
-            $('#main').html('').load(baseUrl+'/users/data?userId=t1');
+        $('#content a').click(function(){
+            var item = $(this).attr('class');
+            $('#main').html('').load(baseUrl+'/users/data?userId=${user.userId}&item='+item);
         })
     })
 </script>
