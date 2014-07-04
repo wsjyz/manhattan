@@ -63,8 +63,8 @@
                     <div class="navbar-inner col-md-offset-2">
                         <ul class="nav navbar-nav">
                             <li class="active"><a href="index">首页</a></li>
-                            <li><a href="course">曼哈顿课堂</a></li>
-                            <li><a href="teacher">我的名师</a></li>
+                            <li><a href="javascript:void(0);" class="mhtCourse">曼哈顿课堂</a></li>
+                            <li><a href="teacher" class="mhtTeachers">我的名师</a></li>
                             <li><a href="place">场地风采</a></li>
                             <li><a href="appoint">我要预约</a></li>
                             <li><a href="question">精彩问答</a></li>
@@ -86,7 +86,7 @@
     <script src="bower_components/jquery/jquery.min.js"></script>
     <script src="bower_components/bootstrap/js/bootstrap.min.js"></script>
     <script src="bower_components/pagination/jquery.twbsPagination.js"></script>
-    <script type="text/javascript" data-main="scripts/require.main.js" src="bower_components/RequireJS/require.js"></script>
+    <!--<script type="text/javascript" data-main="scripts/require.main.js" src="bower_components/RequireJS/require.js"></script>-->
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -103,6 +103,12 @@
             var item = $(this).attr('class');
             $('#main').html('').load(baseUrl+'/users/data?userId=${user.userId}&item='+item);
         })
+        $('.mhtCourse').click(function(){
+            $('#main').html('').load(baseUrl+'/mhtCourse/courses');
+        })
+        <#if tologin??>
+        $('.login').trigger('click');
+        </#if>
     })
 </script>
 </html>

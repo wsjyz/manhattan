@@ -33,6 +33,14 @@ public class MainController {
         return view;
     }
 
+    @RequestMapping("/users/relogin")
+    public ModelAndView relogin(HttpSession session) {
+        ModelAndView view = new ModelAndView();
+        view.addObject("tologin", "true");
+        view.setViewName("index");
+        return view;
+    }
+
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public @ResponseBody JsonResult login(@RequestParam String mobile,@RequestParam String password,HttpSession session) {
         String passwordMd5= DigestUtils.md5Hex(password);

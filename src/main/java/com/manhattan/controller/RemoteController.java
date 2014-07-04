@@ -251,7 +251,7 @@ public class RemoteController {
     @RequestMapping(value = "/teacher/listPage")
     public
     @ResponseBody
-    OpenPage<TeacherDetail> listTeachers(@FastJson OpenPage<TeacherDetail> openPage,@FastJson String searchKey) {
+    OpenPage<TeacherDetail> listTeachers(@FastJson OpenPage<TeacherDetail> openPage,@RequestParam String searchKey) {
         OpenPage<TeacherDetail> resultPage = teacherDetailService.findTeacherByPage(openPage,searchKey);
         return resultPage;
     }

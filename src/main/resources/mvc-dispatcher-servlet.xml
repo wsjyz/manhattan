@@ -36,7 +36,7 @@
     <mvc:resources mapping="/font/**" location="/WEB-INF/app/fonts/"/>
     <mvc:resources mapping="/bower_components/**" location="/WEB-INF/app/bower_components/"/>
     <mvc:resources mapping="/views/**" location="/WEB-INF/app/views/"/>
-    <mvc:resources mapping="/upload/**" location="/WEB-INF/upload/"/>
+    <mvc:resources mapping="/upload/**" location="/upload/"/>
 
     <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
         <property name="templateLoaderPath" value="/WEB-INF/app/"/>

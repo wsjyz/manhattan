@@ -56,13 +56,13 @@ a:hover{
 .bs-header .wallet{
     background-position:25% 0%;
 }
-.bs-header .appointment{
+.bs-header .myAppointment{
     background-position:50% 0%;
 }
-.bs-header .homework{
+.bs-header .myHomework{
     background-position:75% 0%;
 }
-.bs-header .coursecourse{
+.bs-header .course{
     background-position:101% 0%;
 }
 

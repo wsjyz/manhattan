@@ -36,8 +36,8 @@ public class ITeacherDetailDaoImpl extends BaseDAO implements ITeacherDetailDao 
                 .append(" where 1=1 ");
         List<Object> params = new ArrayList<Object>();
         if (StringUtils.isNotBlank(searchKey)) {
-            sql.append(" and u.user_name like %?%");
-            params.add(searchKey);
+            sql.append(" and u.user_name like ?");
+            params.add("%"+searchKey+"%");
         }
         sql.append(" and u.type=? ");
         params.add(MhtConstant.USER_TYPE_TEACHER);

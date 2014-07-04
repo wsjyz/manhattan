@@ -2,11 +2,11 @@
 <style>
     .controls{margin-top:5px;}
 </style>
-<div class="row">
+<div class="row" id="userinfo">
     <div class="panel panel-danger col-md-2 col-md-offset-2 border-red">
         <div class="panel-heading">个人信息</div>
         <ul class="list-group">
-            <li class="list-group-item"><a href="#" class="baseInfo"><i class="fa fa-user fa-fw"></i> 基本信息</a></li>
+            <li class="list-group-item"><a href="javascript:void(0);" class="baseInfo"><i class="fa fa-user fa-fw"></i> 基本信息</a></li>
             <li class="list-group-item"><a href="#" class="wallet"><i class="fa fa-database fa-fw"></i> 钱包</a></li>
             <li class="list-group-item"><a href="#" class="myListen"><i class="fa fa-headphones fa-fw"></i> 我的试听</a></li>
             <li class="list-group-item"><a href="#" class="myAppointment"><i class="fa fa-phone fa-fw"></i> 我的预约</a></li>
@@ -26,16 +26,15 @@ $(function(){
 
     var els='.wallet,.myListen,.myAppointment,.myHomework,.myCollect,.systemInfo,.setPass';
 
-    $(els).on('click',function(){myhandle(event)});
+    $(els).on('click',function(){myhandle()});
 
     <#if item??>
-        $('.${item}').trigger('click');
+    myhandle('${item}');
     </#if>
 
 })
-function myhandle(e){
-    e.preventDefault();
-    var page=$(e.target).attr('class');
+function myhandle(page){
+    var page=page||$(this).attr('class');
     $('#data-content').html('').load('${ctx!}/users/data/'+page+'?userId=${user.userId}');
 }
 

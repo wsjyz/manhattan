@@ -7,7 +7,7 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <div id="listenList" class="list-group">
+                        <div id="appointmentList" class="list-group">
                         </div>
                         <div class="pagination pull-right"><ul id="pagination"class="pagination-sm pull-right"></div></ul>
                     </div>
@@ -19,14 +19,14 @@
 <script>
     $(function() {
         var pageUrl = '${ctx!}/mhd/users/data/list/myAppointmentList';
-        $('#listenList').load(pageUrl,{userId:'${user.userId}'},function(){
+        $('#appointmentList').load(pageUrl,{userId:'${user.userId}'},function(){
             var totalPages=parseInt($('#totalPages').val());
             var pageSize=parseInt($('#pageSize').val());
             $('#pagination').twbsPagination({
                 totalPages: totalPages,
                 visiblePages: totalPages%5,
                 onPageClick: function (event, page) {
-                    $('#myGrid').load(pageUrl,{userId:'${user.userId}',"page.pageSize":pageSize,"page.pageNo":page});
+                    $('#appointmentList').load(pageUrl,{userId:'${user.userId}',"pageSize":pageSize,"pageNo":page});
                 }
             });
         });

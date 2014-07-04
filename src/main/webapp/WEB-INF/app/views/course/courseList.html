@@ -1,0 +1,26 @@
+<#include "/common/webUtils.ftl">
+<#assign ctx=request.contextPath>
+<#list page.rows as course>
+<div class="col-sm-3" style="margin-bottom: 10px;">
+    <div class="col-item">
+        <div class="photo">
+            <img src="${ctx!}/${course.coursePic}" class="img-responsive" alt="曼哈顿精品课程" />
+        </div>
+        <div class="info">
+            <div class="price">
+                <h5><i class="fa fa-graduation-cap fa-fw"></i> 班号：${course.classNo}</h5>
+                <h5><i class="fa fa-map-marker fa-fw"></i> 上课地点：${course.place}</h5>
+                <h4 class="price-text-color">￥${course.expense}</h4>
+            </div>
+            <div class="clear-left">
+                <p><a href="javascript:void(0);" data-id="${course.courseId}" class="btn btn-warning order">
+                    <i class="fa fa-phone"></i> 预约</a></p>
+            </div>
+            <div class="clearfix">
+            </div>
+        </div>
+    </div>
+</div>
+</#list>
+<@emptyPage page=page msg="还没有课程"/>
+<@pageParam/>

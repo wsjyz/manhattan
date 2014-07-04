@@ -1,0 +1,39 @@
+<#assign ctx=request.contextPath>
+<link rel="stylesheet" href="${ctx}/styles/course.css"/>
+<div id="courseContent" class="container border-red" style="padding:20px 20px;">
+    <h4><p class="text-danger">曼哈顿精品课堂</p></h4>
+    <div class="row">
+        <div id="carousel-example" class="carousel slide hidden-xs" data-ride="carousel">
+            <div class="carousel-inner">
+                <div class="item active">
+                    <div id="courses" class="row" style="padding:10px 20px;">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pagination pull-right"><ul id="pagination"class="pagination-sm pull-right"></ul></div>
+</div>
+<script>
+$(function() {
+    var pageUrl = '${ctx!}/mhtCourse/courseList';
+    $('#courses').load(pageUrl,{"pageSize":16,"pageNo":1},function(){
+        var totalPages=parseInt($('#totalPages').val());
+        var pageSize=parseInt($('#pageSize').val());
+        $('#pagination').twbsPagination({
+            totalPages: totalPages,
+            visiblePages: totalPages%5,
+            onPageClick: function (event, page) {
+                $('#courses').load(pageUrl,{userId:'${user.userId}',"pageSize":pageSize,"pageNo":page});
+            }
+        });
+    });
+
+    $('#course').on('click','a.order', function () {
+        var courseId = $(this).data("id");
+        $('#courseContent').html('').load('${ctx!}/mhtCourse/courseInfo',{'courseId':courseId});
+    })
+
+});
+</script>

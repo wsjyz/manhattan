@@ -26,7 +26,7 @@
                 totalPages: totalPages,
                 visiblePages: totalPages%5,
                 onPageClick: function (event, page) {
-                    $('#myGrid').load(pageUrl,{userId:'${user.userId}',"page.pageSize":pageSize,"page.pageNo":page});
+                    $('#myGrid').load(pageUrl,{userId:'${user.userId}',"pageSize":pageSize,"pageNo":page});
                 }
             });
         });
