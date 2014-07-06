@@ -87,9 +87,13 @@ public class RemoteController {
                      ,HttpServletResponse response) {
         User user = userService.findUserByFilter(mobile, authCode);
         if (user != null) {
-        	String passwordMd5=DigestUtils.md5Hex(password);
+            if (user.getStatus().equals("ENABLE")) {
+                setResponse("手机号已经注册", response);
+                return false;
+            }
+            String passwordMd5 = DigestUtils.md5Hex(password);
             int res = userService.register(user.getUserId(), passwordMd5, type);
-            return res!=0;
+            return res != 0;
         }else{
             setResponse("注册失败,验证码错误", response);
         }
@@ -251,7 +255,7 @@ public class RemoteController {
     @RequestMapping(value = "/teacher/listPage")
     public
     @ResponseBody
-    OpenPage<TeacherDetail> listTeachers(@FastJson OpenPage<TeacherDetail> openPage,@RequestParam String searchKey) {
+    OpenPage<TeacherDetail> listTeachers(@FastJson OpenPage<TeacherDetail> openPage,@RequestParam(required = false) String searchKey) {
         OpenPage<TeacherDetail> resultPage = teacherDetailService.findTeacherByPage(openPage,searchKey);
         return resultPage;
     }
@@ -263,7 +267,7 @@ public class RemoteController {
      * @param teacherId
      */
     @RequestMapping(value = "/user/collect")
-    public void collectTeacher(@RequestParam("userId") String userId,
+    public @ResponseBody UserAction collectTeacher(@RequestParam("userId") String userId,
                                @RequestParam("teacherId") String teacherId
                                 ,HttpServletResponse response) {
         UserAction action = userActionService.findUserAction(userId, teacherId, MhtConstant.USER_ACTION_COLLECT_TEACHER);
@@ -271,8 +275,13 @@ public class RemoteController {
             UserAction userAction = userActionService.CollectTeacher(userId, teacherId);
             if (userAction == null || StringUtils.isEmpty(userAction.getActionId())) {
                 setResponse("收藏教师失败", response);
+            }else{
+                return action;
             }
+        }else{
+            setResponse("教师已经被收藏", response);
         }
+        return action;
     }
 
     /**

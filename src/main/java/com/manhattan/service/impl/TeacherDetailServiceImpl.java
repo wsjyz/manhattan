@@ -2,6 +2,7 @@ package com.manhattan.service.impl;
 
 import com.manhattan.dao.ITeacherDetailDao;
 import com.manhattan.dao.TeacherDetailDao;
+import com.manhattan.domain.QueryParam;
 import com.manhattan.domain.TeacherDetail;
 import com.manhattan.domain.User;
 import com.manhattan.domain.UserAction;
@@ -73,5 +74,11 @@ public class TeacherDetailServiceImpl implements TeacherDetailService {
             return teacherDetailDao.saveAndFlush(detail);
         }
         return null;
+    }
+
+    @Override
+    public OpenPage<TeacherDetail> findTeacherByPage(OpenPage<TeacherDetail> page,QueryParam queryParam) {
+        OpenPage<TeacherDetail> teacherDetailOpenPage = iTeacherDetailDao.findTeachers(page, queryParam);
+        return teacherDetailOpenPage;
     }
 }

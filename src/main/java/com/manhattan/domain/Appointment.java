@@ -22,12 +22,13 @@ public class Appointment {
     @Column(name = "course_category") private String courseCategory;
     @Column(name = "tutoring_way") private String tutoringWay;
     @Column(name = "area") private String area;
+    @Column(name = "contacts") private String contacts;
     @Column(name = "other_content") private String otherContent;
     @Column(name = "mobile") private String mobile;
     @Column(name = "phone") private String phone;
     @Column(name = "qq") private String qq;
     @Column(name = "address") private String address;
-    @Column(name = "appointment_time") private String appointmentTime;
+    @Column(name = "appointment_time") private Date appointmentTime;
     @Column(name = "resource_type") private String resourceType;
     @Column(name = "resource_id")private String resourceId;
     @Column(name = "payment")private String payment;
@@ -72,7 +73,7 @@ public class Appointment {
         this.area = area;
     }
 
-    public void setAppointmentTime(String appointmentTime) {
+    public void setAppointmentTime(Date appointmentTime) {
         this.appointmentTime = appointmentTime;
     }
 
@@ -94,6 +95,14 @@ public class Appointment {
 
     public String getOtherContent() {
         return otherContent;
+    }
+
+    public String getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(String contacts) {
+        this.contacts = contacts;
     }
 
     public void setOtherContent(String otherContent) {
@@ -132,7 +141,7 @@ public class Appointment {
         this.address = address;
     }
 
-    public String getAppointmentTime() {
+    public Date getAppointmentTime() {
         return appointmentTime;
     }
 

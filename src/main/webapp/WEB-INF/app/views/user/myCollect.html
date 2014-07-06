@@ -1,35 +1,35 @@
 <#assign ctx=request.contextPath>
-    <div class="row">
-        <div class="col-md-12 toppad">
-            <div class="panel panel-info" style="margin-bottom: 0px;">
-                <div class="panel-heading">
-                    <h3 class="panel-title">我的收藏</h3>
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div id="collectList" class="list-group">
-                            </div>
-                            <div class="pagination pull-right"><ul id="pagination"class="pagination-sm pull-right"></ul></div>
+<div class="row">
+    <div class="col-md-12 toppad">
+        <div class="panel panel-info" style="margin-bottom: 0px;">
+            <div class="panel-heading">
+                <h3 class="panel-title">我的收藏</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="collectList" class="list-group">
                         </div>
+                        <div class="pagination pull-right"><ul id="pagination" class="pagination-sm pull-right"></ul></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <script>
-        $(function() {
-            var pageUrl = '${ctx!}/users/data/list/collectList';
-            $('#collectList').load(pageUrl,{userId:'${user.userId}'},function(){
-                var totalPages=parseInt($('#totalPages').val());
-                var pageSize=parseInt($('#pageSize').val());
-                $('#pagination').twbsPagination({
-                    totalPages: totalPages,
-                    visiblePages: totalPages%5,
-                    onPageClick: function (event, page) {
-                        $('#collectList').load(pageUrl,{userId:'${user.userId}',"pageSize":pageSize,"pageNo":page});
-                    }
-                });
+</div>
+<script>
+    $(function() {
+        var pageUrl = '${ctx!}/users/data/list/collectList';
+        $('#collectList').load(pageUrl,{userId:'${user.userId}'},function(){
+            var totalPages=parseInt($('#totalPages').val());
+            var pageSize=parseInt($('#pageSize').val());
+            $('#pagination').twbsPagination({
+                totalPages: totalPages,
+                visiblePages: totalPages%5,
+                onPageClick: function (event, page) {
+                    $('#collectList').load(pageUrl,{userId:'${user.userId}',"pageSize":pageSize,"pageNo":page});
+                }
             });
         });
-    </script>
+    });
+</script>

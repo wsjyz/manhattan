@@ -7,14 +7,13 @@ import com.manhattan.dao.ITeacherDetailDao;
 import com.manhattan.domain.*;
 import com.manhattan.domain.Appointment;
 import com.manhattan.domain.rowMapper.CourseRowMapper;
+import com.manhattan.util.MhtConstant;
 import com.manhattan.util.OpenPage;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Administrator on 2014/6/21 0021.
@@ -39,6 +38,24 @@ public class CourseDaoImpl extends BaseDAO implements ICourseDao {
                 teacherDetails.add(detail);
             }
             course.setTeacherDetailList(teacherDetails);
+            Map<String, Object> extMap = new HashMap<String, Object>();
+            OpenPage<Course> page = new OpenPage<Course>();
+            page.setAutoCount(true);
+            page.setAutoPaging(true);
+            UserAction userAction=new UserAction();
+            userAction.setResourceId(courseId);
+            userAction.setActionType(MhtConstant.USER_ACTION_FOLLOW_COURSE);
+            extMap.put("followCount", findWithUserAction(page,userAction).getTotal());
+            userAction.setActionType(MhtConstant.USER_ACTION_COMMENT_COURSE);
+            extMap.put("commentCount", findWithUserAction(page,userAction).getTotal());
+            userAction.setActionType(MhtConstant.USER_ACTION_COLLECT_COURSE);
+            extMap.put("collectCount", findWithUserAction(page,userAction).getTotal());
+            Course c = new Course();
+            c.setCourseId(courseId);
+            Appointment appointment=new Appointment();
+            appointment.setResourceType(MhtConstant.USER_ACTION_APPOINTMENT_COURSE);
+            extMap.put("appointmentCount", findCourseByUserId(page,c,appointment).getTotal());
+            course.setExtMap(extMap);
         }
         return course;
     }
@@ -70,7 +87,7 @@ public class CourseDaoImpl extends BaseDAO implements ICourseDao {
             params.add(qp.getSex());
         }
         if (StringUtils.isNotBlank(qp.getTutoringWay())) {
-            sql.append(" and c.tutoringWay=?");
+            sql.append(" and td.tutoring_way=?");
             params.add(qp.getTutoringWay());
         }
         List<Course> courseList = new ArrayList<Course>();
@@ -110,6 +127,10 @@ public class CourseDaoImpl extends BaseDAO implements ICourseDao {
         if (StringUtils.isNotBlank(appointment.getUserId())) {
             sql.append(" and ua.user_id=?");
             params.add(appointment.getUserId());
+        }
+        if (StringUtils.isNotBlank(course.getCourseId())) {
+            sql.append(" and c.course_id=?");
+            params.add(course.getCourseId());
         }
         if (StringUtils.isNotBlank(appointment.getResourceType())) {
             sql.append(" and ua.resource_type=?");
@@ -154,19 +175,30 @@ public class CourseDaoImpl extends BaseDAO implements ICourseDao {
 
     @Override
     public OpenPage<Course> findCollectByUserId(OpenPage<Course> page, String userId, String resourceType) {
+        UserAction userAction=new UserAction();
+        userAction.setUserId(userId);
+        userAction.setActionType(resourceType);
+        return findWithUserAction(page,userAction);
+    }
+
+    public OpenPage<Course> findWithUserAction(OpenPage<Course> page,UserAction userAction) {
         StringBuffer selectSql = new StringBuffer("select ");
         StringBuffer sql = new StringBuffer("");
         sql.append(" from t_mht_course c inner join t_mht_user_action ua ");
         sql.append("on c.course_id=ua.resource_id ")
                 .append(" where 1=1 ");
         List<Object> params = new ArrayList<Object>();
-        if (StringUtils.isNotBlank(userId)) {
+        if (StringUtils.isNotBlank(userAction.getUserId())) {
             sql.append(" and ua.user_id=?");
-            params.add(userId);
+            params.add(userAction.getUserId());
         }
-        if (StringUtils.isNotBlank(resourceType)) {
+        if (StringUtils.isNotBlank(userAction.getResourceId())) {
+            sql.append(" and c.course_id=?");
+            params.add(userAction.getResourceId());
+        }
+        if (StringUtils.isNotBlank(userAction.getActionType())) {
             sql.append(" and ua.action_type=?");
-            params.add(resourceType);
+            params.add(userAction.getActionType());
         }
         List<Course> courseList = new ArrayList<Course>();
         if (page.isAutoCount()) {

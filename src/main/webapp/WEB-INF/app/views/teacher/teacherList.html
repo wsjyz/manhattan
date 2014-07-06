@@ -1,0 +1,23 @@
+<#include "/common/webUtils.ftl">
+<#assign ctx=request.contextPath>
+<#list teachers as teacher>
+    <div class="col-md-2" style="width:250px;">
+        <div class="thumbnail">
+            <img src="${ctx!}/${teacher.user.avatar}" alt="教师" style="width:170px;height: 150px;">
+            <div class="caption">
+                <h5>${teacher.user.userName}</h5>
+                <p>教授课程：${teacher.courseCategory}</p>
+                <p>信用等级：<#if teacher.user.credits??><@stars count=teacher.user.credits/></#if></p>
+                <p>
+                    <a href="javascript:void(0);" data-userid="${teacher.userId}" class="btn btn-warning btn-block" role="button"><i class="fa fa-heart-o fa-fw"></i> 详细介绍</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</#list>
+<#if (teachers![])?size == 0>
+    <div class="alert alert-warning alert-dismissible" role="alert" style="margin-top: 20px;">
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <strong>还没有教师!</strong>
+    </div>
+</#if>

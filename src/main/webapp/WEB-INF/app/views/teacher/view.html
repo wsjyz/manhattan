@@ -1,0 +1,302 @@
+<#assign ctx=request.contextPath>
+<#include "/common/webUtils.ftl">
+<div class="row marketing">
+    <div class="col-md-4">
+        <p>
+            <img src="${ctx!}${teacher.user.avatar}" alt="教师" class="img-responsive img-rounded center-block" style="width:256px;height:178px;">
+        </p>
+    </div>
+    <div class="col-md-6">
+        <h4><strong>${teacher.user.userName}</strong></h4>
+        <h4><small>教授科目：${teacher.courseCategory}<span style="margin-left: 20px;">最近登陆时间：${teacher.user.lastLoginTime}</span></small></h4>
+        <h4><small>所在地区：${teacher.user.area}<span style="margin-left: 20px;">身份认证：${teacher.user.lastLoginTime}</span></small></h4>
+        <h4><small>信用等级：<#if teacher.user.credits??><@stars count=teacher.user.credits/></#if></small></h4>
+        <h4><small>
+            <span class="mr20"><i class="fa fa-heart-o fa-fw"></i> 关注：${teacher.extMap.followCount}人</span>
+            <span class="mr20"><i class="fa fa-bookmark-o fa-fw"></i> 报名：${teacher.extMap.appointmentCount}人</span>
+            <span class="mr20"><i class="fa fa-comment-o fa-fw"></i> 评论：${teacher.extMap.commentCount}人</span>
+            <span class="mr20"><i class="fa fa-star-o fa-fw"></i> 收藏：${teacher.extMap.collectCount}人</span>
+        </small></h4>
+        <h4><small><i class="fa fa-weixin fa-fw"></i> 微信号：${teacher.wechat}</small></h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-offset-4 col-md-7" style="margin-top: 16px;">
+        <button type="button" class="btn btn-lg btn-warning" id="tolisten" <#if !userId??><@toggleText msg="您需要登录才能试听"/><#else>data-userid="${userId}" data-toggle="modal" data-target="#actionModal"</#if> style="margin-right: 20px;">立即试听</button>
+        <button type="button" class="btn btn-lg btn-warning" id="toappiont" <#if !userId??><@toggleText msg="您需要登录才能预约"/><#else>data-userid="${userId}" data-toggle="modal" data-target="#actionModal"</#if>>立即预约</button>
+        <span class="pull-right text-danger mr20" style="margin-top: 12px;"><i class="fa fa-phone fa-fw"></i> 电话预约：${teacher.appointmentPhone}</span>
+    </div>
+</div>
+<p class="heading-title"></p>
+
+<ul class="nav nav-tabs" role="tablist">
+    <li class="active"><a href="#info" role="tab" data-toggle="tab">自我介绍</a></li>
+    <li><a href="#video" role="tab" data-toggle="tab">视频展示</a></li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane active" id="info">
+        <h4><span class="label label-default">专家点评：</span></h4>
+        <p>评分： ${teacher.expertScore}分</p>
+        <p>评价： ${teacher.expertComments}分</p>
+        <h4><span class="label label-default">自我介绍：</span></h4>
+        <p>${teacher.selfIntroduction}</p>
+        <h4><span class="label label-default">可授课区域：</span></h4>
+        <p>${teacher.teachingArea}</p>
+        <h4><span class="label label-default">辅导方式：</span></h4>
+        <p>${teacher.tutoringWay}</p>
+        <h4><span class="label label-default">课时收费：</span></h4>
+        <div class="col-md-4">
+            <table class="table table-bordered table-condensed">
+                <thead>
+                <tr>
+                    <th>授课方式</th>
+                    <th>学员程度</th>
+                    <th>费用</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>${teacher.tutoringWay}</td>
+                    <td>${teacher.studentLevel}</td>
+                    <td>${teacher.classFees}元</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row"></div>
+        <h4><span class="label label-default">可授课时间：</span></h4>
+        <div class="col-md-10">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>星期/时间</th>
+                    <th>星期一</th>
+                    <th>星期二</th>
+                    <th>星期三</th>
+                    <th>星期四</th>
+                    <th>星期五</th>
+                    <th>星期六</th>
+                    <th>星期日</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>上午</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>下午</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>晚六点后</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row"></div>
+        <div class="well" style="margin-top: 16px;">
+            <span class="pull-left text-danger mr20" style="margin-top: 12px;"><i class="fa fa-phone fa-fw"></i> 电话预约：${teacher.appointmentPhone}</span>
+            <button type="button" class="btn btn-lg btn-warning" id="toappiont" <#if !userId??><@toggleText msg="您需要登录才能预约"/><#else>data-userid="${userId}" data-toggle="modal" data-target="#actionModal"</#if> style="margin-left: 40px;margin-right: 20px;">立即预约</button>
+            <button type="button" class="btn btn-lg btn-warning" id="tolisten" <#if !userId??><@toggleText msg="您需要登录才能试听"/><#else>data-userid="${userId}" data-toggle="modal" data-target="#actionModal"</#if> style="margin-right: 20px;">立即试听</button>
+            <button type="button" class="btn btn-lg btn-warning" id="toCollect" <#if !userId??><@toggleText msg="您需要登录才能收藏"/><#else>data-userid="${userId}" data-tid="${teacher.userId}"</#if> style="margin-right: 20px;">收藏</button>
+        </div>
+
+    </div>
+    <div class="tab-pane" id="video">
+
+    </div>
+</div>
+<h5><p class="text-warning">教师评论</p></h5>
+<p class="heading-title"></p>
+<div id="comments">
+
+</div>
+<#if userId??>
+    <div class="modal fade" id="actionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel">立即试听</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="courseAction" class="form-horizontal" role="form">
+                        <input id="resourceType" name="resourceType" value="LISTEN_TEACHER" type="hidden"/>
+                        <input id="resourceId" name="resourceId" value="${teacher.userId}" type="hidden"/>
+                        <div class="form-group">
+                            <label for="courseCategory" class="col-md-3 control-label">学习科目：</label>
+                            <div class="col-md-6">
+                                <select class="form-control" id="courseCategory" name="courseCategory">
+                                    <option>TOFEL</option>
+                                    <option>IELTS</option>
+                                    <option>SSAT</option>
+                                    <option>SAT</option>
+                                    <option>ACT</option>
+                                    <option>GRE</option>
+                                    <option>GMAT</option>
+                                    <option>LSAT</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="area" class="col-md-3 control-label">所在地区：</label>
+                            <div class="col-md-6">
+                                <select class="form-control" id="area" name="area">
+                                    <option>静安区</option>
+                                    <option>黄浦区</option>
+                                    <option>卢湾区</option>
+                                    <option>徐汇区</option>
+                                    <option>长宁区</option>
+                                    <option>静安区</option>
+                                    <option>普陀区</option>
+                                    <option>闸北区</option>
+                                    <option>虹口区</option>
+                                    <option>闵行区</option>
+                                    <option>宝山区</option>
+                                    <option>嘉定区</option>
+                                    <option>浦东新区</option>
+                                    <option>金山区</option>
+                                    <option>松江区</option>
+                                    <option>青浦区</option>
+                                    <option>南汇区</option>
+                                    <option>杨浦区</option>
+                                    <option>奉贤区</option>
+                                    <option>崇明县</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="tutoringWay1" class="col-md-3 control-label">学习方式：</label>
+                            <div class="col-md-6">
+                                <label class="radio-inline">
+                                    <input type="radio" name="tutoringWay" id="tutoringWay1" value="STUDENT_VISIT" checked="checked"> 学生上门
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="tutoringWay" id="tutoringWay2" value="TEACHER_VISIT"> 教师上门
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="contacts" class="col-md-3 control-label">联系人：</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="contacts" name="contacts">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="otherContent" class="col-md-3 control-label">补充说明：</label>
+                            <div class="col-md-6">
+                                <textarea class="form-control" id="otherContent" name="otherContent" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="address" class="col-md-3 control-label">联系地址：</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="address" name="address">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="mobile" class="col-md-3 control-label">手机：</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="mobile" name="mobile">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone" class="col-md-3 control-label">固话：</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="phone" name="phone">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="qq" class="col-md-3 control-label">QQ：</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="qq" name="qq">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer" style="text-align: center;">
+                    <button type="button" id="saveAction" class="btn btn-warning btn-lg">立即试听</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</#if>
+<style>
+    .tab-pane{
+        padding:10px 20px;
+    }
+</style>
+<script>
+    $(function(){
+        <#if userId??>
+        $('#tolisten,#toappiont').click(function(){
+            var userId = $(this).data('userid');
+            if(userId!=='') {
+                if($(this).attr('id')=='toappiont'){
+                    $('#myModalLabel,#saveAction').text('立即预约');
+                    $('#resourceType').val('APPOINTMENT_TEACHER');
+                }else{
+                    $('#myModalLabel,#saveAction').text('立即试听');
+                    $('#resourceType').val('LISTEN_TEACHER');
+                }
+            }else{
+                return false;
+            }
+        })
+
+        $('#toCollect').click(function(){
+            var json={};
+            json.teacherId = $(this).data('tid');
+            $.post('${ctx}/mhtCourse/collect',json,function(data){
+                if(data) {
+                    new PNotify({
+                        text: '收藏教师成功.',
+                        animate_speed: 'fast',
+                        type: 'success'
+                    });
+                }
+            })
+        });
+
+        $('#saveAction').click(function(){
+            var json=$('#courseAction').serializeJson();
+            $.post('${ctx}/mhtCourse/appointment',json,function(){
+                $('#actionModal').modal('hide');
+                clearForm($('#courseAction'));
+            })
+        })
+
+        </#if>
+
+        if ($("[data-toggle=tooltip]").length) {
+            $("[data-toggle=tooltip]").tooltip();
+        }
+
+        function clearForm(form) {
+            form.find('input:text,textarea').each(function(){
+                $(this).val('');
+            })
+        }
+    })
+</script>

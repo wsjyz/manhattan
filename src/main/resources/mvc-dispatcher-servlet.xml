@@ -20,12 +20,12 @@
         </mvc:argument-resolvers>
     </mvc:annotation-driven>
 
-    <!--<mvc:interceptors>-->
-        <!--<mvc:interceptor>-->
-            <!--<mvc:mapping path="/users/**"/>-->
-            <!--<bean class="com.manhattan.interceptor.UserInterceptor"></bean>-->
-        <!--</mvc:interceptor>-->
-    <!--</mvc:interceptors>-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/users/**"/>
+            <bean class="com.manhattan.interceptor.UserInterceptor"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
 
     <mvc:default-servlet-handler/>
     <mvc:view-controller path="/" view-name="forward:/app/index"/>

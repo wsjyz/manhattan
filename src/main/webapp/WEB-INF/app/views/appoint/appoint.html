@@ -1,0 +1,123 @@
+<#assign ctx=request.contextPath>
+<div class="container" style="background-color: #FFF;">
+    <div class="row">
+        <div class="col-md-offset-2 col-md-8 border-red" style="padding:20px 20px;">
+        <form id="courseAction" class="form-horizontal" role="form">
+            <input id="resourceType" name="resourceType" value="LISTEN_COURSE" type="hidden"/>
+            <input id="resourceId" name="resourceId" value="${course.courseId}" type="hidden"/>
+            <div class="form-group">
+                <label for="courseCategory" class="col-md-3 control-label">学习科目：</label>
+                <div class="col-md-4">
+                    <select class="form-control" id="courseCategory" name="courseCategory">
+                        <option>TOFEL</option>
+                        <option>IELTS</option>
+                        <option>SSAT</option>
+                        <option>SAT</option>
+                        <option>ACT</option>
+                        <option>GRE</option>
+                        <option>GMAT</option>
+                        <option>LSAT</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="area" class="col-md-3 control-label">所在地区：</label>
+                <div class="col-md-4">
+                    <select class="form-control" id="area" name="area">
+                        <option>静安区</option>
+                        <option>黄浦区</option>
+                        <option>卢湾区</option>
+                        <option>徐汇区</option>
+                        <option>长宁区</option>
+                        <option>静安区</option>
+                        <option>普陀区</option>
+                        <option>闸北区</option>
+                        <option>虹口区</option>
+                        <option>闵行区</option>
+                        <option>宝山区</option>
+                        <option>嘉定区</option>
+                        <option>浦东新区</option>
+                        <option>金山区</option>
+                        <option>松江区</option>
+                        <option>青浦区</option>
+                        <option>南汇区</option>
+                        <option>杨浦区</option>
+                        <option>奉贤区</option>
+                        <option>崇明县</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="tutoringWay1" class="col-md-3 control-label">学习方式：</label>
+                <div class="col-md-4">
+                    <label class="radio-inline">
+                        <input type="radio" name="tutoringWay" id="tutoringWay1" value="STUDENT_VISIT"> 学生上门
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="tutoringWay" id="tutoringWay2" value="TEACHER_VISIT"> 教师上门
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="contacts" class="col-md-3 control-label">联系人：</label>
+                <div class="col-md-4">
+                    <input type="text" class="form-control" id="contacts" name="contacts">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="otherContent" class="col-md-3 control-label">补充说明：</label>
+                <div class="col-md-4">
+                    <textarea class="form-control" id="otherContent" name="otherContent" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="address" class="col-md-3 control-label">联系地址：</label>
+                <div class="col-md-4">
+                    <input type="text" class="form-control" id="address" name="address">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="mobile" class="col-md-3 control-label">手机：</label>
+                <div class="col-md-4">
+                    <input type="text" class="form-control" id="mobile" name="mobile">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="phone" class="col-md-3 control-label">固话：</label>
+                <div class="col-md-4">
+                    <input type="text" class="form-control" id="phone" name="phone">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="qq" class="col-md-3 control-label">QQ：</label>
+                <div class="col-md-4">
+                    <input type="text" class="form-control" id="qq" name="qq">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default">立即预约</button>
+                </div>
+            </div>
+        </form>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+</div>
+<script>
+    $(function(){
+        $('#saveAction').click(function(){
+            var json=$('#courseAction').serializeJson();
+            $.post('${ctx}/mhtCourse/appointment',json,function(data){
+                if(data) {
+                    new PNotify({
+                        text: '预约教师成功.',
+                        animate_speed: 'fast',
+                        type: 'success'
+                    });
+                }
+            })
+            return false;
+        })
+    })
+</script>

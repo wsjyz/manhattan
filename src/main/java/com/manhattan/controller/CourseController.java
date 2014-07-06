@@ -179,7 +179,7 @@ public class CourseController extends BaseController {
         if(appointment != null){
             appointment.setResourceType(MhtConstant.USER_ACTION_APPOINTMENT_COURSE);
             SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            appointment.setAppointmentTime(sdf.format(new Date()));
+            appointment.setAppointmentTime(new Date());
             Appointment app = appointmentService.save(appointment);
             return app;
         }
@@ -194,11 +194,19 @@ public class CourseController extends BaseController {
      */
     @RequestMapping(value = "/addCollect")
     @ResponseBody
-    public void addCollect(@RequestParam String userId,@RequestParam String courseId,HttpServletResponse response){
-        UserAction userAction=userActionService.save(userId, courseId, MhtConstant.USER_ACTION_COLLECT_COURSE);
-        if (userAction == null) {
-            setResponse("收藏课程失败", response);
+    public UserAction addCollect(@RequestParam String userId,@RequestParam String courseId,HttpServletResponse response){
+        UserAction ua=userActionService.findUserAction(userId, courseId, MhtConstant.USER_ACTION_COLLECT_COURSE);
+        if (ua == null) {
+            UserAction userAction=userActionService.save(userId, courseId, MhtConstant.USER_ACTION_COLLECT_COURSE);
+            if (userAction == null) {
+                setResponse("收藏课程失败", response);
+            }else{
+                return userAction;
+            }
+        }else{
+            setResponse("课程已经被收藏", response);
         }
+        return null;
     }
 
     /**

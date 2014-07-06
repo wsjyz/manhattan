@@ -1,0 +1,19 @@
+<#include "/common/webUtils.ftl">
+<#list page.rows as place>
+    <a href="#" class="list-group-item">
+        <div class="media col-md-3">
+            <div class="pull-left">
+                <img class="media-object img-rounded img-responsive avatar" src="${ctx!}${place.mapUrl}"  >
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h4>${place.placeName}</h4>
+            <p><b>开设课程: </b>${place.courseCategory}</p>
+            <p><b>收费标准: </b>${place.fees}</p>
+            <p><b>机构地址: </b>${place.placeAddress}</p>
+            <p class="pull-right">${place.phone}</p>
+        </div>
+    </a>
+</#list>
+<@emptyPage page=page msg="没有任何场地"/>
+<@pageParam/>

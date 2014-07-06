@@ -82,7 +82,7 @@ public class HomeworkController extends BaseController{
 
         String path = confBean.getFileUploadPath()+request.getParameter("homeworkId");
 
-        MultipartFile file = request.getFile("homeworkFile");
+        MultipartFile file = request.getFile("file");
         String originalFilename = file.getOriginalFilename();
         String fileSuffix = originalFilename.substring(originalFilename.indexOf("."),originalFilename.length());
         File targetFile = new File(path, UUIDGen.genShortPK()+fileSuffix);

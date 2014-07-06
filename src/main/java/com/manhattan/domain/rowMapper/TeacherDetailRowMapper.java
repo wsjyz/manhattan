@@ -25,7 +25,7 @@ public class TeacherDetailRowMapper implements RowMapper<TeacherDetail> {
         teacherDetail.setExpertComments(rs.getString("expert_comments"));
         teacherDetail.setTeachingArea(rs.getString("teaching_area"));
         teacherDetail.setTutoringWay(rs.getString("tutoring_way"));
-        teacherDetail.setClassFees(rs.getString("class_fees"));
+        teacherDetail.setClassFees(rs.getBigDecimal("class_fees"));
         teacherDetail.setTeachingTime(rs.getString("teaching_time"));
         teacherDetail.setFinalGraduateSchool(rs.getString("final_graduate_school"));
         teacherDetail.setSpecialty(rs.getString("specialty"));

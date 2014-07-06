@@ -3,6 +3,7 @@ package com.manhattan.dao.impl;
 import com.manhattan.dao.BaseDAO;
 import com.manhattan.dao.ITeacherDetailDao;
 import com.manhattan.dao.UserDAO;
+import com.manhattan.domain.QueryParam;
 import com.manhattan.domain.TeacherDetail;
 import com.manhattan.domain.User;
 import com.manhattan.domain.rowMapper.TeacherDetailRowMapper;
@@ -138,6 +139,49 @@ public class ITeacherDetailDaoImpl extends BaseDAO implements ITeacherDetailDao 
             params.add(page.getPageNo() - 1);
         }
         teacherDetails=getJdbcTemplate().query(selectSql.append("t.*").append(sql).toString(), params.toArray(), new TeacherDetailRowMapper());
+        page.setRows(teacherDetails);
+        return page;
+    }
+
+    @Override
+    public OpenPage<TeacherDetail> findTeachers(OpenPage<TeacherDetail> page, QueryParam queryParam) {
+        StringBuffer selectSql = new StringBuffer("select ");
+        StringBuffer sql = new StringBuffer("");
+        sql.append(" from t_mht_teacher_detail t left join t_mht_user u ");
+        sql.append("on t.user_id=u.user_id ")
+                .append(" where 1=1 ");
+        List<Object> params = new ArrayList<Object>();
+        if (StringUtils.isNotBlank(queryParam.getKeyword())) {
+            sql.append(" and u.user_name like ?");
+            params.add("%"+queryParam.getKeyword()+"%");
+        }
+        if (StringUtils.isNotBlank(queryParam.getSex())) {
+            sql.append(" and u.sex = ?");
+            params.add(queryParam.getSex());
+        }
+        if (StringUtils.isNotBlank(queryParam.getTutoringWay())) {
+            sql.append(" and t.tutoring_way = ?");
+            params.add(queryParam.getTutoringWay());
+        }
+        if (StringUtils.isNotBlank(queryParam.getPlace())) {
+            sql.append(" and t.teaching_area = ?");
+            params.add(com.manhattan.util.StringUtils.formatInStr(queryParam.getPlace()));
+        }
+        sql.append(" and u.type=? ");
+        params.add(MhtConstant.USER_TYPE_TEACHER);
+        List<TeacherDetail> teacherDetails = new ArrayList<TeacherDetail>();
+        if (page.isAutoCount()) {
+            long count = getJdbcTemplate().queryForObject(selectSql.append("count(*) ").append(sql).toString(), params.toArray(),Long.class);
+            page.setTotal(count);
+            selectSql=new StringBuffer("select ");
+        }
+        if (page.isAutoPaging()) {
+            sql.append("limit ? offset ? ");
+            params.add(page.getPageSize());
+            params.add(page.getPageNo() - 1);
+        }
+        teacherDetails=getJdbcTemplate().query(selectSql.append("*").append(sql).toString(), params.toArray(), new TeacherDetailRowMapper());
+        setUsers(teacherDetails);
         page.setRows(teacherDetails);
         return page;
     }

@@ -1,28 +1,18 @@
 package com.manhattan.service.impl;
 
-import com.google.common.collect.ImmutableList;
 import com.manhattan.dao.CourseDao;
 import com.manhattan.dao.ICourseDao;
-import com.manhattan.dao.InformationDao;
 import com.manhattan.dao.TeacherDetailDao;
-import com.manhattan.domain.*;
+import com.manhattan.domain.Course;
+import com.manhattan.domain.QueryParam;
 import com.manhattan.service.CourseService;
-import com.manhattan.util.MhtConstant;
 import com.manhattan.util.OpenPage;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.*;
-import java.sql.Timestamp;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Administrator on 2014/6/12 0012.

@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2014/6/12 0012.
@@ -65,6 +66,9 @@ public class Course {
     private String videoUrl;
     @Column(name = "teaching_time")
     private String teachingTime;
+
+    @Transient
+    private Map<String,Object> extMap;
 
 //    @ManyToOne(cascade=CascadeType.REFRESH,fetch=FetchType.LAZY)
 //    @JoinColumn(name="post_teacher",insertable = false,updatable = false)
@@ -225,4 +229,11 @@ public class Course {
         this.classNo = classNo;
     }
 
+    public Map<String, Object> getExtMap() {
+        return extMap;
+    }
+
+    public void setExtMap(Map<String, Object> extMap) {
+        this.extMap = extMap;
+    }
 }

@@ -12,6 +12,7 @@ public class QueryParam {
     String sex;
     Date appointmentTime;
     String tutoringWay;
+    String keyword;
 
     public String getCourseCategory() {
         return courseCategory;
@@ -51,5 +52,13 @@ public class QueryParam {
 
     public void setAppointmentTime(Date appointmentTime) {
         this.appointmentTime = appointmentTime;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 }

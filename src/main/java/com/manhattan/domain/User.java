@@ -45,7 +45,9 @@ public class User {
     private Date vipExpiredTime;
     @Column
     private String evaluation;
-
+    @Column private String area;
+    @Column(name = "last_login_time") private Date lastLoginTime;
+    @Column private String status;
 //    @OneToMany(cascade=CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy="postTeacher")
 //    private List<Course> courses;
 //    @OneToOne(fetch = FetchType.LAZY,optional = false)
@@ -163,6 +165,30 @@ public class User {
 
     public void setEvaluation(String evaluation) {
         this.evaluation = evaluation;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+
+    public Date getLastLoginTime() {
+        return lastLoginTime;
+    }
+
+    public void setLastLoginTime(Date lastLoginTime) {
+        this.lastLoginTime = lastLoginTime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public TeacherDetail getTeacherDetail() {

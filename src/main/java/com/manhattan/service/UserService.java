@@ -35,4 +35,6 @@ public interface UserService {
     int register(String userId, String password,String type);
 
     OpenPage<User> findUserByTeacherId(OpenPage<User> openPage, String teacherId, String actionType);
+
+    Page findUserByPage(Pageable pageAble, User user);
 }

@@ -1,5 +1,6 @@
 package com.manhattan.service;
 
+import com.manhattan.domain.QueryParam;
 import com.manhattan.domain.TeacherDetail;
 import com.manhattan.util.OpenPage;
 import org.springframework.data.domain.Page;
@@ -16,4 +17,6 @@ public interface TeacherDetailService {
     OpenPage<TeacherDetail> findTeacherByPage(OpenPage<TeacherDetail> page, String searchKey);
 
     TeacherDetail postCourse(TeacherDetail teacherDetail);
+
+    OpenPage<TeacherDetail> findTeacherByPage(OpenPage<TeacherDetail> page, QueryParam queryParam);
 }

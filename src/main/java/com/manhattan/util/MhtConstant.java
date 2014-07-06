@@ -38,7 +38,9 @@ public class MhtConstant {
 
     //关注、评论
     public static final String USER_ACTION_FOLLOW_TEACHER ="FOLLOW_TEACHER";
+    public static final String USER_ACTION_FOLLOW_COURSE ="FOLLOW_COURSE";
     public static final String USER_ACTION_COMMENT_TEACHER ="COMMENT_TEACHER";
+    public static final String USER_ACTION_COMMENT_COURSE ="COMMENT_COURSE";
 
     //充值成功
     public static final String PAY_STATUS_SUCCESS = "SUCCESS";

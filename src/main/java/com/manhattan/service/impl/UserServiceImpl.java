@@ -73,5 +73,16 @@ public class UserServiceImpl implements UserService {
         return iUserDAO.findUserByTeacherId(openPage,teacherId,actionType);
     }
 
+    @Override
+    public Page findUserByPage(Pageable pageAble, User user) {
+        return userDAO.findAll(new Specification<User>() {
+            @Override
+            public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+
+                return null;
+            }
+        },pageAble);
+    }
+
 
 }

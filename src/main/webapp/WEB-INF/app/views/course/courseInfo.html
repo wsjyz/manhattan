@@ -1,15 +1,208 @@
+<#assign ctx=request.contextPath>
+<#include "/common/webUtils.ftl">
 <div class="row marketing">
-    <div class="col-md-6">
+    <div class="col-md-4">
         <p>
-            <img src="${ctx!}/${course.coursePic}" alt="曼哈顿精品课程" class="img-responsive img-rounded center-block">
+            <img src="${ctx!}${course.coursePic}" alt="曼哈顿精品课程" class="img-responsive img-rounded center-block" style="width:356px;height:248px;">
         </p>
     </div>
     <div class="col-md-6">
-        <h4>${course.coursePic}</h4>
-        <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Etiam leo neque, hendrerit et magna ut, viverra consectetur augue.
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        </p>
+        <h4><strong>${course.classNo} ${course.courseTitle}</strong></h4>
+        <h4><small>${course.courseSubtitle}</small></h4>
+        <h4><small>
+            <span style="margin-right: 10px;">开课时间：${course.startTime}</span>
+            <span style="margin-right: 10px;">结束时间：${course.endTime}</span>
+            <span>课时：${course.period}</span>
+        </small></h4>
+        <h4><small><i class="fa fa-map-marker fa-fw"></i> 上课地点：${course.place}</small></h4>
+        <div class="row">
+            <div class="col-md-5">
+                <h2><p class="text-warning"><strong>￥${course.expense} RMB</strong></p></h2>
+            </div>
+            <div class="col-md-7" style="margin-top: 16px;">
+                <button type="button" class="btn btn-lg btn-warning" id="tolisten" <#if !userId??><@toggleText msg="您需要登录才能试听"/><#else>data-userid="${userId}" data-toggle="modal" data-target="#actionModal"</#if> style="margin-right: 20px;">立即试听</button>
+                <button type="button" class="btn btn-lg btn-warning" id="toappiont" <#if !userId??><@toggleText msg="您需要登录才能预约"/><#else>data-userid="${userId}" data-toggle="modal" data-target="#actionModal"</#if>>立即预约</button>
+            </div>
+        </div>
     </div>
 </div>
+<div class="row">
+    <div>
+        <h4 style="margin-left: 10px;"><small>
+            <span class="mr20"><i class="fa fa-heart-o fa-fw"></i> 关注：${course.extMap.followCount}人</span>
+            <span class="mr20"><i class="fa fa-bookmark-o fa-fw"></i> 报名：${course.extMap.appointmentCount}人</span>
+            <span class="mr20"><i class="fa fa-comment-o fa-fw"></i> 评论：${course.extMap.commentCount}人</span>
+            <span class="mr20"><i class="fa fa-star-o fa-fw"></i> 收藏：${course.extMap.collectCount}人</span>
+            <span class="pull-right text-danger mr20" style="margin-top: 7px;"><i class="fa fa-phone fa-fw"></i> 预约电话：${course.appointmentPhone}</span>
+        </small></h4>
+        <p class="heading-title"></p>
+        <h5 class="text-warning">课程简介：</h5>
+        <p>${course.courseIntro}</p>
+        <p class="heading-title"></p>
+        <p class="text-warning">主讲教师：</p>
+        <div id="teacherList" style="overflow-x: auto;overflow-y: hidden;height: 300px;">
+        <#list course.teacherDetailList as teacher>
+            <div class="col-md-3" style="width:250px;">
+                <div class="thumbnail">
+                    <img src="${ctx!}/${teacher.user.avatar}" alt="教师" style="width:170px;height: 150px;">
+                    <div class="caption">
+                        <h5>${teacher.user.userName}</h5>
+                        <p>教授课程：${teacher.courseCategory}</p>
+                        <p>信用等级：<#if teacher.user.credits??><@stars count=teacher.user.credits/></#if></p>
+                        <p>
+                            <a href="javascript:void(0);" data-userid="${teacher.userId}" class="btn btn-warning btn-block" role="button"><i class="fa fa-heart-o fa-fw"></i> 详细介绍</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </#list>
+        </div>
+    </div>
+</div>
+<#if userId??>
+<div class="modal fade" id="actionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">立即试听</h4>
+            </div>
+            <div class="modal-body">
+                <form id="courseAction" class="form-horizontal" role="form">
+                    <input id="resourceType" name="resourceType" value="LISTEN_COURSE" type="hidden"/>
+                    <input id="resourceId" name="resourceId" value="${course.courseId}" type="hidden"/>
+                    <div class="form-group">
+                        <label for="courseCategory" class="col-md-3 control-label">学习科目：</label>
+                        <div class="col-md-6">
+                            <select class="form-control" id="courseCategory" name="courseCategory">
+                                <option>TOFEL</option>
+                                <option>IELTS</option>
+                                <option>SSAT</option>
+                                <option>SAT</option>
+                                <option>ACT</option>
+                                <option>GRE</option>
+                                <option>GMAT</option>
+                                <option>LSAT</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="area" class="col-md-3 control-label">所在地区：</label>
+                        <div class="col-md-6">
+                            <select class="form-control" id="area" name="area">
+                                <option>静安区</option>
+                                <option>黄浦区</option>
+                                <option>卢湾区</option>
+                                <option>徐汇区</option>
+                                <option>长宁区</option>
+                                <option>静安区</option>
+                                <option>普陀区</option>
+                                <option>闸北区</option>
+                                <option>虹口区</option>
+                                <option>闵行区</option>
+                                <option>宝山区</option>
+                                <option>嘉定区</option>
+                                <option>浦东新区</option>
+                                <option>金山区</option>
+                                <option>松江区</option>
+                                <option>青浦区</option>
+                                <option>南汇区</option>
+                                <option>杨浦区</option>
+                                <option>奉贤区</option>
+                                <option>崇明县</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="tutoringWay1" class="col-md-3 control-label">学习方式：</label>
+                        <div class="col-md-6">
+                            <label class="radio-inline">
+                                <input type="radio" name="tutoringWay" id="tutoringWay1" value="STUDENT_VISIT"> 学生上门
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="tutoringWay" id="tutoringWay2" value="TEACHER_VISIT"> 教师上门
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="contacts" class="col-md-3 control-label">联系人：</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="contacts" name="contacts">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="otherContent" class="col-md-3 control-label">补充说明：</label>
+                        <div class="col-md-6">
+                            <textarea class="form-control" id="otherContent" name="otherContent" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="address" class="col-md-3 control-label">联系地址：</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="address" name="address">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="mobile" class="col-md-3 control-label">手机：</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="mobile" name="mobile">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone" class="col-md-3 control-label">固话：</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="phone" name="phone">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="qq" class="col-md-3 control-label">QQ：</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="qq" name="qq">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="text-align: center;">
+                <button type="button" id="saveAction" class="btn btn-warning btn-lg">立即试听</button>
+            </div>
+        </div>
+    </div>
+</div>
+</#if>
+<script>
+    <#if userId??>
+    $('#tolisten,#toappiont').click(function(){
+        var userId = $(this).data('userid');
+        if(userId!=='') {
+            if($(this).attr('id')=='toappiont'){
+                $('#myModalLabel,#saveAction').text('立即预约');
+                $('#resourceType').val('APPOINTMENT_COURSE');
+            }else{
+                $('#myModalLabel,#saveAction').text('立即试听');
+                $('#resourceType').val('LISTEN_COURSE');
+            }
+        }else{
+            return false;
+        }
+    })
+
+    $('#saveAction').click(function(){
+        var json=$('#courseAction').serializeJson();
+        $.post('${ctx}/mhtCourse/appointment',json,function(){
+            $('#actionModal').modal('hide');
+        })
+    })
+
+    </#if>
+
+    $('#teacherList a').click(function(){
+        var userId = $(this).data('userid');
+        $('#courseContent').html('').load('${ctx!}/teachers/view',{teacherId:userId},function(){
+            $('#cousemsg').hide();
+        })
+    });
+
+    if ($("[data-toggle=tooltip]").length) {
+        $("[data-toggle=tooltip]").tooltip();
+    }
+</script>

@@ -1,0 +1,36 @@
+<#assign ctx=request.contextPath>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 toppad">
+            <div class="panel panel-info" style="margin-bottom: 0px;">
+                <div class="panel-heading">
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="placeList" class="list-group">
+                            </div>
+                            <div class="pagination pull-right"><ul id="pagination"class="pagination-sm pull-right"></ul></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function() {
+        var pageUrl = '${ctx!}/place/placeList';
+        $('#placeList').load(pageUrl,function(){
+            var totalPages=parseInt($('#totalPages').val());
+            var pageSize=parseInt($('#pageSize').val());
+            $('#pagination').twbsPagination({
+                totalPages: totalPages,
+                visiblePages: totalPages%10,
+                onPageClick: function (event, page) {
+                    $('#placeList').load(pageUrl,{"pageSize":pageSize,"pageNo":page});
+                }
+            });
+        });
+    );
+</script>

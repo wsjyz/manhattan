@@ -1,1 +1,182 @@
-${user.userId}
+<#assign ctx=request.contextPath>
+<link rel="stylesheet" href="${ctx}/styles/course.css"/>
+<style>
+span.label,.labels small span{
+    font-size: inherit;
+    margin-right: 10px;
+}
+div{
+    background-color: #FFF;
+}
+</style>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <img src="${ctx}/images/index/img1.png" alt=""/>
+        </div>
+        <div class="col-md-4 border-red" style="height: 320px;">
+            <div class="panel panel-danger">
+                <div class="panel-heading" style="background-color:#FE4141;color:#ccc;">最新动态
+                    <a class="pull-right" style="color: #ccc;cursor: pointer;">更多<i class="fa fa-angle-double-right fa-fw"></i> </a>
+                </div>
+                <ul class="list-group">
+                    <#list page.rows as item>
+                        <li class="list-group-item"><i class="fa fa-caret-right fa-fw"></i> ${item.title}</li>
+                    </#list>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row border-red" style="margin-top: 10px;padding:20px 20px;">
+        <div class="container" id="filter">
+            <form id="searchForm" class="form-horizontal" role="form">
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="keyword" style="margin-left: -80px;">搜索关键词：</label>
+                <div class="col-md-4" style="margin-top: 5px;">
+                    <input class="form-inline" type="text" id="keyword" name="keyword">
+                    <button class="btn btn-default btn-sm" id="search">search</button>
+                </div>
+            </div>
+            <p class="heading-title"></p>
+            <h4 id="courseCategory" class="labels"><small>课程分类：
+                <span class="label label-info allitem">不限</span>
+                <span>TOFEL</span>
+                <span>IELTS</span>
+                <span>SSAT</span>
+                <span>SAT</span>
+                <span>ACT</span>
+                <span>GRE</span>
+                <span>GMAT</span>
+                <span>LSAT</span>
+            </small></h4>
+            <p class="heading-title"></p>
+            <h4 id="tutoringWay" class="labels"><small>教学方式：
+                <span class="label label-info allitem">不限</span>
+                <span>学生上门</span>
+                <span>教师上门</span>
+            </small></h4>
+            <p class="heading-title"></p>
+            <h4 id="sex" class="labels"><small>教师性别：
+                <span class="label label-info allitem">不限</span>
+                <span>男</span>
+                <span>女</span>
+            </small></h4>
+            <p class="heading-title"></p>
+                <div class="row">
+                    <div class="col-md-2"><h4 class="labels"><small>授课范围：</small></h4></div>
+                    <div class="col-md-10" style="margin-left: -120px;">
+                        <h4 id="teachingArea" class="labels"><small>
+                            <span class="label label-info allitem">不限</span>
+                            <span>黄浦区</span>
+                            <span>卢湾区</span>
+                            <span>徐汇区</span>
+                            <span>长宁区</span>
+                            <span>静安区</span>
+                            <span>普陀区</span>
+                            <span>闸北区</span>
+                            <span>虹口区</span>
+                            <span>闵行区</span><br/>
+                            <span id="bsq" style="margin-left: 60px;margin-top: 10px;">宝山区</span>
+                            <span style="margin-top: 10px;">嘉定区</span>
+                            <span style="margin-top: 10px;">浦东新区</span>
+                            <span style="margin-top: 10px;">金山区</span>
+                            <span style="margin-top: 10px;">松江区</span>
+                            <span style="margin-top: 10px;">青浦区</span>
+                            <span style="margin-top: 10px;">南汇区</span>
+                            <span style="margin-top: 10px;">杨浦区</span>
+                            <span style="margin-top: 10px;">奉贤区</span>
+                            <span style="margin-top: 10px;">崇明县</span>
+                        </small></h4>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+    <div class="row border-red" style="margin-top: 10px;padding:20px 20px;">
+        <div>
+            <img src="${ctx!}/images/index/niceteacher.png" style="margin-top:-32px;margin-left:30px;"/>
+        </div>
+        <div id="carousel-example" class="carousel slide hidden-xs" data-ride="carousel">
+            <div class="carousel-inner">
+                <div class="item active">
+                    <div id="teachers" class="row" style="padding:10px 20px;">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row border-red" style="margin-top: 10px;padding:20px 20px;">
+        <div>
+            <img src="${ctx!}/images/index/teacher.png" style="margin-top:-32px;margin-left:30px;"/>
+        </div>
+        <div class="carousel slide hidden-xs" data-ride="carousel">
+            <div class="carousel-inner">
+                <div class="item active">
+                    <div id="teacherList" class="row" style="padding:10px 20px;">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row border-red" style="margin-top: 10px;padding:20px 20px;">
+        <div class="col-md-8">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="active"><a href="#home" role="tab" data-toggle="tab">教师热评榜</a></li>
+                <li><a href="#profile" role="tab" data-toggle="tab">最新预约记录</a></li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div class="tab-pane active" id="home">...</div>
+                <div class="tab-pane" id="profile">...</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">精彩回答
+                    <a class="pull-right" style="color: #ccc;cursor: pointer;">更多<i class="fa fa-angle-double-right fa-fw"></i> </a>
+                </div>
+                <ul class="list-group">
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+$(function(){
+    $('#teachers').load('${ctx!}/teachers/teacherList');
+    $('#teacherList').load('${ctx!}/teachers/teacherList');
+    $('#filter h4.labels span').click(function(){
+        if($(this).hasClass('label')){
+            $(this).addClass('label').removeClass('label').removeClass('label-info');
+        }else{
+            $(this).siblings().removeClass('label').removeClass('label-info');
+            $(this).addClass('label').addClass('label-info');
+            if($(this).attr('id')=='bsq'){
+                $(this).css({"margin-left":'33px'});
+            }
+        }
+
+    })
+
+    $('#search').click(function(){
+        var json={};
+        json['keyword']=$('#keyword').val();
+        json['courseCategory'] = defaultEmpty($('#courseCategory span.label').text(),'不限');
+        json['tutoringWay'] = defaultEmpty($('#tutoringWay span.label').text(),'不限');
+        json['sex'] = defaultEmpty($('#sex span.label').text(),'不限');
+        json['teachingArea'] = defaultEmpty($('#teachingArea span.label').text(),'不限');
+        $('#teachers').load('${ctx!}/teachers/teacherList',json);
+        return false;
+    })
+
+    function defaultEmpty(value,dvalue){
+        return value==dvalue?'':value;
+    }
+})
+</script>

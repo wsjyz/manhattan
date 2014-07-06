@@ -1,7 +1,7 @@
 <#assign ctx=request.contextPath>
 <link rel="stylesheet" href="${ctx}/styles/course.css"/>
-<div id="courseContent" class="container border-red" style="padding:20px 20px;">
-    <h4><p class="text-danger">曼哈顿精品课堂</p></h4>
+<div id="courseContent" class="container border-red" style="padding:20px 50px;">
+    <h5><p class="text-danger"><strong>曼哈顿精品课堂</strong></p></h5>
     <div class="row">
         <div id="carousel-example" class="carousel slide hidden-xs" data-ride="carousel">
             <div class="carousel-inner">
@@ -13,7 +13,15 @@
             </div>
         </div>
     </div>
-    <div class="pagination pull-right"><ul id="pagination"class="pagination-sm pull-right"></ul></div>
+    <div class="pagination pull-right"><ul id="pagination" class="pagination-sm pull-right"></ul></div>
+</div>
+<div id="cousemsg" class="container border-grey" style="margin-top: 50px;padding:10px 50px;display: none;">
+    <p style="height: 40px;"><img src="${ctx}/images/phone.png" alt="咨询电话"/>免费咨询电话：400-021-6168 <a href="http://www.shmhdengliseh.com" class="pull-right" style="margin-top: 20px;">http://www.shmhdengliseh.com</a></p>
+    <p class="heading-title"></p>
+    <p>静安寺：愚园309号紫安大厦（2/7号线静安寺站）</p>
+    <p>徐家汇：虹桥路188号元福大厦2604室（1/9/11号线徐家汇站）</p>
+    <p>闵七宝：合川路虹泉路新乐坊3楼（9号线合川路站）</p>
+    <p>浦联洋：锦绣路888弄御景园会所2楼（9号线杨高中路站、2号线科技馆站）</p>
 </div>
 <script>
 $(function() {
@@ -23,16 +31,18 @@ $(function() {
         var pageSize=parseInt($('#pageSize').val());
         $('#pagination').twbsPagination({
             totalPages: totalPages,
-            visiblePages: totalPages%5,
+            visiblePages: totalPages%10,
             onPageClick: function (event, page) {
                 $('#courses').load(pageUrl,{userId:'${user.userId}',"pageSize":pageSize,"pageNo":page});
             }
         });
     });
 
-    $('#course').on('click','a.order', function () {
+    $('#courseContent').on('click','a.order', function () {
         var courseId = $(this).data("id");
-        $('#courseContent').html('').load('${ctx!}/mhtCourse/courseInfo',{'courseId':courseId});
+        $('#courseContent').html('').load('${ctx!}/mhtCourse/courseInfo',{'courseId':courseId},function(){
+            $('#cousemsg').show();
+        });
     })
 
 });

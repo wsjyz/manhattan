@@ -31,8 +31,10 @@ public interface UserDAO extends JpaRepository<User, String>,JpaSpecificationExe
     
     @Modifying
     @Transactional
-    @Query(value = "update User u set u.password=?2,u.type=?3 where u.userId=?1")
+    @Query(value = "update User u set u.password=?2,u.type=?3,u.status='ENABLE' where u.userId=?1")
     int updateUser(String userId, String password, String type);
 
     Page<User> findByUserNameLikeAndType(String userName, String teacher,Pageable pageAble);
+
+    Page findByMobileLikeAndUserNameLike(String mobile,String userName, Pageable pageAble);
 }

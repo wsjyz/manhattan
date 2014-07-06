@@ -26,7 +26,10 @@ $(function(){
 
     var els='.wallet,.myListen,.myAppointment,.myHomework,.myCollect,.systemInfo,.setPass';
 
-    $(els).on('click',function(){myhandle()});
+    $(els).click(function(){
+        var page=page||$(this).attr('class');
+        $('#data-content').html('').load('${ctx!}/users/data/'+page+'?userId=${user.userId}');
+    });
 
     <#if item??>
     myhandle('${item}');
@@ -34,6 +37,7 @@ $(function(){
 
 })
 function myhandle(page){
+    console.log($(this).attr('class'));
     var page=page||$(this).attr('class');
     $('#data-content').html('').load('${ctx!}/users/data/'+page+'?userId=${user.userId}');
 }

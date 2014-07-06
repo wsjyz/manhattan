@@ -28,6 +28,9 @@ public class UserRowMapper implements RowMapper<User> {
         user.setWallet(rs.getBigDecimal("wallet"));
         user.setVipExpiredTime(rs.getDate("vip_end_time"));
         user.setEvaluation(rs.getString("evaluation"));
+        user.setArea(rs.getString("area"));
+        user.setLastLoginTime(rs.getDate("last_login_time"));
+        user.setStatus(rs.getString("status"));
         return user;
     }
 }

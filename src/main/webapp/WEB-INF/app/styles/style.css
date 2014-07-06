@@ -918,7 +918,7 @@ a.accordion-toggle.expanded, .accordion-button > a.expanded {
 	color: #373E44;
 	margin-bottom:10px;
 	padding-bottom:10px;
-	background: url("../img/normal-bar.png") repeat-x bottom left;
+	background: url("../images/normal-bar.png") repeat-x bottom left;
 	font-weight:700;
 	font-size:12px;
 	line-height:20px;

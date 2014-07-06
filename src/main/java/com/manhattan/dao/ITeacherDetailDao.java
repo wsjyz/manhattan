@@ -1,5 +1,6 @@
 package com.manhattan.dao;
 
+import com.manhattan.domain.QueryParam;
 import com.manhattan.domain.TeacherDetail;
 import com.manhattan.util.OpenPage;
 
@@ -14,4 +15,6 @@ public interface ITeacherDetailDao {
     TeacherDetail findByUserId(String userId);
 
     OpenPage<TeacherDetail> findTeachersByUserIdAndAction(OpenPage<TeacherDetail> page, String userId, String userAction);
+
+    OpenPage<TeacherDetail> findTeachers(OpenPage<TeacherDetail> page, QueryParam queryParam);
 }

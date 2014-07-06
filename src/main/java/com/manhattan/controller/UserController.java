@@ -2,6 +2,7 @@ package com.manhattan.controller;
 
 import com.manhattan.domain.HomeWork;
 import com.manhattan.domain.TeacherDetail;
+import com.manhattan.domain.User;
 import com.manhattan.domain.Wallet;
 import com.manhattan.service.HomeWorkService;
 import com.manhattan.service.TeacherDetailService;
@@ -83,6 +84,23 @@ public class UserController {
             }
         }
         view.setViewName("views/user/"+list);
+        return view;
+    }
+
+    @RequestMapping(value = "/list")
+    public ModelAndView list() {
+        ModelAndView view = new ModelAndView();
+        view.setViewName("views/admin/accounts");
+        return view;
+    }
+
+    @RequestMapping(value = "/listUser")
+    public ModelAndView listUser(@ModelAttribute OpenPage page,@ModelAttribute User user) {
+        ModelAndView view = new ModelAndView();
+        Pageable pageAble = new PageRequest(page.getPageNo()-1, page.getPageSize());
+        Page resPage=userService.findUserByPage(pageAble, user);
+        view.addObject("page", PageConvert.convert(resPage));
+        view.setViewName("views/admin/listUser");
         return view;
     }
 }

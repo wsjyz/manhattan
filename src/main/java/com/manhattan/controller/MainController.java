@@ -1,13 +1,19 @@
 package com.manhattan.controller;
 
+import com.manhattan.domain.Information;
 import com.manhattan.domain.User;
+import com.manhattan.service.InformationService;
+import com.manhattan.service.PlaceService;
+import com.manhattan.service.QuestionService;
 import com.manhattan.service.UserService;
-import com.manhattan.util.FastJson;
-import com.manhattan.util.JsonResult;
-import com.manhattan.util.MhtConstant;
+import com.manhattan.util.*;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +26,12 @@ public class MainController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private InformationService informationService;
+    @Autowired
+    private QuestionService questionService;
+    @Autowired
+    private PlaceService placeService;
 
     @RequestMapping(value={"/","/index"})
 	public ModelAndView index(HttpSession session) {
@@ -33,7 +45,28 @@ public class MainController {
         return view;
     }
 
-    @RequestMapping("/users/relogin")
+    @RequestMapping("/admin")
+    public ModelAndView admin(HttpSession session) {
+        ModelAndView view = new ModelAndView();
+        view.setViewName("views/admin/manage");
+        return view;
+    }
+
+    @RequestMapping("/tologin")
+    public ModelAndView tologin() {
+        ModelAndView view = new ModelAndView();
+        view.setViewName("views/user/login");
+        return view;
+    }
+
+    @RequestMapping("/toregister")
+    public ModelAndView toregister() {
+        ModelAndView view = new ModelAndView();
+        view.setViewName("views/user/register");
+        return view;
+    }
+
+    @RequestMapping("/relogin")
     public ModelAndView relogin(HttpSession session) {
         ModelAndView view = new ModelAndView();
         view.addObject("tologin", "true");
@@ -71,8 +104,63 @@ public class MainController {
         if (StringUtils.isNotEmpty(userId)) {
             view.addObject("user", userService.load(userId));
         }
+        Pageable pageAble = new PageRequest(0, 7);
+        Page<Information> page = informationService.getInformations(pageAble);
+        view.addObject("page", page);
         view.setViewName("views/main");
         return view;
     }
 
+    @RequestMapping("/place/list")
+    public ModelAndView index() {
+        ModelAndView view = new ModelAndView();
+        view.setViewName("views/place/list");
+        return view;
+    }
+
+    @RequestMapping("/place/placeList")
+    public ModelAndView placeList(@ModelAttribute OpenPage page) {
+        ModelAndView view = new ModelAndView();
+        Pageable pageAble = new PageRequest(page.getPageNo()-1, page.getPageSize());
+        Page respage=placeService.listByPage(pageAble);
+        view.addObject("page", PageConvert.convert(respage));
+        view.setViewName("views/place/placeList");
+        return view;
+    }
+
+    @RequestMapping("/appoint")
+    public ModelAndView appoint() {
+        ModelAndView view = new ModelAndView();
+        view.setViewName("views/appoint/appoint");
+        return view;
+    }
+
+    @RequestMapping("/question/questions")
+    public ModelAndView question() {
+        ModelAndView view = new ModelAndView();
+        view.setViewName("views/question/questions");
+        return view;
+    }
+
+    @RequestMapping("/question/questionList")
+    public ModelAndView questionList(@ModelAttribute OpenPage page) {
+        ModelAndView view = new ModelAndView();
+        Pageable pageAble = new PageRequest(page.getPageNo()-1, page.getPageSize());
+        Page respage=questionService.findQuestionByPage("",pageAble);
+        view.addObject("page", PageConvert.convert(respage));
+        view.setViewName("views/question/questionList");
+        return view;
+    }
+
+    @RequestMapping("/question/myQuestion")
+    public ModelAndView myQuestion(@ModelAttribute OpenPage page,HttpSession session) {
+        ModelAndView view = new ModelAndView();
+        Pageable pageAble = new PageRequest(page.getPageNo()-1, page.getPageSize());
+        Object userId=session.getAttribute(MhtConstant.SEESION_USER_ID);
+        if (userId != null) {
+            questionService.findQuestionByPage(userId.toString(),pageAble);
+        }
+        view.setViewName("views/question/myQuestion");
+        return view;
+    }
 }

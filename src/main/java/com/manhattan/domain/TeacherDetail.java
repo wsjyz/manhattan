@@ -4,6 +4,7 @@ package com.manhattan.domain;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +42,7 @@ public class TeacherDetail {
     @Column(name = "student_level")
     private String studentLevel;
     @Column(name = "class_fees")
-    private String classFees;
+    private BigDecimal classFees;
     @Column(name = "teaching_time")
     private String teachingTime;
     @Column(name = "final_graduate_school")
@@ -175,11 +176,11 @@ public class TeacherDetail {
         this.tutoringWay = tutoringWay;
     }
 
-    public String getClassFees() {
+    public BigDecimal getClassFees() {
         return classFees;
     }
 
-    public void setClassFees(String classFees) {
+    public void setClassFees(BigDecimal classFees) {
         this.classFees = classFees;
     }
 
