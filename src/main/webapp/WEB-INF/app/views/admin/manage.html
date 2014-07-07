@@ -33,6 +33,7 @@
     <script src="${ctx}/bower_components/bootstrap/js/bootstrap.min.js"></script>
     <script src="${ctx}/bower_components/pagination/jquery.twbsPagination.js"></script>
     <script src="${ctx}/bower_components/pnotify/pnotify.custom.min.js"></script>
+    <script src="${ctx}/scripts/jquery.form.js"></script>
     <script src="${ctx}/scripts/resource.js"></script>
 
 </head>
@@ -58,9 +59,9 @@
                 <li class="active"><a href="javascript:void(0);" id="account">账号管理</a></li>
                 <li><a href="javascript:void(0);" id="approve">教师审核</a></li>
                 <li><a href="javascript:void(0);" id="post" >内容发布</a></li>
-                <li><a href="javascript:void(0);" id="list">列表管理</a></li>
+                <li><a href="javascript:void(0);" id="contentlist">列表管理</a></li>
                 <li><a href="javascript:void(0);" id="param">参数设置</a></li>
-                <li><a href="javascript:void(0);" id="record">交易记录</a></li>
+                <!--<li><a href="javascript:void(0);" id="record">交易记录</a></li>-->
                 <li><a href="javascript:void(0);" id="exit">退出</a></li>
             </ul>
         </div>
@@ -75,7 +76,15 @@
 <script>
 $(function(){
     $('#account').click(function(){
-        $('#content').load('${ctx}/users/list');
+        $('#content').load('${ctx}/users/admin/list');
     })
+    $('#approve,#post,#contentlist').click(function(){
+        $('.active').removeClass('active');
+        $(this).parent('li').addClass('active');
+        var id = $(this).attr('id');
+        $('#content').load('${ctx}/users/admin/'+id);
+    })
+
+    $('#account').trigger('click');
 })
 </script>

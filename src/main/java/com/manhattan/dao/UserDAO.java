@@ -37,4 +37,9 @@ public interface UserDAO extends JpaRepository<User, String>,JpaSpecificationExe
     Page<User> findByUserNameLikeAndType(String userName, String teacher,Pageable pageAble);
 
     Page findByMobileLikeAndUserNameLike(String mobile,String userName, Pageable pageAble);
+
+    @Modifying
+    @Transactional
+    @Query(value = "update User u set u.status=:status where u.userId=:userId")
+    void updateUserStatus(@Param("userId")String userId,@Param("status") String status);
 }

@@ -1,0 +1,148 @@
+<#assign ctx=request.contextPath>
+<div class="container">
+    <div class="row">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="active"><a href="#course" role="tab" data-toggle="tab">课程</a></li>
+            <li><a href="#information" role="tab" data-toggle="tab">资讯</a></li>
+            <li><a href="#place" role="tab" data-toggle="tab">场地</a></li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content" style="padding:20px 20px;">
+            <div class="tab-pane active" id="course">
+                <form class="form-horizontal" method="post" action="${ctx}/users/admin/postCourse" id="courseForm">
+                    <div class="form-group">
+                        <label for="title" class="col-md-2 control-label">标题</label>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" id="title" name="courseTitle">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="subtitle" class="col-md-2 control-label">副标题</label>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" id="subtitle" name="courseSubtitle">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="expense" class="col-md-2 control-label">费用</label>
+                        <div class="col-md-3 input-group" style="padding-left: 15px;">
+                            <input type="text" class="form-control" id="expense" name="expense">
+                            <span class="input-group-addon">RMB</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="startTime" class="col-md-2 control-label">开课时间</label>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" id="startTime" name="startTime">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="endTime" class="col-md-2 control-label">结课时间</label>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" id="endTime" name="endTime">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="period" class="col-md-2 control-label">课时</label>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" id="period" name="period">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="cplace" class="col-md-2 control-label">上课地点</label>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" id="cplace" name="place">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="teachers" class="col-md-2 control-label">主讲教师</label>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" id="teachers" name="teachers">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="courseIntro" class="col-md-2 control-label">课程简介</label>
+                        <div class="col-md-3">
+                            <textarea class="form-control" id="courseIntro" name="courseIntro"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <button type="submit" class="btn btn-primary" id="postCourse">发布</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="tab-pane" id="information">
+                <form class="form-horizontal" method="post" action="${ctx}/users/admin/postInfo" id="infoForm">
+                    <div class="form-group">
+                        <label for="ititle" class="col-md-2 control-label">标题</label>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" id="ititle" name="title">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="icontent" class="col-md-2 control-label">内容</label>
+                        <div class="col-md-3">
+                            <textarea class="form-control" id="icontent" name="content"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <button type="submit" class="btn btn-primary" id="postInfo">发布</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="tab-pane" id="place">
+                <form class="form-horizontal" method="post" action="${ctx}/users/admin/postPlace" id="placeForm">
+                    <div class="form-group">
+                        <label for="placeName" class="col-md-2 control-label">标题</label>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" id="placeName" name="placeName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="courseCategory" class="col-md-2 control-label">开设课程</label>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" id="courseCategory" name="courseCategory">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="fees" class="col-md-2 control-label">收费标准</label>
+                        <div class="col-md-3 input-group" style="padding-left: 15px;">
+                            <input type="text" class="form-control" id="fees" name="fees">
+                            <span class="input-group-addon">RMB</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="placeAddress" class="col-md-2 control-label">机构地址</label>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" id="placeAddress" name="placeAddress">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone" class="col-md-2 control-label">联系电话</label>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" id="phone" name="phone">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <button type="submit" class="btn btn-primary" id="postPlace">发布</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function(){
+        $('#courseForm').submit(function() {
+            $(this).ajaxSubmit();
+            return false;
+        });
+    })
+</script>

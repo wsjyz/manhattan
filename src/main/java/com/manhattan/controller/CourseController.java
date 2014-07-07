@@ -177,8 +177,8 @@ public class CourseController extends BaseController {
     @ResponseBody
     public Appointment addAppointment(@FastJson Appointment appointment,HttpServletResponse response) {
         if(appointment != null){
-            appointment.setResourceType(MhtConstant.USER_ACTION_APPOINTMENT_COURSE);
-            SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//            appointment.setResourceType(MhtConstant.USER_ACTION_APPOINTMENT_COURSE);
+//            SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             appointment.setAppointmentTime(new Date());
             Appointment app = appointmentService.save(appointment);
             return app;

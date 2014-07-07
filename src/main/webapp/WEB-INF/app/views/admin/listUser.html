@@ -1,14 +1,77 @@
-<#list page.rows as user>
-<tr>
-    <td>${user.mobile}</td>
-    <td>${user.userName}</td>
-    <td>${user.type}</td>
-    <td>
-        <a href="javascript:void(0);">删除</a>
-        <a href="javascript:void(0);">禁用</a>
-        <a href="javascript:void(0);">查看</a>
-    </td>
-</tr>
+<#include "/common/webUtils.ftl">
+<#assign ctx=request.contextPath>
+<table class="table table-bordered table-responsive table-striped" id="userTable">
+    <thead>
+    <tr>
+        <th>手机号</th>
+        <th>姓名</th>
+        <th>分类</th>
+        <th>功能</th>
+    </tr>
+    </thead>
+    <tbody>
+    <#list page.rows as user>
+    <tr>
+        <td>${user.mobile}</td>
+        <td>${user.userName}</td>
+        <td>
+            <#if '${user.type}'=='STUDENT'>
+                学生
+            <#elseif '${user.type}'=='VIPSTUDENT'>
+                VIP学生
+            <#else>
+                教师
+            </#if>
+        </td>
+        <td>
+            <a href="javascript:void(0);" data-id="${user.userId}" data-opt="delete">删除</a>
+            <#if '${user.status}'=='DISABLE'>
+                <a href="javascript:void(0);" data-id="${user.userId}" data-opt="enable">启用</a>
+            <#else>
+                <a href="javascript:void(0);" data-id="${user.userId}" data-opt="disable">禁用</a>
+            </#if>
+            <a href="javascript:void(0);" data-id="${user.userId}" data-opt="view">查看</a>
+        </td>
+    </tr>
 </#list>
+    </tbody>
+</table>
 <@emptyPage page=page msg="没有任何人员"/>
 <@pageParam/>
+<script>
+$(function(){
+    $('#userTable').on('click','a',function(event){
+        event.preventDefault();
+        var userId = $(this).data('id');
+        var opt = $(this).data('opt');
+        if(opt=='delete'){
+            $.post('${ctx}/users/admin/delete',{userId:userId},function(){
+                new PNotify({
+                    text: '删除用户成功.',
+                    animate_speed: 'fast',
+                    type: 'success'
+                });
+            })
+        }else if(opt=='disable'){
+            $.post('${ctx}/users/admin/disable',{userId:userId},function(){
+                new PNotify({
+                    text: '禁用用户成功.',
+                    animate_speed: 'fast',
+                    type: 'success'
+                });
+            })
+        }else if(opt=='enable'){
+            $.post('${ctx}/users/admin/enable',{userId:userId},function(){
+                new PNotify({
+                    text: '启用用户成功.',
+                    animate_speed: 'fast',
+                    type: 'success'
+                });
+            })
+        }else if(opt=='view'){
+            $('#content').load('${ctx}/users/admin/view',{userId:userId},function(){});
+        }
+
+    })
+})
+</script>

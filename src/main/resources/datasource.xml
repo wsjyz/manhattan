@@ -49,10 +49,10 @@
             <value>${jdbc.driverClassName}</value>
         </property>
         <property name="driverUrl">
-            <value>jdbc:mysql://203.195.131.34:3306/manhattan?characterEncoding=utf-8&amp;user=root&amp;password=8hinfoMysqlTest</value>
+            <value>${jdbc.url}</value>
         </property>
-        <property name="user" value="root" />
-        <property name="password" value="8hinfoMysqlTest" />
+        <property name="user" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
         <property name="alias" value="Pool_dbname" />
         <property name="houseKeepingSleepTime" value="90000" />
         <property name="prototypeCount" value="0" />

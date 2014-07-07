@@ -37,4 +37,8 @@ public interface UserService {
     OpenPage<User> findUserByTeacherId(OpenPage<User> openPage, String teacherId, String actionType);
 
     Page findUserByPage(Pageable pageAble, User user);
+
+    void deleteUser(String userId);
+
+    void updateUserStatus(String userId,String status);
 }

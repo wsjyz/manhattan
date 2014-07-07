@@ -10,42 +10,47 @@
                 <label for="userName">姓名：</label>
                 <input type="text" class="form-control" id="userName" name="userName">
             </div>
-            <button type="submit" class="btn btn-default">查找</button>
+            <button id="findUser" type="submit" class="btn btn-default">查找</button>
         </form>
         <div class="col-md-10" style="margin-top:20px;">
-        <table class="table table-bordered table-responsive table-striped">
-            <thead>
-            <tr>
-                <th>手机号</th>
-                <th>姓名</th>
-                <th>分类</th>
-                <th>功能</th>
-            </tr>
-            </thead>
-            <tbody id="tds">
+            <div id="tds">
 
-            </tbody>
-        </table>
-            <div class="pagination pull-right"><ul id="pagination" class="pagination-sm pull-right"></ul></div>
+            </div>
+            <div class="col-md-10 pagination pull-right"><ul id="pagination" class="pagination-sm pull-right"></ul></div>
         </div>
     </div>
 </div>
 <script>
     $(function() {
-        var pageUrl = '${ctx!}/users/listUser';
-        var json=$('#search').serializeJson();
-        $('#tds').load(pageUrl,json,function(){
-            var totalPages=parseInt($('#totalPages').val());
-            var pageSize=parseInt($('#pageSize').val());
-            $('#pagination').twbsPagination({
-                totalPages: totalPages,
-                visiblePages: totalPages%10,
-                onPageClick: function (event, page) {
-                    json.pageSize=pageSize;
-                    json.pageNo=page;
-                    $('#tds').load(pageUrl,json);
-                }
+        var pageUrl = '${ctx!}/users/admin/listUser';
+        var json = {};
+        loadDataPage();
+
+        $('#findUser').click(function(){
+            json.mobile=mobile;
+            json.userName=userName;
+            $('#tds').load(pageUrl,json,function(){});
+            return false;
+        })
+
+        function loadDataPage(){
+            var mobile=$('#mobile').val();
+            var userName=$('#userName').val();
+            json.mobile=mobile;
+            json.userName=userName;
+            $('#tds').load(pageUrl,json,function(){
+                var totalPages=parseInt($('#totalPages').val());
+                var pageSize=parseInt($('#pageSize').val());
+                $('#pagination').twbsPagination({
+                    totalPages: totalPages,
+                    visiblePages: totalPages%10,
+                    onPageClick: function (event, page) {
+                        json.pageSize=pageSize;
+                        json.pageNo=page;
+                        $('#tds').load(pageUrl,json,function(){});
+                    }
+                });
             });
-        });
+        }
     });
 </script>

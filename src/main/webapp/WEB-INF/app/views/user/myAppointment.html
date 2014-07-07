@@ -1,3 +1,4 @@
+<#assign ctx=request.contextPath>
 <div class="row">
     <div class="col-md-12 toppad">
         <div class="panel panel-info" style="margin-bottom: 0px;">
@@ -18,7 +19,7 @@
 </div>
 <script>
     $(function() {
-        var pageUrl = '${ctx!}/mhd/users/data/list/myAppointmentList';
+        var pageUrl = '${ctx!}/users/data/list/myAppointmentList';
         $('#appointmentList').load(pageUrl,{userId:'${user.userId}'},function(){
             var totalPages=parseInt($('#totalPages').val());
             var pageSize=parseInt($('#pageSize').val());

@@ -1,0 +1,24 @@
+<#assign ctx=request.contextPath>
+<#include "/common/webUtils.ftl">
+<div class="row marketing">
+    <div class="col-md-4">
+        <p>
+            <img src="${ctx!}${teacher.user.avatar}" alt="教师" class="img-responsive img-rounded center-block" style="width:256px;height:178px;">
+        </p>
+    </div>
+    <div class="col-md-6">
+        <h4><strong>${teacher.user.userName}</strong></h4>
+        <h4><small>教授科目：${teacher.courseCategory}<span style="margin-left: 20px;">最近登陆时间：${teacher.user.lastLoginTime}</span></small></h4>
+        <h4><small>所在地区：${teacher.user.area}<span style="margin-left: 20px;">身份认证：${teacher.user.lastLoginTime}</span></small></h4>
+        <h4><small>信用等级：<#if teacher.user.credits??><@stars count=teacher.user.credits/></#if></small></h4>
+        <h4><small>
+            <span class="mr20"><i class="fa fa-heart-o fa-fw"></i> 关注：${teacher.extMap.followCount}人</span>
+            <span class="mr20"><i class="fa fa-bookmark-o fa-fw"></i> 报名：${teacher.extMap.appointmentCount}人</span>
+            <span class="mr20"><i class="fa fa-comment-o fa-fw"></i> 评论：${teacher.extMap.commentCount}人</span>
+            <span class="mr20"><i class="fa fa-star-o fa-fw"></i> 收藏：${teacher.extMap.collectCount}人</span>
+        </small></h4>
+        <h4><small><i class="fa fa-weixin fa-fw"></i> 微信号：${teacher.wechat}</small></h4>
+    </div>
+</div>
+<p class="heading-title"></p>
+<h4><small>最高毕业院校：${teacher.finalGraduateSchool}<span style="margin-left: 20px;">专业：${teacher.specialty}</span></small></h4>

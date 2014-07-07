@@ -45,7 +45,35 @@ public class MainController {
         return view;
     }
 
-    @RequestMapping("/admin")
+    @RequestMapping(value={"/admin","/admin/login"})
+    public ModelAndView adminLogin(HttpSession session) {
+        ModelAndView view = new ModelAndView();
+        Object userId=session.getAttribute(MhtConstant.SEESION_USER_ID);
+        if (userId!=null) {
+            User user = userService.findUserById(userId.toString());
+            view.addObject("user", user);
+            view.setViewName("/admin/manage");
+            return view;
+        }
+        view.setViewName("views/admin/login");
+        return view;
+    }
+
+    @RequestMapping("/admin/adminlogin")
+    public @ResponseBody JsonResult adminlogin(@ModelAttribute User user,HttpSession session) {
+        String passwordMd5= DigestUtils.md5Hex(user.getPassword());
+        User user1=userService.findUserIdByFilter(user.getMobile(), passwordMd5);
+        boolean flag=user1!= null & user1.getType().equals("ADMIN");
+        if (flag) {
+            session.setAttribute(MhtConstant.SEESION_USER_ID,user1.getUserId());
+        }
+        JsonResult jsonResult=new JsonResult();
+        jsonResult.setSuccess(flag);
+        jsonResult.setData(user);
+        return jsonResult;
+    }
+
+    @RequestMapping("/admin/manage")
     public ModelAndView admin(HttpSession session) {
         ModelAndView view = new ModelAndView();
         view.setViewName("views/admin/manage");

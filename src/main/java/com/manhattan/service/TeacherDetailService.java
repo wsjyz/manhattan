@@ -19,4 +19,6 @@ public interface TeacherDetailService {
     TeacherDetail postCourse(TeacherDetail teacherDetail);
 
     OpenPage<TeacherDetail> findTeacherByPage(OpenPage<TeacherDetail> page, QueryParam queryParam);
+
+    void updateUserStatus(String userId, String pass);
 }

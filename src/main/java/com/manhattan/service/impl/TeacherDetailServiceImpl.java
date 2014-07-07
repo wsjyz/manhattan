@@ -81,4 +81,9 @@ public class TeacherDetailServiceImpl implements TeacherDetailService {
         OpenPage<TeacherDetail> teacherDetailOpenPage = iTeacherDetailDao.findTeachers(page, queryParam);
         return teacherDetailOpenPage;
     }
+
+    @Override
+    public void updateUserStatus(String userId, String status) {
+        teacherDetailDao.updateUserStatus(userId,status);
+    }
 }

@@ -1,0 +1,176 @@
+<#assign ctx=request.contextPath>
+<div class="container">
+    <div class="row">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="active"><a href="#home" role="tab" data-toggle="course">课程</a></li>
+            <li><a href="#profile" role="tab" data-toggle="listen">试听</a></li>
+            <li><a href="#messages" role="tab" data-toggle="appoint">报名</a></li>
+            <li><a href="#settings" role="tab" data-toggle="homework">作业</a></li>
+            <li><a href="#settings" role="tab" data-toggle="question">问答</a></li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div class="tab-pane active" id="course">
+                <form id="coursesearch" class="form-inline" role="form">
+                    <div class="form-group">
+                        <label for="mobile">手机号：</label>
+                        <input type="text" class="form-control" id="mobile" name="mobile">
+                    </div>
+                    <div class="form-group">
+                        <label for="userName">姓名：</label>
+                        <input type="text" class="form-control" id="userName" name="userName">
+                    </div>
+                    <button id="coursefindUser" type="submit" class="btn btn-default">查找</button>
+                </form>
+                <div class="col-md-10" style="margin-top:20px;">
+                    <div id="coursetds">
+
+                    </div>
+                    <div class="col-md-10 pagination pull-right"><ul id="coursePagination" class="pagination-sm pull-right"></ul></div>
+                </div>
+            </div>
+            <div class="tab-pane" id="listen">
+                <form id="listensearch" class="form-inline" role="form">
+                    <div class="form-group">
+                        <label for="mobile">联系人：</label>
+                        <input type="text" class="form-control" id="mobile" name="mobile">
+                    </div>
+                    <div class="form-group">
+                        <label for="userName">联系电话：</label>
+                        <input type="text" class="form-control" id="userName" name="userName">
+                    </div>
+                    <button id="listenfindUser" type="submit" class="btn btn-default">查找</button>
+                </form>
+                <div class="col-md-10" style="margin-top:20px;">
+                    <div id="listentds">
+
+                    </div>
+                    <div class="col-md-10 pagination pull-right"><ul id="listenPagination" class="pagination-sm pull-right"></ul></div>
+                </div>
+            </div>
+            <div class="tab-pane" id="appoint">
+                <form id="appointsearch" class="form-inline" role="form">
+                    <div class="form-group">
+                        <label for="mobile">联系人：</label>
+                        <input type="text" class="form-control" id="mobile" name="mobile">
+                    </div>
+                    <div class="form-group">
+                        <label for="userName">联系电话：</label>
+                        <input type="text" class="form-control" id="userName" name="userName">
+                    </div>
+                    <button id="appointfindUser" type="submit" class="btn btn-default">查找</button>
+                </form>
+                <div class="col-md-10" style="margin-top:20px;">
+                    <div id="appointtds">
+
+                    </div>
+                    <div class="col-md-10 pagination pull-right"><ul id="appointPagination" class="pagination-sm pull-right"></ul></div>
+                </div>
+            </div>
+            <div class="tab-pane" id="homework">
+                <form id="homeworksearch" class="form-inline" role="form">
+                    <div class="form-group">
+                        <label for="mobile">编号：</label>
+                        <input type="text" class="form-control" id="mobile" name="mobile">
+                    </div>
+                    <div class="form-group">
+                        <label for="userName">创建人：</label>
+                        <input type="text" class="form-control" id="userName" name="userName">
+                    </div>
+                    <button id="homeworkfindUser" type="submit" class="btn btn-default">查找</button>
+                </form>
+                <div class="col-md-10" style="margin-top:20px;">
+                    <div id="homeworktds">
+
+                    </div>
+                    <div class="col-md-10 pagination pull-right"><ul id="homeworkPagination" class="pagination-sm pull-right"></ul></div>
+                </div>
+            </div>
+            <div class="tab-pane" id="question">
+                <form id="questionsearch" class="form-inline" role="form">
+                    <div class="form-group">
+                        <label for="mobile">编号：</label>
+                        <input type="text" class="form-control" id="mobile" name="mobile">
+                    </div>
+                    <div class="form-group">
+                        <label for="userName">创建人：</label>
+                        <input type="text" class="form-control" id="userName" name="userName">
+                    </div>
+                    <button id="questionfindUser" type="submit" class="btn btn-default">查找</button>
+                </form>
+                <div class="col-md-10" style="margin-top:20px;">
+                    <div id="questiontds">
+
+                    </div>
+                    <div class="col-md-10 pagination pull-right"><ul id="questioncoursePagination" class="pagination-sm pull-right"></ul></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function() {
+        var coursepageUrl = '${ctx!}/users/admin/courseList';
+        var listenpageUrl = '${ctx!}/users/admin/listenList';
+        var appointpageUrl = '${ctx!}/users/admin/appointList';
+        var homeworkpageUrl = '${ctx!}/users/admin/homeworkList';
+        var questionpageUrl = '${ctx!}/users/admin/questionList';
+        $('#coursetds').load(coursepageUrl,function(){
+            var totalPages=parseInt($('#totalPages').val());
+            var pageSize=parseInt($('#pageSize').val());
+            $('#coursepagination').twbsPagination({
+                totalPages: totalPages,
+                visiblePages: totalPages%5,
+                onPageClick: function (event, page) {
+                    $('#coursetds').load(coursepageUrl,{"pageSize":pageSize,"pageNo":page});
+                }
+            });
+        });
+        $('#listentds').load(listenpageUrl,function(){
+            var totalPages=parseInt($('#totalPages').val());
+            var pageSize=parseInt($('#pageSize').val());
+            $('#listenpagination').twbsPagination({
+                totalPages: totalPages,
+                visiblePages: totalPages%5,
+                onPageClick: function (event, page) {
+                    $('#listentds').load(listenpageUrl,{"pageSize":pageSize,"pageNo":page});
+                }
+            });
+        });
+        $('#appointtds').load(appointpageUrl,function(){
+            var totalPages=parseInt($('#totalPages').val());
+            var pageSize=parseInt($('#pageSize').val());
+            $('#appointpagination').twbsPagination({
+                totalPages: totalPages,
+                visiblePages: totalPages%5,
+                onPageClick: function (event, page) {
+                    $('#appointtds').load(appointpageUrl,{"pageSize":pageSize,"pageNo":page});
+                }
+            });
+        });
+        $('#homeworktds').load(homeworkpageUrl,function(){
+            var totalPages=parseInt($('#totalPages').val());
+            var pageSize=parseInt($('#pageSize').val());
+            $('#homeworkpagination').twbsPagination({
+                totalPages: totalPages,
+                visiblePages: totalPages%5,
+                onPageClick: function (event, page) {
+                    $('#homeworktds').load(homeworkpageUrl,{"pageSize":pageSize,"pageNo":page});
+                }
+            });
+        });
+        $('#questiontds').load(questionpageUrl,function(){
+            var totalPages=parseInt($('#totalPages').val());
+            var pageSize=parseInt($('#pageSize').val());
+            $('#questionpagination').twbsPagination({
+                totalPages: totalPages,
+                visiblePages: totalPages%5,
+                onPageClick: function (event, page) {
+                    $('#questiontds').load(questionpageUrl,{"pageSize":pageSize,"pageNo":page});
+                }
+            });
+        });
+    });
+</script>

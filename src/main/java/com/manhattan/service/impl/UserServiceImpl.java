@@ -14,6 +14,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -74,15 +75,31 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page findUserByPage(Pageable pageAble, User user) {
+    public Page findUserByPage(Pageable pageAble,final User user) {
         return userDAO.findAll(new Specification<User>() {
             @Override
             public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-
-                return null;
+                List<Predicate> list = new ArrayList<Predicate>();
+                if(StringUtils.isNotBlank(user.getMobile())){
+                    list.add(cb.like(root.get("mobile").as(String.class), "%" + user.getMobile() + "%"));
+                }
+                if(StringUtils.isNotBlank(user.getUserName())){
+                    list.add(cb.like(root.get("userName").as(String.class), "%" + user.getUserName() + "%"));
+                }
+                Predicate[] p = new Predicate[list.size()];
+                return cb.and(list.toArray(p));
             }
         },pageAble);
     }
 
+    @Override
+    public void deleteUser(String userId) {
+        userDAO.delete(userId);
+    }
+
+    @Override
+    public void updateUserStatus(String userId,String status) {
+        userDAO.updateUserStatus(userId,status);
+    }
 
 }

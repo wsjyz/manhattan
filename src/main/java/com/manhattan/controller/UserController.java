@@ -8,11 +8,9 @@ import com.manhattan.service.HomeWorkService;
 import com.manhattan.service.TeacherDetailService;
 import com.manhattan.service.UserService;
 import com.manhattan.service.WalletService;
-import com.manhattan.util.FastJson;
-import com.manhattan.util.MhtConstant;
-import com.manhattan.util.OpenPage;
-import com.manhattan.util.PageConvert;
+import com.manhattan.util.*;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -87,20 +85,14 @@ public class UserController {
         return view;
     }
 
-    @RequestMapping(value = "/list")
-    public ModelAndView list() {
-        ModelAndView view = new ModelAndView();
-        view.setViewName("views/admin/accounts");
-        return view;
+    @RequestMapping(value = "/saveUser")
+    public @ResponseBody Boolean saveUser(@ModelAttribute User user) {
+        User user1=userService.load(user.getUserId());
+        BeanUtils.copyProperties(user, user1, "userId");
+        user1=userService.save(user1);
+        userService.save(user1);
+        return true;
     }
 
-    @RequestMapping(value = "/listUser")
-    public ModelAndView listUser(@ModelAttribute OpenPage page,@ModelAttribute User user) {
-        ModelAndView view = new ModelAndView();
-        Pageable pageAble = new PageRequest(page.getPageNo()-1, page.getPageSize());
-        Page resPage=userService.findUserByPage(pageAble, user);
-        view.addObject("page", PageConvert.convert(resPage));
-        view.setViewName("views/admin/listUser");
-        return view;
-    }
+
 }

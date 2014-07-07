@@ -35,6 +35,9 @@ public class CourseDaoImpl extends BaseDAO implements ICourseDao {
             List<TeacherDetail> teacherDetails = new ArrayList<TeacherDetail>();
             for (String teacherId : teacherIds) {
                 TeacherDetail detail=iTeacherDetailDao.findByUserId(teacherId);
+                if (StringUtils.isEmpty(detail.getUserId())) {
+                    continue;
+                }
                 teacherDetails.add(detail);
             }
             course.setTeacherDetailList(teacherDetails);

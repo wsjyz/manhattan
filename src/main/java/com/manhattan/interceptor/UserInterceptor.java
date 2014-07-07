@@ -20,7 +20,11 @@ public class UserInterceptor implements HandlerInterceptor {
         HttpSession session = request.getSession();
         String userId = (String) session.getAttribute(MhtConstant.SEESION_USER_ID);
         if (StringUtils.isEmpty(userId)) {
-            response.sendRedirect(contextPath+"/relogin");
+            if (url.contains("admin")) {
+                response.sendRedirect(contextPath + "/admin/login");
+            }else{
+                response.sendRedirect(contextPath + "/relogin");
+            }
             return false;
         }
         return true;

@@ -1,0 +1,27 @@
+<#assign ctx=request.contextPath>
+<div class="container">
+    <div class="row">
+        <div class="col-md-10" style="margin-top:20px;">
+            <div id="tds">
+
+            </div>
+            <div class="col-md-10 pagination pull-right"><ul id="pagination" class="pagination-sm pull-right"></ul></div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function() {
+        var pageUrl = '${ctx!}/users/admin/teacherList';
+        $('#tds').load(pageUrl,function(){
+            var totalPages=parseInt($('#totalPages').val());
+            var pageSize=parseInt($('#pageSize').val());
+            $('#pagination').twbsPagination({
+                totalPages: totalPages,
+                visiblePages: totalPages%5,
+                onPageClick: function (event, page) {
+                    $('#tds').load(pageUrl,{"pageSize":pageSize,"pageNo":page});
+                }
+            });
+        });
+    });
+</script>
