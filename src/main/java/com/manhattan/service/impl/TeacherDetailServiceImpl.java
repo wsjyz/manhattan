@@ -86,4 +86,9 @@ public class TeacherDetailServiceImpl implements TeacherDetailService {
     public void updateUserStatus(String userId, String status) {
         teacherDetailDao.updateUserStatus(userId,status);
     }
+
+    @Override
+    public OpenPage findPostCourseTeachers(OpenPage page, String mobile, String userName) {
+        return iTeacherDetailDao.findPostCourseTeachers(page,mobile,userName);
+    }
 }

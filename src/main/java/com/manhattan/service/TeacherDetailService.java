@@ -21,4 +21,6 @@ public interface TeacherDetailService {
     OpenPage<TeacherDetail> findTeacherByPage(OpenPage<TeacherDetail> page, QueryParam queryParam);
 
     void updateUserStatus(String userId, String pass);
+
+    OpenPage findPostCourseTeachers(OpenPage page, String mobile, String userName);
 }

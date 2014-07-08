@@ -73,13 +73,10 @@ public class AdminController {
         return view;
     }
 
-    @RequestMapping(value = "/teacherList")
-    public ModelAndView teacherList() {
+    @RequestMapping(value = "/list/teacher")
+    public ModelAndView teacherList(@ModelAttribute OpenPage page, @RequestParam(required = false) String mobile, @RequestParam(required = false) String userName) {
         ModelAndView view = new ModelAndView();
-        OpenPage<TeacherDetail> page = new OpenPage<TeacherDetail>();
-        page.setPageNo(1);
-        page.setPageSize(10);
-        page = teacherDetailService.findTeacherByPage(page,new QueryParam());
+        page = teacherDetailService.findPostCourseTeachers(page,mobile,userName);
         view.addObject("teachers", page.getRows());
         view.setViewName("views/admin/teacherList");
         return view;

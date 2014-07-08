@@ -4,23 +4,23 @@
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
             <li class="active"><a href="#home" role="tab" data-toggle="course">课程</a></li>
-            <li><a href="#profile" role="tab" data-toggle="listen">试听</a></li>
-            <li><a href="#messages" role="tab" data-toggle="appoint">报名</a></li>
-            <li><a href="#settings" role="tab" data-toggle="homework">作业</a></li>
-            <li><a href="#settings" role="tab" data-toggle="question">问答</a></li>
+            <li><a href="#listen" role="tab" data-toggle="listen">试听</a></li>
+            <li><a href="#appoint" role="tab" data-toggle="appoint">报名</a></li>
+            <li><a href="#homework" role="tab" data-toggle="homework">作业</a></li>
+            <li><a href="#question" role="tab" data-toggle="question">问答</a></li>
         </ul>
 
         <!-- Tab panes -->
-        <div class="tab-content">
+        <div class="tab-content" style="padding:20px 20px;">
             <div class="tab-pane active" id="course">
                 <form id="coursesearch" class="form-inline" role="form">
                     <div class="form-group">
-                        <label for="mobile">手机号：</label>
-                        <input type="text" class="form-control" id="mobile" name="mobile">
+                        <label for="coursemobile">手机号：</label>
+                        <input type="text" class="form-control" id="coursemobile" name="mobile">
                     </div>
                     <div class="form-group">
-                        <label for="userName">姓名：</label>
-                        <input type="text" class="form-control" id="userName" name="userName">
+                        <label for="courseuserName">姓名：</label>
+                        <input type="text" class="form-control" id="courseuserName" name="userName">
                     </div>
                     <button id="coursefindUser" type="submit" class="btn btn-default">查找</button>
                 </form>
@@ -35,11 +35,11 @@
                 <form id="listensearch" class="form-inline" role="form">
                     <div class="form-group">
                         <label for="mobile">联系人：</label>
-                        <input type="text" class="form-control" id="mobile" name="mobile">
+                        <input type="text" class="form-control" id="listenmobile" name="mobile">
                     </div>
                     <div class="form-group">
                         <label for="userName">联系电话：</label>
-                        <input type="text" class="form-control" id="userName" name="userName">
+                        <input type="text" class="form-control" id="listenuserName" name="userName">
                     </div>
                     <button id="listenfindUser" type="submit" class="btn btn-default">查找</button>
                 </form>
@@ -54,11 +54,11 @@
                 <form id="appointsearch" class="form-inline" role="form">
                     <div class="form-group">
                         <label for="mobile">联系人：</label>
-                        <input type="text" class="form-control" id="mobile" name="mobile">
+                        <input type="text" class="form-control" id="appointmobile" name="mobile">
                     </div>
                     <div class="form-group">
                         <label for="userName">联系电话：</label>
-                        <input type="text" class="form-control" id="userName" name="userName">
+                        <input type="text" class="form-control" id="appointuserName" name="userName">
                     </div>
                     <button id="appointfindUser" type="submit" class="btn btn-default">查找</button>
                 </form>
@@ -73,11 +73,11 @@
                 <form id="homeworksearch" class="form-inline" role="form">
                     <div class="form-group">
                         <label for="mobile">编号：</label>
-                        <input type="text" class="form-control" id="mobile" name="mobile">
+                        <input type="text" class="form-control" id="homeworkmobile" name="mobile">
                     </div>
                     <div class="form-group">
                         <label for="userName">创建人：</label>
-                        <input type="text" class="form-control" id="userName" name="userName">
+                        <input type="text" class="form-control" id="homeworkuserName" name="userName">
                     </div>
                     <button id="homeworkfindUser" type="submit" class="btn btn-default">查找</button>
                 </form>
@@ -92,11 +92,11 @@
                 <form id="questionsearch" class="form-inline" role="form">
                     <div class="form-group">
                         <label for="mobile">编号：</label>
-                        <input type="text" class="form-control" id="mobile" name="mobile">
+                        <input type="text" class="form-control" id="questionmobile" name="mobile">
                     </div>
                     <div class="form-group">
                         <label for="userName">创建人：</label>
-                        <input type="text" class="form-control" id="userName" name="userName">
+                        <input type="text" class="form-control" id="questionuserName" name="userName">
                     </div>
                     <button id="questionfindUser" type="submit" class="btn btn-default">查找</button>
                 </form>
@@ -112,22 +112,32 @@
 </div>
 <script>
     $(function() {
-        var coursepageUrl = '${ctx!}/users/admin/courseList';
+        var coursepageUrl = '${ctx!}/users/admin/list/teacher';
         var listenpageUrl = '${ctx!}/users/admin/listenList';
         var appointpageUrl = '${ctx!}/users/admin/appointList';
         var homeworkpageUrl = '${ctx!}/users/admin/homeworkList';
         var questionpageUrl = '${ctx!}/users/admin/questionList';
-        $('#coursetds').load(coursepageUrl,function(){
-            var totalPages=parseInt($('#totalPages').val());
-            var pageSize=parseInt($('#pageSize').val());
-            $('#coursepagination').twbsPagination({
-                totalPages: totalPages,
-                visiblePages: totalPages%5,
-                onPageClick: function (event, page) {
-                    $('#coursetds').load(coursepageUrl,{"pageSize":pageSize,"pageNo":page});
-                }
+        var json={};
+        courseload();
+        function courseload(){
+            var mobile=$('#coursemobile').val();
+            var userName=$('#courseuserName').val();
+            json.mobile=mobile;
+            json.userName=userName;
+            $('#coursetds').load(coursepageUrl,function(){
+                var totalPages=parseInt($('#totalPages').val());
+                var pageSize=parseInt($('#pageSize').val());
+                $('#coursePagination').twbsPagination({
+                    totalPages: totalPages,
+                    visiblePages: totalPages%5,
+                    onPageClick: function (event, page) {
+                        json.pageSize=pageSize;
+                        json.pageNo=page;
+                        $('#coursetds').load(coursepageUrl,json,function(){});
+                    }
+                });
             });
-        });
+        }
         $('#listentds').load(listenpageUrl,function(){
             var totalPages=parseInt($('#totalPages').val());
             var pageSize=parseInt($('#pageSize').val());
