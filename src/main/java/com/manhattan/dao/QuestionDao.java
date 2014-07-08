@@ -17,7 +17,7 @@ public interface QuestionDao extends JpaRepository<Question,String> {
 
     Page<Question> findByAssignTeacherOrderByCreateTimeDesc(String userId, Pageable pageAble);
 
-    Page<Question> findByAssignTeacherAndStatusOrderByCreateTimeDesc(String userId, String status, Pageable pageAble);
+    Page<Question> findByReplyUserAndStatusOrderByCreateTimeDesc(String replyUser, String status, Pageable pageAble);
 
     Page<Question> findByStatusOrderByCreateTimeDesc(String status, Pageable pageAble);
 }

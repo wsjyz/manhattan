@@ -197,10 +197,6 @@ public class AdminController {
 
         return result;
     }
-    @RequestMapping(value = "/postCourse",method = RequestMethod.POST)
-    public @ResponseBody String postPlace(MultipartHttpServletRequest request){
-        String result = "添加课程成功";
-        return result;
-    }
+
 
 }

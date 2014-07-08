@@ -70,8 +70,12 @@ public class TeacherDetailServiceImpl implements TeacherDetailService {
     public TeacherDetail postCourse(TeacherDetail teacherDetail) {
         if(StringUtils.isNotBlank(teacherDetail.getUserId())) {
             TeacherDetail detail=findTeacherDetail(teacherDetail.getUserId());
-            BeanUtils.copyProperties(teacherDetail,detail,"userId");
-            return teacherDetailDao.saveAndFlush(detail);
+            if(detail!=null&&StringUtils.isNotBlank(detail.getUserId())){
+                BeanUtils.copyProperties(teacherDetail,detail,"userId");
+                return teacherDetailDao.saveAndFlush(detail);
+            }else{
+                return teacherDetailDao.saveAndFlush(teacherDetail);
+            }
         }
         return null;
     }

@@ -50,7 +50,7 @@ public class QuestionController extends BaseController{
     public Boolean answerQuestion(@FastJson Question question,HttpServletResponse response) {
         Question question1=questionService.saveQuestion(question);
         if (question1 == null || StringUtils.isEmpty(question1.getQuestionId())) {
-            setResponse("保存提问失败", response);
+            setResponse("问题回答失败", response);
             return false;
         }
         return true;
