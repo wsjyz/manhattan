@@ -17,4 +17,5 @@ import java.util.List;
  */
 public interface CourseDao extends JpaRepository<Course,String>,JpaSpecificationExecutor<Course> {
 
+    List<Course> findByPostTeacher(String postTeacher);
 }

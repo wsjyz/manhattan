@@ -30,7 +30,7 @@ public class QuestionServiceImpl implements QuestionService {
             oldQuestion.setAnswerTime(sdf.format(new Date().getTime()));
             oldQuestion.setStatus(MhtConstant.QUESTION_STATUS_ANSWERED);
             BeanUtils.copyProperties(question,oldQuestion,"questionId","questionTitle","questionContent",
-                    "questionPic","userId","createTime","assignTeacher","status");
+                    "questionPic","userId","createTime","assignTeacher","status","answerTime");
             return questionDao.save(oldQuestion);
         }
 //        else{

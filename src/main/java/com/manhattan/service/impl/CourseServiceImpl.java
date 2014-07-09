@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Administrator on 2014/6/12 0012.
@@ -66,6 +67,11 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public OpenPage<Course> findCollectByUserId(OpenPage<Course> openPage, String userId, String userActionCollectCourse) {
         return iCourseDao.findCollectByUserId(openPage, userId, userActionCollectCourse);
+    }
+
+    @Override
+    public List<Course> findByPostTeacher(String teacherId){
+        return courseDao.findByPostTeacher(teacherId);
     }
 
 }

@@ -52,7 +52,7 @@ public class MainController {
         if (userId!=null) {
             User user = userService.findUserById(userId.toString());
             view.addObject("user", user);
-            view.setViewName("/admin/manage");
+            view.setViewName("views/admin/manage");
             return view;
         }
         view.setViewName("views/admin/login");

@@ -13,6 +13,12 @@ public class MhtConstant {
     public final static String USER_TYPE_VIPSTUDENT = "VIPSTUDENT";
 
     /**
+     * user account status
+     */
+    public final static String USER_STATUS_DISABLE = "DISABLE";
+    public static final String USER_STATUS_ENABLE = "ENABLE";
+
+    /**
      * 问题状态
      */
     public final static String QUESTION_STATUS_ANSWERED="ANSWERED";
