@@ -32,11 +32,13 @@ public class QuestionServiceImpl implements QuestionService {
             BeanUtils.copyProperties(question,oldQuestion,"questionId","questionTitle","questionContent",
                     "questionPic","userId","createTime","assignTeacher","status");
             return questionDao.save(oldQuestion);
-        }else{
-            question.setCreateTime(sdf.format(new Date().getTime()));
-            question.setStatus(MhtConstant.QUESTION_STATUS_UNANSWERED);
-            return questionDao.save(question);
         }
+//        else{
+//            question.setCreateTime(sdf.format(new Date().getTime()));
+//            question.setStatus(MhtConstant.QUESTION_STATUS_UNANSWERED);
+//            return questionDao.save(question);
+//        }
+        return null;
 
     }
 
@@ -55,7 +57,7 @@ public class QuestionServiceImpl implements QuestionService {
         if (StringUtils.equals(type, "ASSIGN")) {
             return questionDao.findByAssignTeacherOrderByCreateTimeDesc(userId, pageAble);
         }else if (StringUtils.equals(type, MhtConstant.QUESTION_STATUS_ANSWERED)) {
-            return questionDao.findByAssignTeacherAndStatusOrderByCreateTimeDesc(userId, MhtConstant.QUESTION_STATUS_ANSWERED, pageAble);
+            return questionDao.findByReplyUserAndStatusOrderByCreateTimeDesc(userId, MhtConstant.QUESTION_STATUS_ANSWERED, pageAble);
         }else if (StringUtils.equals(type, MhtConstant.QUESTION_STATUS_UNANSWERED)) {
             return questionDao.findByStatusOrderByCreateTimeDesc(MhtConstant.QUESTION_STATUS_UNANSWERED, pageAble);
         }

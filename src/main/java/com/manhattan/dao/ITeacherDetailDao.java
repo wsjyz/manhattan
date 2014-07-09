@@ -17,4 +17,6 @@ public interface ITeacherDetailDao {
     OpenPage<TeacherDetail> findTeachersByUserIdAndAction(OpenPage<TeacherDetail> page, String userId, String userAction);
 
     OpenPage<TeacherDetail> findTeachers(OpenPage<TeacherDetail> page, QueryParam queryParam);
+
+    OpenPage findPostCourseTeachers(OpenPage page, String mobile, String userName);
 }

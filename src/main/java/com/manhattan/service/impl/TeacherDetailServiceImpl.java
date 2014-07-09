@@ -70,8 +70,12 @@ public class TeacherDetailServiceImpl implements TeacherDetailService {
     public TeacherDetail postCourse(TeacherDetail teacherDetail) {
         if(StringUtils.isNotBlank(teacherDetail.getUserId())) {
             TeacherDetail detail=findTeacherDetail(teacherDetail.getUserId());
-            BeanUtils.copyProperties(teacherDetail,detail,"userId");
-            return teacherDetailDao.saveAndFlush(detail);
+            if(detail!=null&&StringUtils.isNotBlank(detail.getUserId())){
+                BeanUtils.copyProperties(teacherDetail,detail,"userId");
+                return teacherDetailDao.saveAndFlush(detail);
+            }else{
+                return teacherDetailDao.saveAndFlush(teacherDetail);
+            }
         }
         return null;
     }
@@ -85,5 +89,10 @@ public class TeacherDetailServiceImpl implements TeacherDetailService {
     @Override
     public void updateUserStatus(String userId, String status) {
         teacherDetailDao.updateUserStatus(userId,status);
+    }
+
+    @Override
+    public OpenPage findPostCourseTeachers(OpenPage page, String mobile, String userName) {
+        return iTeacherDetailDao.findPostCourseTeachers(page,mobile,userName);
     }
 }
