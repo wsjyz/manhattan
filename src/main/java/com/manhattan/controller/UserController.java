@@ -19,6 +19,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,13 +88,22 @@ public class UserController {
         return view;
     }
 
-    @RequestMapping(value = "/saveUser")
-    public @ResponseBody Boolean saveUser(@ModelAttribute User user) {
+    @RequestMapping(value = "/saveUser",method = RequestMethod.POST)
+    public @ResponseBody String saveUser(User user) {
+
+//        if(StringUtils.isNotBlank(vipExpiredTime)){
+//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//            try {
+//                user.setVipExpiredTime(sdf.parse(vipExpiredTime));
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//        }
         User user1=userService.load(user.getUserId());
         BeanUtils.copyProperties(user, user1, "userId");
         user1=userService.save(user1);
         userService.save(user1);
-        return true;
+        return "success";
     }
 
 

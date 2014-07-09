@@ -1,4 +1,4 @@
-package com.manhattan.interceptor;
+package com.manhattan.web.interceptor;
 
 import com.manhattan.util.MhtConstant;
 import org.apache.commons.lang3.StringUtils;

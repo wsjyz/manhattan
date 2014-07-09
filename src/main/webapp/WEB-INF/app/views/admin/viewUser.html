@@ -9,7 +9,7 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <form id="userform">
+                        <form id="userform" action="${ctx}/users/saveUser" method="post">
                             <input id="userId" name="userId" type="hidden" value="${user.userId}"/>
                         <table class="table table-user-information">
                             <tbody>
@@ -18,33 +18,44 @@
                                     <span class="badge pull-left"><h5>基本资料：</h5></span>
                                 </td>
                             </tr>
-                            <tr><td class="col-md-2">手机号：</td><td><span class="text">${user.mobile!}</span><input type="text" class="hinput" name="mobile" style="display: none;"/></td></tr>
-                            <tr><td class="col-md-2">姓名：</td><td><span class="text">${user.userName!}</span><input type="text" class="hinput" name="userName" style="display: none;"/></td></tr>
-                            <tr><td class="col-md-2">邮箱：</td><td><span class="text">${user.email!}</span><input type="text" class="hinput" name="email" style="display: none;"/></td></tr>
-                            <tr><td class="col-md-2">地址：</td><td><span class="text">${user.address!}</span><input type="text" class="hinput" name="address" style="display: none;"/></td></tr>
+                            <tr><td class="col-md-2">手机号：</td><td><span class="text">${user.mobile!}</span>
+                                <input type="text" class="hinput" value="${user.mobile!}" name="mobile" style="display: none;"/></td></tr>
+                            <tr><td class="col-md-2">姓名：</td><td><span class="text">${user.userName!}</span>
+                                <input type="text" class="hinput" value="${user.userName!}" name="userName" style="display: none;"/></td></tr>
+                            <tr><td class="col-md-2">邮箱：</td><td><span class="text">${user.email!}</span>
+                                <input type="text" class="hinput" value="${user.email!}" name="email" style="display: none;"/></td></tr>
+                            <tr><td class="col-md-2">地址：</td><td><span class="text">${user.address!}</span>
+                                <input type="text" class="hinput" value="${user.address!}" name="address" style="display: none;"/></td></tr>
                             <tr>
                                 <td colspan="2" style="border-top-width: 0px;">
                                     <span class="badge pull-left"><h5>其他信息：</h5></span>
                                 </td>
                             </tr>
-                            <tr><td>积分：</td><td><span class="text">${user.credit!}</span><input type="text" class="hinput" name="credit" style="display: none;"/></td></tr>
-                            <tr><td>VIP到期时间：</td><td><span class="text">${user.vipExpiredTime!}</span><input type="text" class="hinput" name="vipExpiredTime" style="display: none;"/></td></tr>
-                            <tr class="danger"><td>当前余额：</td><td><span class="text">${user.wallet!}</span><input type="text" class="hinput" name="wallet" style="display: none;"/></td></tr>
+                            <tr><td>积分：</td><td><span class="text">${user.credit!}</span>
+                                <input type="text" class="hinput" name="credits" value="${user.credit!}" style="display: none;"/>
+                            </td></tr>
+                            <tr><td>VIP到期时间：</td><td><span class="text">${user.vipExpiredTime!}</span>
+                                <input type="text" class="hinput" value="${user.vipExpiredTime!}" name="vipExpiredTime" style="display: none"/>
+                            </td></tr>
+                            <tr class="danger"><td>当前余额：</td><td><span class="text">${user.wallet!}</span>
+                                <input type="text" class="hinput" name="wallet" value="${user.wallet!}" style="display: none;"/>
+                            </td></tr>
                             </tbody>
                         </table>
+                            <div class="panel-footer">
+                                <button type="button" class="btn btn-danger" id="delete">删除</button>
+                                <#if '${user.status}'=='DISABLE'>
+                                    <button type="button" class="btn btn-warning" id="enable">启用</button>
+                                    <#else>
+                                        <button type="button" class="btn btn-warning" id="disable">禁用</button>
+                                </#if>
+                                <button type="button" class="btn btn-primary" id="update">修改</button>
+                                <button type="submit" class="btn btn-primary" id="save" style="display: none;">保存修改</button>
+                            </div>
                         </form>
                     </div>
                 </div>
-                <div class="panel-footer">
-                    <button type="button" class="btn btn-danger" id="delete">删除</button>
-                    <#if '${user.status}'=='DISABLE'>
-                        <button type="button" class="btn btn-warning" id="enable">启用</button>
-                    <#else>
-                        <button type="button" class="btn btn-warning" id="disable">禁用</button>
-                    </#if>
-                    <button type="button" class="btn btn-primary" id="update">修改</button>
-                    <button type="button" class="btn btn-primary" id="save" style="display: none;">保存修改</button>
-                </div>
+
             </div>
         </div>
     </div>
@@ -92,18 +103,23 @@
             $(this).attr('disabled','disabled');
             $('#save').show();
         });
+        $('#userform').submit(function() {
+            $(this).ajaxSubmit({
+                type:'POST',
+                url:"${ctx}/users/saveUser",
+                success: function() {
+                    new PNotify({
+                        text: '修改用户成功.',
+                        animate_speed: 'fast',
+                        type: 'success'
+                    });
+                    $('#save').hide();
+                    $('#update').removeAttr("disabled");
+                }
 
-        $('#save').click(function(){
-            var json=$('#userform').serializeJson();
-            $.post('${ctx}/users/saveUser',json,function(){
-                new PNotify({
-                    text: '修改用户成功.',
-                    animate_speed: 'fast',
-                    type: 'success'
-                });
-                $('#save').hide();
-                $('#update').removeAttr("disabled");
-            })
+            });
+            return false;
         });
+
     })
 </script>
