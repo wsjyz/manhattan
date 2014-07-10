@@ -15,10 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by lk.zh on 2014/6/21 0021.
@@ -229,6 +228,46 @@ public class ITeacherDetailDaoImpl extends BaseDAO implements ITeacherDetailDao 
         setUsers(teacherDetails);
         page.setRows(teacherDetails);
         return page;
+    }
+
+    @Override
+    public List<Date> findAppiontByUseIdAndTime(String userId, Date startTime, Date endTime) {
+        StringBuffer selectSql = new StringBuffer("select ");
+        StringBuffer sql = new StringBuffer("");
+        sql.append(" from t_mht_teacher_detail t inner join t_mht_appointment ua ");
+        sql.append("on t.user_id=ua.resource_id ")
+                .append(" where 1=1 ");
+        List<Object> params = new ArrayList<Object>();
+        if (StringUtils.isNotBlank(userId)) {
+            sql.append(" and ua.user_id = ? ");
+            params.add(userId);
+        }
+        if (startTime != null) {
+            sql.append(" and ua.appointment_time >=? ");
+            params.add(startTime);
+        }
+        if (endTime != null) {
+            sql.append(" and ua.appointment_time <=? ");
+            params.add(endTime);
+        }
+        sql.append(" and (ua.resource_type=? or ua.resource_type=?) ");
+        params.add(MhtConstant.USER_ACTION_APPOINTMENT_TEACHER);
+        params.add(MhtConstant.USER_ACTION_LISTEN_TEACHER);
+        List<String> times = new ArrayList<String>();
+        times=getJdbcTemplate().queryForList(selectSql.append("ua.appointment_time").append(sql).toString(), params.toArray(), String.class);
+        List<Date> dates = new ArrayList<Date>();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        if(!CollectionUtils.isEmpty(times)) {
+            try {
+                for (String str : times) {
+                    dates.add(sdf.parse(str));
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return dates;
     }
 
     private void setUsers(List<TeacherDetail> teacherDetails){

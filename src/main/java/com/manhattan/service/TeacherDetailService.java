@@ -6,6 +6,9 @@ import com.manhattan.util.OpenPage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Date;
+import java.util.List;
+
 /**
  * Created by Administrator on 2014/5/22 0022.
  */
@@ -23,4 +26,6 @@ public interface TeacherDetailService {
     void updateUserStatus(String userId, String pass);
 
     OpenPage findPostCourseTeachers(OpenPage page, String mobile, String userName);
+
+    List<Date> findAppiontByUseIdAndTime(String userId, Date startTime, Date endTime);
 }

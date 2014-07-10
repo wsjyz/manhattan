@@ -18,6 +18,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.*;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Administrator on 2014/5/22 0022.
@@ -94,5 +96,10 @@ public class TeacherDetailServiceImpl implements TeacherDetailService {
     @Override
     public OpenPage findPostCourseTeachers(OpenPage page, String mobile, String userName) {
         return iTeacherDetailDao.findPostCourseTeachers(page,mobile,userName);
+    }
+
+    @Override
+    public List<Date> findAppiontByUseIdAndTime(String userId, Date startTime, Date endTime) {
+        return iTeacherDetailDao.findAppiontByUseIdAndTime(userId,startTime,endTime);
     }
 }
