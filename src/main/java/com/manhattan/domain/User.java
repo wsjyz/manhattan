@@ -54,6 +54,7 @@ public class User {
 //    @OneToOne(fetch = FetchType.LAZY,optional = false)
 //    @PrimaryKeyJoinColumn
 
+    @Transient
     private TeacherDetail teacherDetail;
 
     public String getUserId() {

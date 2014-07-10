@@ -73,8 +73,9 @@ public class TeacherDetail {
     @Transient
     private List<UserAction> userActions;
 
-//    @OneToOne (mappedBy = "teacherDetail",fetch = FetchType.LAZY, optional = false)
-
+//    @OneToOne (fetch = FetchType.LAZY, optional = false)
+//    @JoinColumn(name = "user_id",insertable = false,updatable = false)
+    @Transient
     private User user;
 
     @Transient

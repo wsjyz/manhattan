@@ -47,11 +47,11 @@ public class TeacherDetailRowMapper implements RowMapper<TeacherDetail> {
         teacherDetail.setStudentMaxScoreCertificate(rs.getString("student_max_score_certificate"));
         teacherDetail.setAuthenticationStatus(rs.getString("authentication_status"));
         teacherDetail.setStudentLevel(rs.getString("student_level"));
-        User user = new User();
-        user.setUserName(rs.getString("user_name"));
-        user.setAvatar(fileSuffix+"/"+rs.getString("avatar"));
-        user.setSex(rs.getString("sex"));
-        teacherDetail.setUser(user);
+//        User user = new User();
+//        user.setUserName(rs.getString("user_name"));
+//        user.setAvatar(fileSuffix+"/"+rs.getString("avatar"));
+//        user.setSex(rs.getString("sex"));
+//        teacherDetail.setUser(user);
         return teacherDetail;
     }
 }

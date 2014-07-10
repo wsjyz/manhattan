@@ -8,7 +8,6 @@ import com.manhattan.domain.TeacherDetail;
 import com.manhattan.domain.User;
 import com.manhattan.domain.rowMapper.TeacherDetailRowMapper;
 import com.manhattan.domain.rowMapper.UserRowMapper;
-import com.manhattan.util.ConfigurationFile;
 import com.manhattan.util.MhtConstant;
 import com.manhattan.util.OpenPage;
 import org.apache.commons.lang3.StringUtils;
@@ -28,8 +27,7 @@ import java.util.Map;
 public class ITeacherDetailDaoImpl extends BaseDAO implements ITeacherDetailDao  {
     @Autowired
     private UserDAO userDAO;
-    @Autowired
-    private ConfigurationFile configurationFile;
+
     @Override
     public OpenPage<TeacherDetail> findTeachers(OpenPage<TeacherDetail> page, String searchKey) {
         StringBuffer selectSql = new StringBuffer("select ");
@@ -104,9 +102,9 @@ public class ITeacherDetailDaoImpl extends BaseDAO implements ITeacherDetailDao 
             OpenPage<TeacherDetail> page = new OpenPage<TeacherDetail>();
             page.setAutoCount(true);
             page.setAutoPaging(true);
-            extMap.put("followCount", findTeachersByUserIdAndAction(page, userId, MhtConstant.USER_ACTION_FOLLOW_TEACHER).getTotal());
-            extMap.put("commentCount", findTeachersByUserIdAndAction(page, userId, MhtConstant.USER_ACTION_COMMENT_TEACHER).getTotal());
-            extMap.put("collectCount", findTeachersByUserIdAndAction(page, userId, MhtConstant.USER_ACTION_COLLECT_TEACHER).getTotal());
+            extMap.put("followCount", findTeachersByUserIdAndAction(page, null, MhtConstant.USER_ACTION_FOLLOW_TEACHER,userId).getTotal());
+            extMap.put("commentCount", findTeachersByUserIdAndAction(page, null, MhtConstant.USER_ACTION_COMMENT_TEACHER,userId).getTotal());
+            extMap.put("collectCount", findTeachersByUserIdAndAction(page, null, MhtConstant.USER_ACTION_COLLECT_TEACHER,userId).getTotal());
             detail.setExtMap(extMap);
             return detail;
         }
@@ -115,9 +113,13 @@ public class ITeacherDetailDaoImpl extends BaseDAO implements ITeacherDetailDao 
 
     @Override
     public OpenPage<TeacherDetail> findTeachersByUserIdAndAction(OpenPage<TeacherDetail> page, String userId, String userAction) {
+        return findTeachersByUserIdAndAction(page, userId, userAction, null);
+    }
+
+    public OpenPage<TeacherDetail> findTeachersByUserIdAndAction(OpenPage<TeacherDetail> page, String userId, String userAction ,String teacherId) {
         StringBuffer selectSql = new StringBuffer("select ");
         StringBuffer sql = new StringBuffer("");
-        sql.append(" from t_mht_teacher_detail t inner join t_mht_user_action ua inner");
+        sql.append(" from t_mht_teacher_detail t inner join t_mht_user_action ua ");
         sql.append("on t.user_id=ua.resource_id ")
                 .append(" where 1=1 ");
         List<Object> params = new ArrayList<Object>();
@@ -128,6 +130,10 @@ public class ITeacherDetailDaoImpl extends BaseDAO implements ITeacherDetailDao 
         if (StringUtils.isNotBlank(userAction)) {
             sql.append(" and ua.action_type=? ");
             params.add(userAction);
+        }
+        if (StringUtils.isNotBlank(teacherId)) {
+            sql.append(" and t.user_id=? ");
+            params.add(teacherId);
         }
         List<TeacherDetail> teacherDetails = new ArrayList<TeacherDetail>();
         if (page.isAutoCount()) {
@@ -140,9 +146,8 @@ public class ITeacherDetailDaoImpl extends BaseDAO implements ITeacherDetailDao 
             params.add(page.getPageSize());
             params.add(page.getPageNo() - 1);
         }
-        teacherDetails=getJdbcTemplate().query(selectSql.append("t.*,u.user_name,u.avatar,u.sex")
-                .append(sql).toString(), params.toArray(),
-                new TeacherDetailRowMapper(configurationFile.getImgUrlPrefix()));
+        teacherDetails=getJdbcTemplate().query(selectSql.append("t.*").append(sql).toString(), params.toArray(), new TeacherDetailRowMapper());
+        setUsers(teacherDetails);
         page.setRows(teacherDetails);
         return page;
     }
