@@ -8,6 +8,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * Created by lk.zh on 2014/6/24.
@@ -20,8 +22,20 @@ public class UserInterceptor implements HandlerInterceptor {
         HttpSession session = request.getSession();
         String userId = (String) session.getAttribute(MhtConstant.SEESION_USER_ID);
         if (StringUtils.isEmpty(userId)) {
-            if (url.contains("admin")) {
-                response.sendRedirect(contextPath + "/admin/login");
+            if (url.contains("admin")&&!url.contains("admin/login")) {
+                if (!isAjaxRequest(request)) {
+                    response.sendRedirect(contextPath + "/admin/login");
+                }else{
+                    response.reset();
+                    try {
+                        PrintWriter writer = response.getWriter();
+                        writer.write("RELOGIN");
+                        writer.flush();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    return false;
+                }
             }else{
                 response.sendRedirect(contextPath + "/relogin");
             }
@@ -38,5 +52,11 @@ public class UserInterceptor implements HandlerInterceptor {
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
 
+    }
+
+    private boolean isAjaxRequest(HttpServletRequest request){
+        String header = request.getHeader("X-Requested-With");
+        boolean isAjax = "XMLHttpRequest".equals(header) ? true:false;
+        return isAjax;
     }
 }

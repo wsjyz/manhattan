@@ -4,16 +4,14 @@ import com.manhattan.domain.*;
 import com.manhattan.service.CourseService;
 import com.manhattan.service.TeacherDetailService;
 import com.manhattan.service.UserService;
-import com.manhattan.util.ConfigurationFile;
-import com.manhattan.util.JsonResult;
-import com.manhattan.util.OpenPage;
-import com.manhattan.util.PageConvert;
+import com.manhattan.util.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -26,6 +24,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -86,12 +85,24 @@ public class AdminController {
         return view;
     }
 
+    @RequestMapping(value = "/teacherList")
+    public ModelAndView teacherList() {
+        ModelAndView view = new ModelAndView();
+        OpenPage<TeacherDetail> page = new OpenPage<TeacherDetail>();
+        page.setPageNo(1);
+        page.setPageSize(10);
+        page = teacherDetailService.findTeacherByPage(page,new QueryParam());
+        view.addObject("teachers", page);
+        view.setViewName("views/admin/teacherList");
+        return view;
+    }
+
     @RequestMapping(value = "/list/teacher")
     public ModelAndView teacherList(@ModelAttribute OpenPage page, @RequestParam(required = false) String mobile, @RequestParam(required = false) String userName) {
         ModelAndView view = new ModelAndView();
         page = teacherDetailService.findPostCourseTeachers(page,mobile,userName);
-        view.addObject("teachers", page.getRows());
-        view.setViewName("views/admin/teacherList");
+        view.addObject("page", page);
+        view.setViewName("views/admin/courseList");
         return view;
     }
 
@@ -196,6 +207,28 @@ public class AdminController {
 
 
         return result;
+    }
+
+    @RequestMapping(value="view/postCourse")
+    public ModelAndView viewPostCourse(String teacherId) {
+        ModelAndView view = new ModelAndView();
+//        List<Course> courses=courseService.findByPostTeacher(teacherId);
+        TeacherDetail teacherDetail = teacherDetailService.findTeacherDetail(teacherId);
+        if (teacherDetail!=null) {
+            view.addObject("teacherDetail", teacherDetail);
+        }
+        view.setViewName("views/admin/postCourse");
+        return view;
+    }
+
+    @RequestMapping("/postCourse/{opt}")
+    public @ResponseBody boolean postCourse(@RequestParam String teacherId,@PathVariable String opt) {
+        if (opt.equals("disable")||opt.equals("enable")) {
+            userService.updateUserStatus(teacherId, opt.equals("disable")?MhtConstant.USER_STATUS_DISABLE:MhtConstant.USER_STATUS_ENABLE);
+        }else if (opt.equals("delete")) {
+            userService.deleteUser(teacherId);
+        }
+        return true;
     }
     @RequestMapping(value = "/postPlace",method = RequestMethod.POST)
     public @ResponseBody String postPlace(MultipartHttpServletRequest request){

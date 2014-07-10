@@ -29,4 +29,5 @@ public interface CourseService {
 
     OpenPage<Course> findCollectByUserId(OpenPage<Course> openPage, String userId, String userActionCollectCourse);
 
+    List<Course> findByPostTeacher(String teacherId);
 }

@@ -75,7 +75,11 @@
 </html>
 <script>
 $(function(){
+    ajaxCallbackHandle('${ctx}/admin/login');
+
     $('#account').click(function(){
+        $('.active').removeClass('active');
+        $(this).parent('li').addClass('active');
         $('#content').load('${ctx}/users/admin/list');
     })
     $('#approve,#post,#contentlist').click(function(){

@@ -1,0 +1,70 @@
+<div class="container" style="padding:20px 20px;">
+    <h4><strong>${teacherDetail.user.userName}</strong></h4>
+    <p class="heading-title"></p>
+    <h5><strong>自我介绍：</strong><small>${teacherDetail.selfIntroduction}</small></h5>
+    <h5><strong>可授课区域：</strong><small>${teacehrDetail.teachingArea}</small></h5>
+    <h5><strong>辅导方式：</strong><small>${teacehrDetail.tutoringWay}</small></h5>
+    <h5><strong>学员程度：</strong><small>${teacehrDetail.studentLevel}</small></h5>
+    <h5><strong>费用：</strong><small>${teacehrDetail.classFees}</small></h5>
+    <h5><strong>授课时间：</strong><small>${teacehrDetail.teachingTime}</small></h5>
+    <div class="col-md-8">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>星期/时间</th>
+                <th>星期一</th>
+                <th>星期二</th>
+                <th>星期三</th>
+                <th>星期四</th>
+                <th>星期五</th>
+                <th>星期六</th>
+                <th>星期日</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>上午</td>
+                <td><@check str=teacherDetail.teachingTime[0]/></td>
+                <td><@check str=teacherDetail.teachingTime[3]/></td>
+                <td><@check str=teacherDetail.teachingTime[6]/></td>
+                <td><@check str=teacherDetail.teachingTime[9]/></td>
+                <td><@check str=teacherDetail.teachingTime[12]/></td>
+                <td><@check str=teacherDetail.teachingTime[15]/></td>
+                <td><@check str=teacherDetail.teachingTime[18]/></td>
+            </tr>
+            <tr>
+                <td>下午</td>
+                <td><@check str=teacherDetail.teachingTime[1]/></td>
+                <td><@check str=teacherDetail.teachingTime[4]/></td>
+                <td><@check str=teacherDetail.teachingTime[7]/></td>
+                <td><@check str=teacherDetail.teachingTime[10]/></td>
+                <td><@check str=teacherDetail.teachingTime[13]/></td>
+                <td><@check str=teacherDetail.teachingTime[16]/></td>
+                <td><@check str=teacherDetail.teachingTime[19]/></td>
+            </tr>
+            <tr>
+                <td>晚六点后</td>
+                <td><@check str=teacherDetail.teachingTime[2]/></td>
+                <td><@check str=teacherDetail.teachingTime[5]/></td>
+                <td><@check str=teacherDetail.teachingTime[8]/></td>
+                <td><@check str=teacherDetail.teachingTime[11]/></td>
+                <td><@check str=teacherDetail.teachingTime[14]/></td>
+                <td><@check str=teacherDetail.teachingTime[17]/></td>
+                <td><@check str=teacherDetail.teachingTime[20]/></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row"></div>
+    <h5><strong>视频链接地址</strong><small>${teacehrDetail.videoUrl}</small></h5>
+</div>
+<style>
+    small{
+        margin-left:40px;
+    }
+    h5{margin:20px 20px;}
+    i.fa-check{color: red;}
+</style>
+<#macro check str=0>
+    <#if (str)=="1"><i class="fa fa-check"></i></#if>
+</#macro>

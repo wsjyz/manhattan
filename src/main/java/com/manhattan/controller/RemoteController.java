@@ -85,7 +85,7 @@ public class RemoteController {
                      @RequestParam("authCode") String authCode,
                      @RequestParam("type") String type
                      ,HttpServletResponse response) {
-        User user = userService.findUserByFilter(mobile, authCode);
+        User user = userService.findUserByMobile(mobile);
         if (user != null) {
             if (user.getStatus().equals("ENABLE")) {
                 setResponse("手机号已经注册", response);
