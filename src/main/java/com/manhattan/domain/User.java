@@ -13,8 +13,6 @@ import java.util.Date;
 @Entity
 @Table(name = "t_mht_user")
 public class User {
-
-
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid") 
@@ -53,7 +51,7 @@ public class User {
 //    private List<Course> courses;
 //    @OneToOne(fetch = FetchType.LAZY,optional = false)
 //    @PrimaryKeyJoinColumn
-
+    @Transient
     private TeacherDetail teacherDetail;
 
     public String getUserId() {

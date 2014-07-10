@@ -117,9 +117,9 @@ public class ITeacherDetailDaoImpl extends BaseDAO implements ITeacherDetailDao 
     public OpenPage<TeacherDetail> findTeachersByUserIdAndAction(OpenPage<TeacherDetail> page, String userId, String userAction) {
         StringBuffer selectSql = new StringBuffer("select ");
         StringBuffer sql = new StringBuffer("");
-        sql.append(" from t_mht_teacher_detail t inner join t_mht_user_action ua inner");
-        sql.append("on t.user_id=ua.resource_id ")
-                .append(" where 1=1 ");
+        sql.append(" from t_mht_teacher_detail t inner join t_mht_user_action ua ");
+        sql.append("on t.user_id=ua.resource_id ,t_mht_user u")
+                .append(" where 1=1 ").append("and t.user_id = u.user_id");
         List<Object> params = new ArrayList<Object>();
         if (StringUtils.isNotBlank(userId)) {
             sql.append(" and ua.user_id = ? ");
