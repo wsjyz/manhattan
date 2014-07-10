@@ -8,6 +8,7 @@ import com.manhattan.domain.TeacherDetail;
 import com.manhattan.domain.User;
 import com.manhattan.domain.rowMapper.TeacherDetailRowMapper;
 import com.manhattan.domain.rowMapper.UserRowMapper;
+import com.manhattan.util.ConfigurationFile;
 import com.manhattan.util.MhtConstant;
 import com.manhattan.util.OpenPage;
 import org.apache.commons.lang3.StringUtils;
@@ -27,7 +28,8 @@ import java.util.Map;
 public class ITeacherDetailDaoImpl extends BaseDAO implements ITeacherDetailDao  {
     @Autowired
     private UserDAO userDAO;
-
+    @Autowired
+    private ConfigurationFile configurationFile;
     @Override
     public OpenPage<TeacherDetail> findTeachers(OpenPage<TeacherDetail> page, String searchKey) {
         StringBuffer selectSql = new StringBuffer("select ");
@@ -115,7 +117,7 @@ public class ITeacherDetailDaoImpl extends BaseDAO implements ITeacherDetailDao 
     public OpenPage<TeacherDetail> findTeachersByUserIdAndAction(OpenPage<TeacherDetail> page, String userId, String userAction) {
         StringBuffer selectSql = new StringBuffer("select ");
         StringBuffer sql = new StringBuffer("");
-        sql.append(" from t_mht_teacher_detail t inner join t_mht_user_action ua ");
+        sql.append(" from t_mht_teacher_detail t inner join t_mht_user_action ua inner");
         sql.append("on t.user_id=ua.resource_id ")
                 .append(" where 1=1 ");
         List<Object> params = new ArrayList<Object>();
@@ -138,7 +140,9 @@ public class ITeacherDetailDaoImpl extends BaseDAO implements ITeacherDetailDao 
             params.add(page.getPageSize());
             params.add(page.getPageNo() - 1);
         }
-        teacherDetails=getJdbcTemplate().query(selectSql.append("t.*").append(sql).toString(), params.toArray(), new TeacherDetailRowMapper());
+        teacherDetails=getJdbcTemplate().query(selectSql.append("t.*,u.user_name,u.avatar,u.sex")
+                .append(sql).toString(), params.toArray(),
+                new TeacherDetailRowMapper(configurationFile.getImgUrlPrefix()));
         page.setRows(teacherDetails);
         return page;
     }

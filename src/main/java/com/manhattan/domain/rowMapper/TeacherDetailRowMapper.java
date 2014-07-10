@@ -1,6 +1,7 @@
 package com.manhattan.domain.rowMapper;
 
 import com.manhattan.domain.TeacherDetail;
+import com.manhattan.domain.User;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -10,6 +11,13 @@ import java.sql.SQLException;
  * Created by lk.zh on 2014/6/21 0021.
  */
 public class TeacherDetailRowMapper implements RowMapper<TeacherDetail> {
+    private String fileSuffix;
+    public TeacherDetailRowMapper(String fileSuffix){
+        this.fileSuffix = fileSuffix;
+    }
+    public TeacherDetailRowMapper(){
+        fileSuffix = "";
+    }
     @Override
     public TeacherDetail mapRow(ResultSet rs, int rowNum) throws SQLException {
         TeacherDetail teacherDetail=new TeacherDetail();
@@ -39,6 +47,11 @@ public class TeacherDetailRowMapper implements RowMapper<TeacherDetail> {
         teacherDetail.setStudentMaxScoreCertificate(rs.getString("student_max_score_certificate"));
         teacherDetail.setAuthenticationStatus(rs.getString("authentication_status"));
         teacherDetail.setStudentLevel(rs.getString("student_level"));
+        User user = new User();
+        user.setUserName(rs.getString("user_name"));
+        user.setAvatar(fileSuffix+"/"+rs.getString("avatar"));
+        user.setSex(rs.getString("sex"));
+        teacherDetail.setUser(user);
         return teacherDetail;
     }
 }

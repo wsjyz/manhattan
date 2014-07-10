@@ -74,7 +74,7 @@ public class TeacherDetail {
     private List<UserAction> userActions;
 
 //    @OneToOne (mappedBy = "teacherDetail",fetch = FetchType.LAZY, optional = false)
-    @Transient
+
     private User user;
 
     @Transient

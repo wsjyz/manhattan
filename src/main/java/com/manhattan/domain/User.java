@@ -53,7 +53,7 @@ public class User {
 //    private List<Course> courses;
 //    @OneToOne(fetch = FetchType.LAZY,optional = false)
 //    @PrimaryKeyJoinColumn
-    @Transient
+
     private TeacherDetail teacherDetail;
 
     public String getUserId() {
