@@ -38,6 +38,7 @@ public class TeacherDetailRowMapper implements RowMapper<TeacherDetail> {
         teacherDetail.setStudentMaxScore(rs.getString("student_max_score"));
         teacherDetail.setStudentMaxScoreCertificate(rs.getString("student_max_score_certificate"));
         teacherDetail.setAuthenticationStatus(rs.getString("authentication_status"));
+        teacherDetail.setStudentLevel(rs.getString("student_level"));
         return teacherDetail;
     }
 }

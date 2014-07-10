@@ -32,7 +32,7 @@
         <property name="formatters">
             <set>
                 <bean class="org.springframework.format.datetime.DateFormatter">
-                    <constructor-arg value="yyyy-MM-dd HH:mm:ss"/>
+                    <!--<constructor-arg value="yyyy-MM-dd HH:mm:ss"/>-->
                 </bean><!--String to DATE-->
                 <bean class="org.springframework.format.number.CurrencyFormatter"/><!--String to BigDecimal-->
             </set>

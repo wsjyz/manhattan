@@ -33,12 +33,11 @@ public class QuestionServiceImpl implements QuestionService {
                     "questionPic","userId","createTime","assignTeacher","status");
             return questionDao.save(oldQuestion);
         }
-//        else{
-//            question.setCreateTime(sdf.format(new Date().getTime()));
-//            question.setStatus(MhtConstant.QUESTION_STATUS_UNANSWERED);
-//            return questionDao.save(question);
-//        }
-        return null;
+        else{
+            question.setCreateTime(sdf.format(new Date().getTime()));
+            question.setStatus(MhtConstant.QUESTION_STATUS_UNANSWERED);
+            return questionDao.save(question);
+        }
 
     }
 

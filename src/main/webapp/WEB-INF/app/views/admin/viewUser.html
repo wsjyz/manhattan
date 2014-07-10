@@ -1,4 +1,62 @@
 <#assign ctx=request.contextPath>
+    <script>
+        $(function(){
+
+            $('#back').click(function(){
+                $('#content').load('${ctx}/users/admin/list');
+            })
+
+            $('#delete').click(function(){
+                var userId=$('#userId').val();
+                $.post('${ctx}/users/admin/delete',{userId:userId},function(){
+                    new PNotify({
+                        text: '删除用户成功.',
+                        animate_speed: 'fast',
+                        type: 'success'
+                    });
+                })
+            })
+            $('#disable').click(function(){
+                var userId=$('#userId').val();
+                $.post('${ctx}/users/admin/disable',{userId:userId},function(){
+                    new PNotify({
+                        text: '禁用用户成功.',
+                        animate_speed: 'fast',
+                        type: 'success'
+                    });
+                })
+            })
+            $('#enable').click(function(){
+                var userId=$('#userId').val();
+                $.post('${ctx}/users/admin/enable',{userId:userId},function(){
+                    new PNotify({
+                        text: '启用用户成功.',
+                        animate_speed: 'fast',
+                        type: 'success'
+                    });
+                })
+            })
+            $('#update').click(function(){
+
+                $('span.text').hide();
+                $('input.hinput').show();
+                $(this).attr('disabled','disabled');
+                $('#save').show();
+                $('#typeId').show();
+            });
+
+
+        })
+        function saveModify(){
+            new PNotify({
+                text: '修改用户成功.',
+                animate_speed: 'fast',
+                type: 'success'
+            });
+            $('#save').hide();
+            $('#update').removeAttr("disabled");
+        }
+    </script>
 <div class="row">
     <a class="pull-right btn btn-default" href="#" id="back" style="margin: 20px 20px;">返回</a>
     <div class="col-md-12 toppad">
@@ -6,10 +64,11 @@
             <div class="panel-heading">
                 <h3 class="panel-title">基本信息</h3>
             </div>
+            <iframe name="resultiframe" src="" style="border: 0px;display: none;"></iframe>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <form id="userform" action="${ctx}/users/saveUser" method="post">
+                        <form id="userform" action="${ctx}/users/saveUser" method="post" target="resultiframe">
                             <input id="userId" name="userId" type="hidden" value="${user.userId}"/>
                         <table class="table table-user-information">
                             <tbody>
@@ -26,6 +85,24 @@
                                 <input type="text" class="hinput" value="${user.email!}" name="email" style="display: none;"/></td></tr>
                             <tr><td class="col-md-2">地址：</td><td><span class="text">${user.address!}</span>
                                 <input type="text" class="hinput" value="${user.address!}" name="address" style="display: none;"/></td></tr>
+                            <tr class="danger">
+                                <td>账户类型：</td>
+                                <td><span class="text">
+                                    <#if '${user.type}'=='STUDENT'>
+                                    学生
+                                    <#elseif '${user.type}'=='VIPSTUDENT'>
+                                        VIP学生
+                                        <#else>
+                                            教师
+                                    </#if></span>
+                                    <select id="typeId"  data-style="btn-info"
+                                             name="type"  style="display: none;">
+                                        <option value="TEACHER">教师</option>
+                                        <option value="STUDENT">学生</option>
+                                        <option value="VIPSTUDENT">VIP学生</option>
+                                    </select>
+                                </td>
+                            </tr>
                             <tr>
                                 <td colspan="2" style="border-top-width: 0px;">
                                     <span class="badge pull-left"><h5>其他信息：</h5></span>
@@ -37,9 +114,12 @@
                             <tr><td>VIP到期时间：</td><td><span class="text">${user.vipExpiredTime!}</span>
                                 <input type="text" class="hinput" value="${user.vipExpiredTime!}" name="vipExpiredTime" style="display: none"/>
                             </td></tr>
-                            <tr class="danger"><td>当前余额：</td><td><span class="text">${user.wallet!}</span>
+                            <tr class="danger">
+                                <td>当前余额：</td>
+                                <td><span class="text">${user.wallet!}</span>
                                 <input type="text" class="hinput" name="wallet" value="${user.wallet!}" style="display: none;"/>
-                            </td></tr>
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
                             <div class="panel-footer">
@@ -50,7 +130,7 @@
                                         <button type="button" class="btn btn-warning" id="disable">禁用</button>
                                 </#if>
                                 <button type="button" class="btn btn-primary" id="update">修改</button>
-                                <button type="submit" class="btn btn-primary" id="save" style="display: none;">保存修改</button>
+                                <button type="submit" onclick="javascript:saveModify();" class="btn btn-primary" id="save" style="display: none;">保存修改</button>
                             </div>
                         </form>
                     </div>
@@ -60,66 +140,3 @@
         </div>
     </div>
 </div>
-<script>
-    $(function(){
-
-        $('#back').click(function(){
-            $('#content').load('${ctx}/users/admin/list');
-        })
-
-        $('#delete').click(function(){
-            var userId=$('#userId').val();
-            $.post('${ctx}/users/admin/delete',{userId:userId},function(){
-                new PNotify({
-                    text: '删除用户成功.',
-                    animate_speed: 'fast',
-                    type: 'success'
-                });
-            })
-        })
-        $('#disable').click(function(){
-            var userId=$('#userId').val();
-            $.post('${ctx}/users/admin/disable',{userId:userId},function(){
-                new PNotify({
-                    text: '禁用用户成功.',
-                    animate_speed: 'fast',
-                    type: 'success'
-                });
-            })
-        })
-        $('#enable').click(function(){
-            var userId=$('#userId').val();
-            $.post('${ctx}/users/admin/enable',{userId:userId},function(){
-                new PNotify({
-                    text: '启用用户成功.',
-                    animate_speed: 'fast',
-                    type: 'success'
-                });
-            })
-        })
-        $('#update').click(function(){
-            $('span.text').hide();
-            $('input.hinput').show();
-            $(this).attr('disabled','disabled');
-            $('#save').show();
-        });
-        $('#userform').submit(function() {
-            $(this).ajaxSubmit({
-                type:'POST',
-                url:"${ctx}/users/saveUser",
-                success: function() {
-                    new PNotify({
-                        text: '修改用户成功.',
-                        animate_speed: 'fast',
-                        type: 'success'
-                    });
-                    $('#save').hide();
-                    $('#update').removeAttr("disabled");
-                }
-
-            });
-            return false;
-        });
-
-    })
-</script>
