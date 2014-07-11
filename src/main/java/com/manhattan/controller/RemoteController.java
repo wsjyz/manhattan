@@ -82,12 +82,12 @@ public class RemoteController {
     @ResponseBody
     Boolean register(@RequestParam("mobile") String mobile,
                      @RequestParam("password") String password,
-                     @RequestParam("authCode") String authCode,
+                     @RequestParam(value = "authCode",required = false) String authCode,
                      @RequestParam("type") String type
                      ,HttpServletResponse response) {
         User user = userService.findUserByMobile(mobile);
         if (user != null) {
-            if (user.getStatus().equals("ENABLE")) {
+            if (StringUtils.isNotBlank(user.getStatus())&&user.getStatus().equals("ENABLE")) {
                 setResponse("手机号已经注册", response);
                 return false;
             }
@@ -95,7 +95,7 @@ public class RemoteController {
             int res = userService.register(user.getUserId(), passwordMd5, type);
             return res != 0;
         }else{
-            setResponse("注册失败,验证码错误", response);
+            setResponse("注册失败,请先获取验证码", response);
         }
         return false;
     }

@@ -200,7 +200,6 @@ public class ITeacherDetailDaoImpl extends BaseDAO implements ITeacherDetailDao 
         StringBuffer sql = new StringBuffer("");
         sql.append(" from t_mht_teacher_detail t inner join t_mht_user u");
         sql.append(" on t.user_id=u.user_id ");
-        sql.append(" inner join t_mht_course c on t.user_id=c.post_teacher");
         sql.append(" where 1=1 ");
         List<Object> params = new ArrayList<Object>();
         if (StringUtils.isNotBlank(userName)) {

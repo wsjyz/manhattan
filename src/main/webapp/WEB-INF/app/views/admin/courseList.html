@@ -9,7 +9,7 @@
     </tr>
     </thead>
     <tbody>
-    <#list page.getRows() as teacher>
+    <#list page.rows as teacher>
         <tr>
             <td>${teacher.user.mobile}</td>
             <td>${teacher.user.userName}</td>
@@ -26,7 +26,7 @@
     </#list>
     </tbody>
 </table>
-<@emptyPage page=teachers msg="没有任何人员"/>
+<@emptyPage page=page msg="没有任何人员"/>
 <@pageParam/>
 
 <script>
@@ -37,7 +37,6 @@
             var opt = $(this).data('opt');
             if(opt=='disable'||opt=='delete'||opt=='enable'){
                 $.post('${ctx}/users/admin/postCourse/'+opt,{teacherId:userId},function(){
-                    console.log($);
                     $.mhtMsg('操作成功!');
                 })
             }else{
