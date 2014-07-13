@@ -73,7 +73,7 @@ public class CourseController extends BaseController {
     @ResponseBody
     public TeacherDetail postCourses(@FastJson TeacherDetail teacherDetail,HttpServletResponse response) {
         TeacherDetail saved=teacherDetailService.postCourse(teacherDetail);
-        if (saved!=null) {
+        if (saved==null) {
             setResponse("发布课程失败", response);
         }
         return saved;
