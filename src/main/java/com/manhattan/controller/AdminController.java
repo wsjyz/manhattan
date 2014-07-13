@@ -1,9 +1,7 @@
 package com.manhattan.controller;
 
 import com.manhattan.domain.*;
-import com.manhattan.service.CourseService;
-import com.manhattan.service.TeacherDetailService;
-import com.manhattan.service.UserService;
+import com.manhattan.service.*;
 import com.manhattan.util.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +40,12 @@ public class AdminController {
     CourseService courseService;
     @Autowired
     private ConfigurationFile confBean;
+    @Autowired
+    private AppointmentService appointmentService;
+    @Autowired
+    private HomeWorkService homeWorkService;
+    @Autowired
+    private QuestionService questionService;
 
     @RequestMapping(value = "/list")
     public ModelAndView list() {
@@ -97,12 +101,32 @@ public class AdminController {
         return view;
     }
 
-    @RequestMapping(value = "/list/teacher")
-    public ModelAndView teacherList(@ModelAttribute OpenPage page, @RequestParam(required = false) String mobile, @RequestParam(required = false) String userName) {
+    @RequestMapping(value = "/list/{opt}")
+    public ModelAndView contentListDetail(@ModelAttribute OpenPage page,
+                                          @PathVariable String opt,
+                                          @RequestParam(required = false) String mobile,
+                                          @RequestParam(required = false) String userName) {
         ModelAndView view = new ModelAndView();
-        page = teacherDetailService.findPostCourseTeachers(page,mobile,userName);
+        Pageable pageAble = new PageRequest(page.getPageNo()-1, page.getPageSize());
+        if (opt.equals("teacher")) {
+            page = teacherDetailService.findPostCourseTeachers(page,mobile,userName);
+            view.addObject("page", page);
+            view.setViewName("views/admin/courseList");
+            return view;
+        } else if (opt.equals("listen")) {
+            Page datas = appointmentService.findByPage(pageAble, mobile, userName,MhtConstant.USER_ACTION_LISTEN_TEACHER);
+            page = PageConvert.convert(datas);
+        } else if (opt.equals("appoint")) {
+            Page datas = appointmentService.findByPage(pageAble, mobile, userName,MhtConstant.USER_ACTION_APPOINTMENT_TEACHER);
+            page = PageConvert.convert(datas);
+        } else if (opt.equals("homework")) {
+            Page datas = homeWorkService.getHomeworksByTeacher(pageAble, null);
+            page = PageConvert.convert(datas);
+        } else if (opt.equals("question")) {
+
+        }
         view.addObject("page", page);
-        view.setViewName("views/admin/courseList");
+        view.setViewName("views/admin/"+opt+"List");
         return view;
     }
 
