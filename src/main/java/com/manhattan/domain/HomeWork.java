@@ -22,6 +22,10 @@ public class HomeWork {
     @Column (name="homework_file")private String homeworkFile;
     @Column (name="user_id")private String userId;
 
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "teacher_id",insertable = false,updatable = false)
+    private User teacher;
+
     public String getHomeworkTitle() {
         return homeworkTitle;
     }
@@ -68,5 +72,13 @@ public class HomeWork {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public User getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(User teacher) {
+        this.teacher = teacher;
     }
 }

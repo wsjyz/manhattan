@@ -15,4 +15,6 @@ public interface HomeWorkService {
     Page<HomeWork> getHomeworksByTeacher(Pageable pageAble,String teacherId);
 
     HomeWork post(HomeWork homeWork);
+
+    Page findByPage(Pageable pageable, String userName);
 }

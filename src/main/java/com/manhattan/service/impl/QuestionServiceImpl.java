@@ -48,6 +48,9 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public Page<Question> findQuestionByPage(String userId, Pageable pageAble) {
+        if (StringUtils.isBlank(userId)) {
+            return questionDao.findAll(pageAble);
+        }
         return questionDao.findByUserIdOrderByCreateTimeDesc(userId, pageAble);
     }
 

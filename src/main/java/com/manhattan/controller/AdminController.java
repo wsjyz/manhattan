@@ -120,10 +120,11 @@ public class AdminController {
             Page datas = appointmentService.findByPage(pageAble, mobile, userName,MhtConstant.USER_ACTION_APPOINTMENT_TEACHER);
             page = PageConvert.convert(datas);
         } else if (opt.equals("homework")) {
-            Page datas = homeWorkService.getHomeworksByTeacher(pageAble, null);
+            Page datas = homeWorkService.findByPage(pageAble, null);
             page = PageConvert.convert(datas);
         } else if (opt.equals("question")) {
-
+            Page datas = questionService.findQuestionByPage(userName, pageAble);
+            page = PageConvert.convert(datas);
         }
         view.addObject("page", page);
         view.setViewName("views/admin/"+opt+"List");
