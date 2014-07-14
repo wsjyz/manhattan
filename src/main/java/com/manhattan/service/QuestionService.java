@@ -16,4 +16,5 @@ public interface QuestionService {
 
     Page<Question> findQuestionByPage(String userId, String type, Pageable pageAble);
 
+    Page findByPage(Pageable pageable, String userName);
 }

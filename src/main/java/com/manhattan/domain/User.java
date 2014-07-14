@@ -49,6 +49,7 @@ public class User {
     @Column private String area;
     @Column(name = "last_login_time") private Date lastLoginTime;
     @Column private String status;
+    @Column(name = "payment_method") private String paymentMethod;
 //    @OneToMany(cascade=CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy="postTeacher")
 //    private List<Course> courses;
 //    @OneToOne(fetch = FetchType.LAZY,optional = false)
@@ -199,5 +200,13 @@ public class User {
 
     public void setTeacherDetail(TeacherDetail teacherDetail) {
         this.teacherDetail = teacherDetail;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 }

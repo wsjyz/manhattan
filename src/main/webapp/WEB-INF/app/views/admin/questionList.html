@@ -1,0 +1,46 @@
+<#include "/common/webUtils.ftl">
+<#assign ctx=request.contextPath>
+<table class="table table-bordered table-responsive table-striped" id="questionTable">
+    <thead>
+    <tr>
+        <th class="col-md-2">创建人</th>
+        <th class="col-md-2">提问方式</th>
+        <th class="col-md-2">付费方式</th>
+        <th class="col-md-2">状态</th>
+        <th class="col-md-3">功能</th>
+    </tr>
+    </thead>
+    <tbody>
+    <#list page.getRows() as question>
+        <tr>
+            <td>${question.askUser.userName}</td>
+            <td><#if question.assignTeacher??>指定<#else>未指定</#if></td>
+            <td>${PAYMENT_METHOD_MAP[question.askUser.paymentMethod]}</td>
+            <td>${QUESTION_STATUS_MAP[question.status]}</td>
+            <td>
+                <a href="javascript:void(0);" data-id="${question.questionId}" data-opt="delete">删除</a>
+                <a href="javascript:void(0);" data-id="${question.questionId}" data-opt="view">查看</a>
+            </td>
+        </tr>
+    </#list>
+    </tbody>
+</table>
+<@emptyPage page=page msg="没有任何提问"/>
+<@pageParam/>
+
+<script>
+    $(function(){
+
+        $('#questionTable').on('click','a',function(){
+            var questionId=$(this).data('id');
+            var opt = $(this).data('opt');
+            if(opt=='delete'){
+                $.post('${ctx}/users/admin/question/'+opt,{questionId:questionId},function(){
+                    $.mhtMsg('操作成功!');
+                })
+            }else{
+                $('#content').load('${ctx}/users/admin/view/question',{questionId:questionId},function(){});
+            }
+        })
+    })
+</script>

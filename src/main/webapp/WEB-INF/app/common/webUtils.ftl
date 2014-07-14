@@ -117,3 +117,20 @@ hasEmpty=false emptyKey="" emptyText="全部" disabled=false onchange="" onclick
 <#macro toggleText msg="">
     data-toggle="tooltip" data-original-title="${msg}"
 </#macro>
+
+
+<#assign QUESTION_STATUS_MAP={
+"ANSWERED":"已回答",
+"UNANSWER":"未回答"
+}>
+
+<#assign USER_SEX_MAP={
+"MALE":"男",
+"FEMALE":"女"
+}>
+
+<#assign PAYMENT_METHOD_MAP={
+"NORMAL":"普通",
+"VIP":"VIP",
+"MONTHLY":"包月"
+}>

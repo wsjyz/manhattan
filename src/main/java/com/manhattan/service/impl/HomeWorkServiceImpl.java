@@ -45,9 +45,9 @@ public class HomeWorkServiceImpl implements HomeWorkService {
             public Predicate toPredicate(Root<HomeWork> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
                 Predicate predicate = cb.conjunction();
                 Join<HomeWork,User> userJoin =
-                        root.join(root.getModel().getSingularAttribute("user_id",User.class),JoinType.LEFT);
+                        root.join(root.getModel().getSingularAttribute("teacher",User.class),JoinType.LEFT);
                 if (StringUtils.isNotBlank(userName)) {
-                    predicate.getExpressions().add(cb.equal(userJoin.<String>get("user_name"), "%"+userName+"%"));
+                    predicate.getExpressions().add(cb.like(userJoin.<String>get("userName"), "%"+userName+"%"));
                 }
                 return predicate;
             }

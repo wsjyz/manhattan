@@ -2,6 +2,7 @@ package com.manhattan.service.impl;
 
 import com.manhattan.dao.QuestionDao;
 import com.manhattan.domain.Question;
+import com.manhattan.domain.User;
 import com.manhattan.service.QuestionService;
 import com.manhattan.util.MhtConstant;
 import org.apache.commons.lang3.StringUtils;
@@ -9,8 +10,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -64,5 +67,21 @@ public class QuestionServiceImpl implements QuestionService {
             return questionDao.findByStatusOrderByCreateTimeDesc(MhtConstant.QUESTION_STATUS_UNANSWERED, pageAble);
         }
         return null;
+    }
+
+    @Override
+    public Page findByPage(final Pageable pageable, final String userName) {
+        return questionDao.findAll(new Specification<Question>() {
+            @Override
+            public Predicate toPredicate(Root<Question> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                Predicate predicate = cb.conjunction();
+                Join<Question,User> userJoin =
+                        root.join(root.getModel().getSingularAttribute("askUser",User.class),JoinType.LEFT);
+                if (StringUtils.isNotBlank(userName)) {
+                    predicate.getExpressions().add(cb.like(userJoin.<String>get("userName"), "%"+userName+"%"));
+                }
+                return predicate;
+            }
+        }, pageable);
     }
 }

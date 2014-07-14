@@ -4,6 +4,7 @@
     <thead>
     <tr>
         <th class="col-md-2">创建人</th>
+        <th class="col-md-2">作业标题</th>
         <th class="col-md-2">创建时间</th>
         <th class="col-md-3">功能</th>
     </tr>
@@ -11,9 +12,9 @@
     <tbody>
     <#list page.getRows() as homework>
         <tr>
-            <td>${homework.userName}</td>
-            <td>${homework.mobile}</td>
-            <td>${homework.payment}</td>
+            <td>${homework.teacher.userName}</td>
+            <td>${homework.homeworkTitle}</td>
+            <td>${homework.postTime}</td>
             <td>
                 <a href="javascript:void(0);" data-id="${teacher.userId}" data-opt="delete">删除</a>
                 <a href="javascript:void(0);" data-id="${teacher.userId}" data-opt="view">查看</a>
