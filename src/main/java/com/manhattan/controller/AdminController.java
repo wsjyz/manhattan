@@ -246,6 +246,15 @@ public class AdminController {
         return view;
     }
 
+    @RequestMapping(value = "view/appoint")
+    public ModelAndView viewAppoint(@RequestParam String appointmentId) {
+        ModelAndView view = new ModelAndView();
+        Appointment appointment = appointmentService.loadById(appointmentId);
+        view.addObject("appointment", appointment);
+        view.setViewName("views/admin/appointment");
+        return view;
+    }
+
     @RequestMapping("/postCourse/{opt}")
     public @ResponseBody boolean postCourse(@RequestParam String teacherId,@PathVariable String opt) {
         if (opt.equals("disable")||opt.equals("enable")) {

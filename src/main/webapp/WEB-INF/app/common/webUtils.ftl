@@ -134,3 +134,8 @@ hasEmpty=false emptyKey="" emptyText="全部" disabled=false onchange="" onclick
 "VIP":"VIP",
 "MONTHLY":"包月"
 }>
+
+<#assign PAYMENT_MAP={
+"ONLINE":"在线支付",
+"ADMIN":"线下试听"
+}>

@@ -1,0 +1,19 @@
+<#include "/common/webUtils.ftl">
+<div class="container">
+    <h4><strong>基本信息</strong></h4>
+    <p class="heading-title"></p>
+    <h5><strong>姓名：</strong><small>${appointment.userName!}</small></h5>
+    <h5><strong>性别：</strong><small>${USER_SEX_MAP[appointment.sex!]}</small></h5>
+    <h4><strong>学习信息</strong></h4>
+    <p class="heading-title"></p>
+    <h5><strong>学习科目：</strong><small>${appointment.courseCategory!}</small></h5>
+    <h5><strong>授课方式：</strong><small>${appointment.tutoringWay!}</small></h5>
+    <h5><strong>学员所在地区：</strong><small>${appointment.area!}</small></h5>
+    <h5><strong>补充说明：</strong><small>${appointment.otherContent!}</small></h5>
+    <h4><strong>联系方式</strong></h4>
+    <p class="heading-title"></p>
+    <h5><strong>手机：</strong><small>${appointment.mobile!}</small></h5>
+    <h5><strong>固定电话：</strong><small>${appointment.phone!}</small></h5>
+    <h5><strong>QQ：</strong><small>${appointment.qq!}</small></h5>
+    <h5><strong>通讯地址：</strong><small>${appointment.address!}</small></h5>
+</div>

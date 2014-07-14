@@ -16,4 +16,6 @@ public interface AppointmentService {
     Appointment save(Appointment appointment);
 
     Page findByPage(Pageable pageAble, String mobile, String userName,String type);
+
+    Appointment loadById(String appiontId);
 }

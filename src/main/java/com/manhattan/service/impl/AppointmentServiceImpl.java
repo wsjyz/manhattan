@@ -50,4 +50,9 @@ public class AppointmentServiceImpl implements AppointmentService {
             }
         }, pageAble);
     }
+
+    @Override
+    public Appointment loadById(String appiontId) {
+        return appointmentDAO.getOne(appiontId);
+    }
 }
