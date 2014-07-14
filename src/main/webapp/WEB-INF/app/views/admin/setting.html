@@ -1,0 +1,63 @@
+<#assign ctx=request.contextPath>
+<div class="container">
+    <form class="form-horizontal" id="settingForm">
+        <input name="settingId" type="hidden" value="${(setting.settingId)!}"/>
+        <div class="form-group">
+            <label for="vipInput" class="col-md-2 control-label">VIP：</label>
+            <div class="col-md-3">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="vipInput" name="vipCost">
+                    <span class="input-group-addon">RMB</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="credit" class="col-md-2 control-label">积分：</label>
+            <div class="col-md-3">
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button">在线时长 X</button>
+                    </span>
+                    <select class="form-control"  id="credit" name="credit">
+                        <option>1.0</option>
+                        <option>1.5</option>
+                        <option>2.0</option>
+                        <option>3.0</option>
+                    </select>
+                    <span class="input-group-addon">分</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="monthlyCost" class="col-md-2 control-label">包月：</label>
+            <div class="col-md-3">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="monthlyCost" name="monthlyCost">
+                    <span class="input-group-addon">RMB</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-primary" id="save">保存</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    $(function(){
+        $('#save').click(function(){
+            var setting=$('#settingForm').serializeJson();
+            $.post('${ctx!}/users/admin/saveSetting',setting,function(result){
+                if(result) {
+                    new PNotify({
+                        text: '保存成功.',
+                        animate_speed: 'fast',
+                        type: 'success'
+                    });
+                }
+            })
+            return false;
+        })
+    })
+</script>

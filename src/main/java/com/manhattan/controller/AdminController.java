@@ -46,6 +46,8 @@ public class AdminController {
     private HomeWorkService homeWorkService;
     @Autowired
     private QuestionService questionService;
+    @Autowired
+    private SettingService settingService;
 
     @RequestMapping(value = "/list")
     public ModelAndView list() {
@@ -72,9 +74,20 @@ public class AdminController {
         view.setViewName("views/admin/contentlist");
         return view;
     }
+    @RequestMapping(value = "/setting")
+    public ModelAndView setting() {
+        ModelAndView view = new ModelAndView();
+        Setting setting=settingService.getSetting();
+        if (setting != null) {
+            view.addObject("setting", setting);
+        }
+        view.setViewName("views/admin/setting");
+        return view;
+    }
     @RequestMapping(value = "/exit")
     public ModelAndView exit(HttpSession session) {
         ModelAndView view = new ModelAndView();
+        session.removeAttribute(MhtConstant.SEESION_USER_ID);
         view.setViewName("views/admin/login");
         return view;
     }
@@ -255,6 +268,15 @@ public class AdminController {
         return view;
     }
 
+    @RequestMapping(value = "view/question")
+    public ModelAndView viewQuestion(@RequestParam String questionId) {
+        ModelAndView view = new ModelAndView();
+        Question question = questionService.loadById(questionId);
+        view.addObject("question", question);
+        view.setViewName("views/admin/question");
+        return view;
+    }
+
     @RequestMapping("/postCourse/{opt}")
     public @ResponseBody boolean postCourse(@RequestParam String teacherId,@PathVariable String opt) {
         if (opt.equals("disable")||opt.equals("enable")) {
@@ -264,10 +286,28 @@ public class AdminController {
         }
         return true;
     }
+
+    @RequestMapping("/appoint/delete")
+    public @ResponseBody boolean deleteAppoint(@RequestParam String appointmentId) {
+        appointmentService.deleteById(appointmentId);
+        return true;
+    }
+
+    @RequestMapping("/question/delete")
+    public @ResponseBody boolean deleteQuestion(@RequestParam String questionId) {
+        questionService.deleteById(questionId);
+        return true;
+    }
+
     @RequestMapping(value = "/postPlace",method = RequestMethod.POST)
     public @ResponseBody String postPlace(MultipartHttpServletRequest request){
         String result = "添加课程成功";
         return result;
     }
 
+    @RequestMapping(value = "/saveSetting",method = RequestMethod.POST)
+    public @ResponseBody String saveSetting(@ModelAttribute Setting setting){
+        Setting setting1=settingService.save(setting);
+        return setting.getSettingId();
+    }
 }

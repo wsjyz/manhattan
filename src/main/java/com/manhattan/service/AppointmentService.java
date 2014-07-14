@@ -18,4 +18,6 @@ public interface AppointmentService {
     Page findByPage(Pageable pageAble, String mobile, String userName,String type);
 
     Appointment loadById(String appiontId);
+
+    void deleteById(String appointmentId);
 }

@@ -84,4 +84,14 @@ public class QuestionServiceImpl implements QuestionService {
             }
         }, pageable);
     }
+
+    @Override
+    public Question loadById(String questionId) {
+        return questionDao.findOne(questionId);
+    }
+
+    @Override
+    public void deleteById(String questionId) {
+        questionDao.delete(questionId);
+    }
 }

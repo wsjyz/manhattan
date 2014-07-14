@@ -53,6 +53,11 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public Appointment loadById(String appiontId) {
-        return appointmentDAO.getOne(appiontId);
+        return appointmentDAO.findOne(appiontId);
+    }
+
+    @Override
+    public void deleteById(String appointmentId) {
+        appointmentDAO.delete(appointmentId);
     }
 }

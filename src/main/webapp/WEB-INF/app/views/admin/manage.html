@@ -60,7 +60,7 @@
                 <li><a href="javascript:void(0);" id="approve">教师审核</a></li>
                 <li><a href="javascript:void(0);" id="post" >内容发布</a></li>
                 <li><a href="javascript:void(0);" id="contentlist">列表管理</a></li>
-                <li><a href="javascript:void(0);" id="param">参数设置</a></li>
+                <li><a href="javascript:void(0);" id="setting">参数设置</a></li>
                 <!--<li><a href="javascript:void(0);" id="record">交易记录</a></li>-->
                 <li><a href="javascript:void(0);" id="exit">退出</a></li>
             </ul>
@@ -82,12 +82,16 @@ $(function(){
         $(this).parent('li').addClass('active');
         $('#content').load('${ctx}/users/admin/list');
     })
-    $('#approve,#post,#contentlist').click(function(){
+    $('#approve,#post,#contentlist,#setting').click(function(){
         $('.active').removeClass('active');
         $(this).parent('li').addClass('active');
         var id = $(this).attr('id');
         $('#content').load('${ctx}/users/admin/'+id);
     })
+
+    $('#exit').click(function(){
+        location.href='${ctx}/users/admin/exit';
+    });
 
     $('#account').trigger('click');
 })

@@ -6,7 +6,7 @@
         <th class="col-md-2">创建人</th>
         <th class="col-md-2">作业标题</th>
         <th class="col-md-2">创建时间</th>
-        <th class="col-md-3">功能</th>
+        <th class="col-md-1">功能</th>
     </tr>
     </thead>
     <tbody>
@@ -16,8 +16,7 @@
             <td>${homework.homeworkTitle}</td>
             <td>${homework.postTime}</td>
             <td>
-                <a href="javascript:void(0);" data-id="${teacher.userId}" data-opt="delete">删除</a>
-                <a href="javascript:void(0);" data-id="${teacher.userId}" data-opt="view">查看</a>
+                <a href="javascript:void(0);" data-id="${homework.homeworkId}" data-opt="delete">删除</a>
             </td>
         </tr>
     </#list>
@@ -30,14 +29,12 @@
     $(function(){
 
         $('#homeworkTable').on('click','a',function(){
-            var userId=$(this).data('id');
+            var homeworkId=$(this).data('id');
             var opt = $(this).data('opt');
             if(opt=='delete'){
-                $.post('${ctx}/users/admin/homework/'+opt,{teacherId:userId},function(){
+                $.post('${ctx}/users/admin/homework/'+opt,{homeworkId:homeworkId},function(){
                     $.mhtMsg('操作成功!');
                 })
-            }else{
-                $('#content').load('${ctx}/users/admin/view/homework',{teacherId:userId},function(){});
             }
         })
     })
