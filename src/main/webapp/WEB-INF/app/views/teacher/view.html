@@ -249,6 +249,11 @@
 </style>
 <script>
     $(function(){
+
+        if ($("[data-toggle=tooltip]").length) {
+            $("[data-toggle=tooltip]").tooltip();
+        }
+
         <#if userId??>
         $('#tolisten,#toappiont').click(function(){
             var userId = $(this).data('userid');

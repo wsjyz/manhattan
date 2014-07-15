@@ -1,3 +1,4 @@
+<#assign ctx=request.contextPath>
 <div class="col-md-offset-1">
     <ul class="nav nav-tabs">
         <li class="active"><a href="#student" data-toggle="tab">注册为学生</a>
@@ -14,27 +15,27 @@
                         <div class="form-group">
                             <label for="smobile" class="control-label col-md-3">手机号</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" id="smobile" name="mobile" placeholder="Phone"
+                                <input type="text" class="form-control" id="smobile" name="mobile" placeholder="Phone" required="true"
                                         />
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="inputPassword3" class="control-label col-md-3">密码</label>
                             <div class="col-md-7">
-                                <input type="password" class="form-control" id="inputPassword3" name="password" placeholder="Password"
+                                <input type="password" class="form-control" id="inputPassword3" name="password" placeholder="Password" required="true"
                                         />
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="inputPassword31" class="control-label col-md-3">确认密码</label>
                             <div class="col-md-7">
-                                <input type="password" class="form-control" id="inputPassword31" placeholder="Password" />
+                                <input type="password" class="form-control" id="inputPassword31" placeholder="Password" required="true" />
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="authCode" class="control-label col-md-3">验证码</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" id="authCode" name="authCode" placeholder="AuthCode"
+                                <input type="text" class="form-control" id="authCode" name="authCode" placeholder="AuthCode" required="true"
                                         />
                                 <button class="btn btn-info" style="margin-top:10px;" id="getAuthCode">
                                     <span class="glyphicon glyphicon-envelope"></span> 获取验证码</button>
@@ -61,28 +62,30 @@
                         <div class="form-group">
                             <label for="tinputEmail3" class="control-label col-md-3">手机号</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" id="tinputEmail3" name="mobile" placeholder="Phone"
+                                <input type="text" class="form-control" id="tinputEmail3" name="mobile" placeholder="Phone" required="true"
                                         />
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="tinputPassword3" class="control-label col-md-3">密码</label>
                             <div class="col-md-7">
-                                <input type="password" class="form-control" id="tinputPassword3" name="password" placeholder="Password"
+                                <input type="password" class="form-control" id="tinputPassword3" name="password" placeholder="Password" required="true"
                                         />
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="tinputPassword31" class="control-label col-md-3">确认密码</label>
                             <div class="col-md-7">
-                                <input type="password" class="form-control" id="tinputPassword31" placeholder="Password" />
+                                <input type="password" class="form-control" id="tinputPassword31" placeholder="Password" required="true" />
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="tauthCode" class="control-label col-md-3">验证码</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" id="tauthCode" name="authCode" placeholder="AuthCode"
+                                <input type="text" class="form-control" id="tauthCode" name="authCode" placeholder="AuthCode" required="true"
                                         />
+                                <button class="btn btn-info" style="margin-top:10px;" id="tgetAuthCode">
+                                <span class="glyphicon glyphicon-envelope"></span> 获取验证码</button>
                             </div>
                         </div>
                         <div class="form-group">
@@ -111,9 +114,26 @@
         var authCode;
         $('#studentRegister,#teacherRegister').submit(function(e){
             e.preventDefault();
-            var form=$(this);
+            var form=$(this),pass1,pass2,authCodeValue;
+            if(form.attr('id')=='studentRegister'){
+                pass1 = $('#inputPassword3').val();
+                pass2 = $('#inputPassword31').val();
+                authCodeValue = $('#authCode').val();
+            }else{
+                pass1 = $('#tinputPassword3').val();
+                pass2 = $('#tinputPassword31').val();
+                authCodeValue = $('#tauthCode').val();
+            }
+            if(pass1!=pass2) {
+                $.mhtMsg('两次输入密码不一致');
+                return false;
+            }
+            if(authCodeValue!=authCode) {
+                $.mhtMsg('验证码错误');
+                return false;
+            }
             var user=form.serializeJson();
-            $.post(resource.register,user,function(result){
+            $.post('${ctx!}/register',user,function(result){
                 if(result&&result.success) {
                     form.append('<div class="alert alert-success span6">' +
                             '<button type="button" class="close" data-dismiss="alert">&times;</button>' +
@@ -127,19 +147,34 @@
             return false;
         })
 
-        $('#getAuthCode').click(function(){
+        $('#getAuthCode,#tgetAuthCode').click(function(){
             $(this).attr('disabled', 'disabled');
             var smobile = $('#smobile').val();
             if(!smobile){
                 new PNotify({
+                    title: '输入提示',
                     text: '请先输入手机号.',
                     animate_speed: 'fast',
-                    type: 'error'
+                    type: 'error',
+                    min_height: '100px'
                 });
                 $(this).removeAttr('disabled');
             }else{
                 $.get('${ctx!}/common/authCode',{mobile:smobile},function(res){
-                    change();
+                    console.log($.type(res));
+                    if(res.success) {
+                        change();
+                        authCode=res.data;
+                    }else{
+                        $(this).removeAttr('disabled');
+                        new PNotify({
+                            title: '输入提示',
+                            text: res.message,
+                            animate_speed: 'fast',
+                            type: 'error',
+                            min_height: '100px'
+                        });
+                    }
                 })
             }
         })

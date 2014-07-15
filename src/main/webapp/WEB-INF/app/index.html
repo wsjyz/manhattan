@@ -43,8 +43,8 @@
                     <a href="#" class="register">注册</a>
                     <image src="images/index/collect.png">收藏网站</span>
                 </#if>
-                <span class="pull-right"></span>
             </div>
+            <span class="pull-right"><a class="exit" href="javascript:void(0);">退出</a></span>
         </div>
     </div>
     <div>
@@ -130,6 +130,9 @@
         })
         $('.question').click(function(){
             $('#main').html('').load('${ctx}/question/questions');
+        })
+        $('.exit').click(function(){
+            location.href = '${ctx}/relogin';
         })
         <#if tologin??>
         $('.login').trigger('click');

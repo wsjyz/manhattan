@@ -107,6 +107,7 @@ public class MainController {
     @RequestMapping("/relogin")
     public ModelAndView relogin(HttpSession session) {
         ModelAndView view = new ModelAndView();
+        session.removeAttribute(MhtConstant.SEESION_USER_ID);
         view.addObject("tologin", "true");
         view.setViewName("index");
         return view;
