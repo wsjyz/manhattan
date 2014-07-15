@@ -1,3 +1,4 @@
+<#assign ctx=request.contextPath>
 <div class="row">
     <div class="col-md-12 toppad">
         <div class="panel panel-info" style="margin-bottom: 0px;">
@@ -12,7 +13,7 @@
                             <tr>
                                 <td colspan="2" style="border-top-width: 0px;">
                                     <span class="badge pull-left"><h5>基本资料：</h5></span>
-                                    <a class="pull-right" href="#" style="margin-top: 20px;">编辑</a>
+                                    <a class="pull-right" href="javascript:void(0);" style="margin-top: 20px;" id="editBaseInfo">编辑</a>
                                 </td>
                             </tr>
                             <tr><td>手机号：</td><td>${user.mobile!}</td></tr>
@@ -34,3 +35,10 @@
         </div>
     </div>
 </div>
+<script>
+    $(function(){
+        $('#editBaseInfo').click(function(){
+            $('#data-content').html('').load('${ctx!}/users/data/editBaseInfo?userId=${user.userId}');
+        })
+    })
+</script>

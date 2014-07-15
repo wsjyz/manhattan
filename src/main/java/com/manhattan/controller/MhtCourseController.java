@@ -67,7 +67,10 @@ public class MhtCourseController {
     @RequestMapping("/appointment")
     @ResponseBody
     public String appointment(@ModelAttribute Appointment appointment,HttpSession session) {
-        appointment.setUserId(session.getAttribute(MhtConstant.SEESION_USER_ID).toString());
+        Object userId=session.getAttribute(MhtConstant.SEESION_USER_ID);
+        if (userId != null) {
+            appointment.setUserId(userId.toString());
+        }
         appointment.setAppointmentTime(new Date());
         Appointment am=appointmentService.save(appointment);
         return am.getAppointmentId();

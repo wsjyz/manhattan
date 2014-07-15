@@ -40,6 +40,9 @@ $.fn.twbsPagination.defaults.last='最后一页';
 
 $(function(){
 
+    if ($("[data-toggle=tooltip]").length) {
+        $("[data-toggle=tooltip]").tooltip();
+    }
 
 })
 

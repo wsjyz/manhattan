@@ -108,7 +108,7 @@ hasEmpty=false emptyKey="" emptyText="全部" disabled=false onchange="" onclick
 </#macro>
 
 <#macro stars count=0>
-    <#list 0..(count-1) as t><i class="fa fa-star fa-fw"></i></#list>
+    <#list 0..(count-1) as t><i class="fa fa-star fa-fw" style="color:#f0ad4e;"></i></#list>
     <#if count<5>
     <#list 0..(4-count) as t><i class="fa fa-star-o fa-fw"></i></#list>
     </#if>

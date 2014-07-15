@@ -14,8 +14,8 @@ public class Place {
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
-    @Column(name ="placeId") private String placeId;
-    @Column(name ="placeName") private String placeName;
+    @Column(name ="place_id") private String placeId;
+    @Column(name ="place_name") private String placeName;
     @Column(name ="place_address") private String placeAddress;
     @Column(name ="phone") private String phone;
     @Column(name ="course_category") private String courseCategory;

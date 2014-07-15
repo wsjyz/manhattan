@@ -29,10 +29,10 @@
         $('#loginForm').submit(function(e){
             e.preventDefault();
             var user=$('#loginForm').serializeJson();
-            $.post(resource.login,user,function(result){
+            $.post('${ctx!}/login',user,function(result){
                 if(result&&result.success) {
                     $('.tip').text("，"+result.data.userName);
-                    $('#main').html('').load('main/',{userId:result.data.userId});
+                    location.href='${ctx!}/index'
                 }else{
                     $('#alertMsg').show();
                 }

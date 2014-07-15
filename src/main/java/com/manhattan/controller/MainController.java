@@ -1,6 +1,7 @@
 package com.manhattan.controller;
 
 import com.manhattan.domain.Information;
+import com.manhattan.domain.Question;
 import com.manhattan.domain.User;
 import com.manhattan.service.InformationService;
 import com.manhattan.service.PlaceService;
@@ -17,9 +18,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.UUID;
 
 @Controller
 public class MainController {
@@ -32,6 +40,8 @@ public class MainController {
     private QuestionService questionService;
     @Autowired
     private PlaceService placeService;
+    @Autowired
+    private ConfigurationFile confBean;
 
     @RequestMapping(value={"/","/index"})
 	public ModelAndView index(HttpSession session) {
@@ -139,6 +149,13 @@ public class MainController {
         return view;
     }
 
+    @RequestMapping("/postCourse")
+    public ModelAndView postCourse() {
+        ModelAndView view = new ModelAndView();
+        view.setViewName("views/teacher/postCourse");
+        return view;
+    }
+
     @RequestMapping("/place/list")
     public ModelAndView index() {
         ModelAndView view = new ModelAndView();
@@ -190,5 +207,38 @@ public class MainController {
         }
         view.setViewName("views/question/myQuestion");
         return view;
+    }
+
+    @RequestMapping("/question/saveQuestion")
+    public @ResponseBody String saveQuestion(MultipartHttpServletRequest request) {
+        Question question = new Question();
+        String userId = request.getParameter("userId");
+        String questionTitle = request.getParameter("questionTitle");
+        String questionContent = request.getParameter("questionContent");
+
+        String path = request.getSession().getServletContext().getRealPath("upload");
+        MultipartFile file = request.getFile("questionPic");
+        String originalFilename = file.getOriginalFilename();
+        String fileSuffix = originalFilename.substring(originalFilename.indexOf("."), originalFilename.length());
+        path = path + new SimpleDateFormat("yyyyMMdd").format(new Date()) + "/";
+        String picName = UUID.randomUUID().toString().replace("-", "") + fileSuffix;
+        File targetFile = new File(path, picName);
+        if (!targetFile.exists()) {
+            targetFile.mkdirs();
+        }
+        String picUrl = path + picName;
+        try {
+            file.transferTo(targetFile);
+            question.setQuestionPic(picUrl);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        question.setUserId(userId);
+        question.setQuestionTitle(questionTitle);
+        question.setQuestionContent(questionContent);
+
+        questionService.saveQuestion(question);
+        return "success";
     }
 }

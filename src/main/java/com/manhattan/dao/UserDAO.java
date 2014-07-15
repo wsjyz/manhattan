@@ -42,4 +42,14 @@ public interface UserDAO extends JpaRepository<User, String>,JpaSpecificationExe
     @Transactional
     @Query(value = "update User u set u.status=:status where u.userId=:userId")
     void updateUserStatus(@Param("userId")String userId,@Param("status") String status);
+
+    @Modifying
+    @Transactional
+    @Query(value = "update User u set u.userName=?2,u.sex=?3,u.email=?4,u.address=?5,u.area=?6 where u.userId=?1")
+    int updateUser(String userId, String userName, String sex, String email, String address, String area);
+
+    @Modifying
+    @Transactional
+    @Query(value = "update User u set u.password=?2 where u.userId=?1")
+    int changePassword(String userId, String changePass);
 }

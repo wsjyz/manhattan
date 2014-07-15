@@ -12,9 +12,9 @@
                     <form id="studentRegister" class="form-horizontal" role="form">
                         <input name="type" type="hidden" value="STUDENT" />
                         <div class="form-group">
-                            <label for="inputEmail3" class="control-label col-md-3">手机号</label>
+                            <label for="smobile" class="control-label col-md-3">手机号</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" id="inputEmail3" name="mobile" placeholder="Phone"
+                                <input type="text" class="form-control" id="smobile" name="mobile" placeholder="Phone"
                                         />
                             </div>
                         </div>
@@ -36,7 +36,7 @@
                             <div class="col-md-7">
                                 <input type="text" class="form-control" id="authCode" name="authCode" placeholder="AuthCode"
                                         />
-                                <button class="btn btn-info" style="margin-top:10px;" onclick="mbtime(this)">
+                                <button class="btn btn-info" style="margin-top:10px;" id="getAuthCode">
                                     <span class="glyphicon glyphicon-envelope"></span> 获取验证码</button>
                             </div>
                         </div>
@@ -107,31 +107,56 @@
     }
 </style>
 <script>
-    var authCode;
-    $('#studentRegister,#teacherRegister').submit(function(e){
-        e.preventDefault();
-        var form=$(this);
-        var user=form.serializeJson();
-        $.post(resource.register,user,function(result){
-            if(result&&result.success) {
-                form.append('<div class="alert alert-success span6">' +
-                        '<button type="button" class="close" data-dismiss="alert">&times;</button>' +
-                        '<strong>恭喜</strong>，注册成功</div>');
-                $('.tip').text("");
+    $(function(){
+        var authCode;
+        $('#studentRegister,#teacherRegister').submit(function(e){
+            e.preventDefault();
+            var form=$(this);
+            var user=form.serializeJson();
+            $.post(resource.register,user,function(result){
+                if(result&&result.success) {
+                    form.append('<div class="alert alert-success span6">' +
+                            '<button type="button" class="close" data-dismiss="alert">&times;</button>' +
+                            '<strong>恭喜</strong>，注册成功</div>');
+                    $('.tip').text("");
 //                $('#main').html('').load(resource.main,{userId:result.data});
+                }else{
+                    $('.alert').show();
+                }
+            })
+            return false;
+        })
+
+        $('#getAuthCode').click(function(){
+            $(this).attr('disabled', 'disabled');
+            var smobile = $('#smobile').val();
+            if(!smobile){
+                new PNotify({
+                    text: '请先输入手机号.',
+                    animate_speed: 'fast',
+                    type: 'error'
+                });
+                $(this).removeAttr('disabled');
             }else{
-                $('.alert').show();
+                $.get('${ctx!}/common/authCode',{mobile:smobile},function(res){
+                    change();
+                })
             }
         })
-        return false;
     })
-    function sendAuthcode(mobile){
-        $.get('/mhd/common/authCode',{mobile:mobile},function(res){
 
-        })
+    var i=60,t;
+    function change(){
+        console.log(i);
+        i--;
+        $('#getAuthCode').text("重新获取"+i+"s");
+        if(i==0){
+            $('#getAuthCode').removeAttr('disabled');
+            $('#getAuthCode').text("获取验证码");
+        }else{
+            clearTimeout(t);
+            t = setTimeout("change()",1000);
+        }
     }
-    //todo:手机验证码获取
-    $(function(){
-//        sendAuthcode('18721400241');
-    })
+
 </script>

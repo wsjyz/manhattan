@@ -1,10 +1,30 @@
 <#assign ctx=request.contextPath>
+<#include "/common/webUtils.ftl">
 <div class="container" style="background-color: #FFF;">
     <div class="row">
         <div class="col-md-offset-2 col-md-8 border-red" style="padding:20px 20px;">
-        <form id="courseAction" class="form-horizontal" role="form">
-            <input id="resourceType" name="resourceType" value="LISTEN_COURSE" type="hidden"/>
+            <form id="courseAction" class="form-horizontal" role="form">
+            <input id="resourceType" name="resourceType" value="APPOINTMENT_COURSE" type="hidden"/>
             <input id="resourceId" name="resourceId" value="${course.courseId}" type="hidden"/>
+            <h5><strong><i class="fa fa-bars fa-fw" style="color:#f0ad4e;"></i> 基本信息</strong></h5>
+            <div class="form-group">
+                <label for="userName" class="col-md-3 control-label">姓名：</label>
+                <div class="col-md-4">
+                    <input type="text" class="form-control" id="userName" name="userName">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="sex" class="col-md-3 control-label">性别：</label>
+                <div class="col-md-4">
+                    <label class="radio-inline">
+                        <input type="radio" name="sex" id="sex" value="MALE" checked="checked"> 男
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="sex" value="FEMALE"> 女
+                    </label>
+                </div>
+            </div>
+            <h5><strong><i class="fa fa-bars fa-fw" style="color:#f0ad4e;"></i> 学习信息</strong></h5>
             <div class="form-group">
                 <label for="courseCategory" class="col-md-3 control-label">学习科目：</label>
                 <div class="col-md-4">
@@ -51,7 +71,7 @@
                 <label for="tutoringWay1" class="col-md-3 control-label">学习方式：</label>
                 <div class="col-md-4">
                     <label class="radio-inline">
-                        <input type="radio" name="tutoringWay" id="tutoringWay1" value="STUDENT_VISIT"> 学生上门
+                        <input type="radio" name="tutoringWay" id="tutoringWay1" value="STUDENT_VISIT" checked="checked"> 学生上门
                     </label>
                     <label class="radio-inline">
                         <input type="radio" name="tutoringWay" id="tutoringWay2" value="TEACHER_VISIT"> 教师上门
@@ -61,7 +81,7 @@
             <div class="form-group">
                 <label for="contacts" class="col-md-3 control-label">联系人：</label>
                 <div class="col-md-4">
-                    <input type="text" class="form-control" id="contacts" name="contacts">
+                    <input type="text" class="form-control" id="contacts" name="contacts" required="true">
                 </div>
             </div>
             <div class="form-group">
@@ -73,13 +93,15 @@
             <div class="form-group">
                 <label for="address" class="col-md-3 control-label">联系地址：</label>
                 <div class="col-md-4">
-                    <input type="text" class="form-control" id="address" name="address">
+                    <input type="text" class="form-control" id="address" name="address" required="true">
                 </div>
             </div>
+            <h5><strong><i class="fa fa-bars fa-fw" style="color:#f0ad4e;"></i> 联系方式</strong></h5>
+
             <div class="form-group">
                 <label for="mobile" class="col-md-3 control-label">手机：</label>
                 <div class="col-md-4">
-                    <input type="text" class="form-control" id="mobile" name="mobile">
+                    <input type="text" class="form-control" id="mobile" name="mobile" required="true">
                 </div>
             </div>
             <div class="form-group">
@@ -95,8 +117,8 @@
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                    <button type="submit" class="btn btn-default">立即预约</button>
+                <div class="col-md-offset-3 col-md-1" <#if !userId??>data-toggle="tooltip" data-placement="bottom" data-original-title="您需要登录才能预约"</#if>>
+                    <button type="submit" class="btn btn-warning" <#if !userId??>disabled="disabled"</#if>>立即预约</button>
                 </div>
             </div>
         </form>
@@ -106,7 +128,12 @@
 </div>
 <script>
     $(function(){
-        $('#saveAction').click(function(){
+
+        if ($("[data-toggle=tooltip]").length) {
+            $("[data-toggle=tooltip]").tooltip();
+        }
+
+        $('#courseAction').submit(function(){
             var json=$('#courseAction').serializeJson();
             $.post('${ctx}/mhtCourse/appointment',json,function(data){
                 if(data) {

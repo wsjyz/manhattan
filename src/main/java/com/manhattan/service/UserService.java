@@ -41,4 +41,8 @@ public interface UserService {
     void deleteUser(String userId);
 
     void updateUserStatus(String userId,String status);
+
+    int updateUser(User user);
+
+    int changePassword(String userId, String changePass);
 }

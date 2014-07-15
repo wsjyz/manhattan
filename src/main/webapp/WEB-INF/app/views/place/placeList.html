@@ -1,9 +1,21 @@
 <#include "/common/webUtils.ftl">
+<style>
+    img.avatar{
+        height:100px;
+        margin-right:10px;
+        margin-top: 10px;
+    }
+    a.list-group-item {
+        height:140px;
+        min-height:100px;
+        padding:5px 5px;
+    }
+</style>
 <#list page.rows as place>
     <a href="#" class="list-group-item">
         <div class="media col-md-3">
             <div class="pull-left">
-                <img class="media-object img-rounded img-responsive avatar" src="${ctx!}${place.mapUrl}"  >
+                <img class="media-object img-rounded img-responsive avatar" src="${ctx!}${place.mapUrl}"/>
             </div>
         </div>
         <div class="col-md-6">
@@ -11,8 +23,8 @@
             <p><b>开设课程: </b>${place.courseCategory}</p>
             <p><b>收费标准: </b>${place.fees}</p>
             <p><b>机构地址: </b>${place.placeAddress}</p>
-            <p class="pull-right">${place.phone}</p>
         </div>
+        <p class="pull-right" style="margin-top: 55px;margin-right: 60px;color: #f0ad4e;"><i class="fa fa-phone fa-fw"></i> ${place.phone}</p>
     </a>
 </#list>
 <@emptyPage page=page msg="没有任何场地"/>

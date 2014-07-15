@@ -9,6 +9,7 @@ import com.manhattan.service.TeacherDetailService;
 import com.manhattan.service.UserService;
 import com.manhattan.service.WalletService;
 import com.manhattan.util.*;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,7 +90,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/saveUser",method = RequestMethod.POST)
-    public @ResponseBody String saveUser(User user) {
+    public @ResponseBody String saveUser(@ModelAttribute User user) {
 
 //        if(StringUtils.isNotBlank(vipExpiredTime)){
 //            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -106,5 +107,26 @@ public class UserController {
         return "success";
     }
 
+    @RequestMapping(value = "/updateUser",method = RequestMethod.POST)
+    public @ResponseBody String updateUser(@ModelAttribute User user) {
+        int res=userService.updateUser(user);
+        return "success";
+    }
+
+    @RequestMapping(value = "/changePass")
+    public @ResponseBody JsonResult changePass(@RequestParam String userId,@RequestParam String originalPass,@RequestParam String changePass) {
+        JsonResult jsonResult=new JsonResult();
+        User user = userService.load(userId);
+        String originalPassMd5= DigestUtils.md5Hex(originalPass);
+        if (!user.getPassword().equals(originalPassMd5)) {
+            jsonResult.setSuccess(false);
+            jsonResult.setMessage("原密码输入错误!");
+            return jsonResult;
+        }
+        String passwordMd5= DigestUtils.md5Hex(changePass);
+        int res=userService.changePassword(userId, passwordMd5);
+        jsonResult.setSuccess(true);
+        return jsonResult;
+    }
 
 }

@@ -1,3 +1,4 @@
+<#assign ctx=request.contextPath>
 <!doctype html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -54,7 +55,7 @@
                     <li><a href="#" class="wallet"></a></li>
                     <li><a href="#" class="myAppointment"></a></li>
                     <li><a href="#" class="myHomework"></a></li>
-                    <li><a href="#" class="course"></a></li>
+                    <li><a href="#" class="course mhtCourse"></a></li>
                 </ul>
             </div>
         </div>
@@ -67,7 +68,11 @@
                             <li><a href="javascript:void(0);" class="mhtCourse">曼哈顿课堂</a></li>
                             <li><a href="javascript:void(0);" class="mhtTeachers">我的名师</a></li>
                             <li><a href="javascript:void(0);" class="place">场地风采</a></li>
+                            <#if user.type=="TEACHER">
+                            <li><a href="javascript:void(0);" class="postCourse">发布课程</a></li>
+                            <#else>
                             <li><a href="javascript:void(0);" class="appoint">我要预约</a></li>
+                            </#if>
                             <li><a href="javascript:void(0);" class="question">精彩问答</a></li>
                         </ul>
                     </div>
@@ -88,6 +93,7 @@
     <script src="bower_components/bootstrap/js/bootstrap.min.js"></script>
     <script src="bower_components/pagination/jquery.twbsPagination.js"></script>
     <script src="bower_components/pnotify/pnotify.custom.min.js"></script>
+    <script src="${ctx}/scripts/jquery.form.js"></script>
     <!--<script type="text/javascript" data-main="scripts/require.main.js" src="bower_components/RequireJS/require.js"></script>-->
     <!-- endbower -->
     <!-- endbuild -->
@@ -98,27 +104,32 @@
 </body>
 <script>
     $(function(){
+        ajaxCallbackHandle('${ctx}/relogin');
+
         $('.login,.register').click(function(){
             $('#main').html('').load('to'+$(this).attr('class'));
         });
-        $('#content a').click(function(){
+        $('#content a:not(.mhtCourse)').click(function(){
             var item = $(this).attr('class');
-            $('#main').html('').load(baseUrl+'/users/data?userId=${user.userId}&item='+item);
+            $('#main').html('').load('${ctx}/users/data?userId=${user.userId}&item='+item);
         })
         $('.mhtCourse').click(function(){
-            $('#main').html('').load(baseUrl+'/mhtCourse/courses');
+            $('#main').html('').load('${ctx}/mhtCourse/courses');
         })
         $('.mhtTeachers').click(function(){
-            $('#main').html('').load(baseUrl+'/teachers/list');
+            $('#main').html('').load('${ctx}/teachers/list');
         })
         $('.place').click(function(){
-            $('#main').html('').load(baseUrl+'/place/list');
+            $('#main').html('').load('${ctx}/place/list');
+        })
+        $('.postCourse').click(function(){
+            $('#main').html('').load('${ctx}/postCourse');
         })
         $('.appoint').click(function(){
-            $('#main').html('').load(baseUrl+'/appoint');
+            $('#main').html('').load('${ctx}/appoint');
         })
         $('.question').click(function(){
-            $('#main').html('').load(baseUrl+'/question/questions');
+            $('#main').html('').load('${ctx}/question/questions');
         })
         <#if tologin??>
         $('.login').trigger('click');

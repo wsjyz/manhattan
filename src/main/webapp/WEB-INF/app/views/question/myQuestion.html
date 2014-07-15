@@ -1,5 +1,10 @@
 <#include "/common/webUtils.ftl">
+<#assign ctx=request.contextPath>
+<style>
+    li.question{border-bottom:1px dashed #ccc;width: 700px;}
+</style>
 <#list page.rows as item>
-    <li class="list-group-item"><i class="fa fa-caret-right fa-fw"></i> ${item.questionTitle}</li>
+    <p><li class="question">${item.questionTitle}</li></p>
 </#list>
+<@emptyPage page=page msg="没有任何提问"/>
 <@pageParam/>

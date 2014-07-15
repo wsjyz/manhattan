@@ -1,0 +1,67 @@
+<#assign ctx=request.contextPath>
+<div class="container">
+    <div class="row" style="padding:20px 20px;">
+        <div class="col-md-10">
+            <form class="form-horizontal" name="editForm" id="editForm">
+                <input name="userId" type="hidden" value="${(user.userId)!}"/>
+                <div class="form-group">
+                    <label for="userName" class="col-md-2 control-label">姓名：</label>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" id="userName" name="userName">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="sex" class="col-md-2 control-label">性别：</label>
+                    <div class="col-md-3">
+                        <label class="radio-inline">
+                            <input type="radio" name="sex" id="sex" value="MALE" checked="checked"> 男
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="sex" value="FEMALE"> 女
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="address" class="col-md-2 control-label">邮箱：</label>
+                    <div class="col-md-3">
+                        <input type="email" class="form-control" id="address" name="address">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email" class="col-md-2 control-label">地址：</label>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" id="email" name="email">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="area" class="col-md-2 control-label">所在地区：</label>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" id="area" name="area">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-primary" id="save">保存</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    $(function(){
+        $('#editForm').submit(function(){
+            var user=$('#editForm').serializeJson();
+            $.post('${ctx!}/users/updateUser',user, function(res){
+                if(res&&res =='success'){
+                    new PNotify({
+                        text: '保存成功.',
+                        animate_speed: 'fast',
+                        type: 'success'
+                    });
+                }
+            })
+            return false;
+        })
+    })
+</script>

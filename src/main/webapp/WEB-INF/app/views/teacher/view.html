@@ -36,16 +36,16 @@
 
 <div class="tab-content">
     <div class="tab-pane active" id="info">
-        <h4><span class="label label-default">专家点评：</span></h4>
+        <h5><span class="label label-default">专家点评：</span></h5>
         <p>评分： ${teacher.expertScore}分</p>
         <p>评价： ${teacher.expertComments}分</p>
-        <h4><span class="label label-default">自我介绍：</span></h4>
+        <h5><span class="label label-default">自我介绍：</span></h5>
         <p>${teacher.selfIntroduction}</p>
-        <h4><span class="label label-default">可授课区域：</span></h4>
+        <h5><span class="label label-default">可授课区域：</span></h5>
         <p>${teacher.teachingArea}</p>
-        <h4><span class="label label-default">辅导方式：</span></h4>
+        <h5><span class="label label-default">辅导方式：</span></h5>
         <p>${teacher.tutoringWay}</p>
-        <h4><span class="label label-default">课时收费：</span></h4>
+        <h5><span class="label label-default">课时收费：</span></h5>
         <div class="col-md-4">
             <table class="table table-bordered table-condensed">
                 <thead>
@@ -83,33 +83,33 @@
                 <tbody>
                 <tr>
                     <td>上午</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td><@check str=teacherDetail.teachingTime[0]/></td>
+                    <td><@check str=teacherDetail.teachingTime[3]/></td>
+                    <td><@check str=teacherDetail.teachingTime[6]/></td>
+                    <td><@check str=teacherDetail.teachingTime[9]/></td>
+                    <td><@check str=teacherDetail.teachingTime[12]/></td>
+                    <td><@check str=teacherDetail.teachingTime[15]/></td>
+                    <td><@check str=teacherDetail.teachingTime[18]/></td>
                 </tr>
                 <tr>
                     <td>下午</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td><@check str=teacherDetail.teachingTime[1]/></td>
+                    <td><@check str=teacherDetail.teachingTime[4]/></td>
+                    <td><@check str=teacherDetail.teachingTime[7]/></td>
+                    <td><@check str=teacherDetail.teachingTime[10]/></td>
+                    <td><@check str=teacherDetail.teachingTime[13]/></td>
+                    <td><@check str=teacherDetail.teachingTime[16]/></td>
+                    <td><@check str=teacherDetail.teachingTime[19]/></td>
                 </tr>
                 <tr>
                     <td>晚六点后</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td><@check str=teacherDetail.teachingTime[2]/></td>
+                    <td><@check str=teacherDetail.teachingTime[5]/></td>
+                    <td><@check str=teacherDetail.teachingTime[8]/></td>
+                    <td><@check str=teacherDetail.teachingTime[11]/></td>
+                    <td><@check str=teacherDetail.teachingTime[14]/></td>
+                    <td><@check str=teacherDetail.teachingTime[17]/></td>
+                    <td><@check str=teacherDetail.teachingTime[20]/></td>
                 </tr>
                 </tbody>
             </table>
@@ -289,9 +289,6 @@
 
         </#if>
 
-        if ($("[data-toggle=tooltip]").length) {
-            $("[data-toggle=tooltip]").tooltip();
-        }
 
         function clearForm(form) {
             form.find('input:text,textarea').each(function(){

@@ -102,4 +102,14 @@ public class UserServiceImpl implements UserService {
         userDAO.updateUserStatus(userId,status);
     }
 
+    @Override
+    public int updateUser(User user) {
+        return userDAO.updateUser(user.getUserId(),user.getUserName(),user.getSex(),user.getEmail(),user.getAddress(),user.getArea());
+    }
+
+    @Override
+    public int changePassword(String userId, String changePass) {
+        return userDAO.changePassword(userId, changePass);
+    }
+
 }

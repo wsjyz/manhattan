@@ -9,7 +9,7 @@
                 <p>教授课程：${teacher.courseCategory}</p>
                 <p>信用等级：<#if teacher.user.credits??><@stars count=teacher.user.credits/></#if></p>
                 <p>
-                    <a href="javascript:void(0);" data-userid="${teacher.userId}" class="btn btn-warning btn-block" role="button"><i class="fa fa-heart-o fa-fw"></i> 详细介绍</a>
+                    <a href="javascript:void(0);" data-userid="${teacher.userId}" class="btn btn-warning btn-block viewTeacher" role="button"><i class="fa fa-heart-o fa-fw"></i> 详细介绍</a>
                 </p>
             </div>
         </div>
@@ -21,3 +21,11 @@
         <strong>还没有教师!</strong>
     </div>
 </#if>
+<script>
+    $(function(){
+        $('a.viewTeacher').click(function(){
+            var teacherId=$(this).data('userid');
+            $('#mainContent').load('${ctx!}/teachers/view',{teacherId:teacherId});
+        })
+    })
+</script>
