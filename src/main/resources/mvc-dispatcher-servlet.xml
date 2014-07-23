@@ -51,6 +51,16 @@
     <mvc:resources mapping="/views/**" location="/WEB-INF/app/views/"/>
     <mvc:resources mapping="/upload/**" location="/upload/"/>
 
+    <!--通用视图解析器-->
+    <bean id="viewResolverCommon" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/pages/"/>
+        <property name="suffix" value=".jsp"/>
+        <property name="viewClass">
+            <value>org.springframework.web.servlet.view.InternalResourceView</value>
+        </property>
+        <property name="order" value="1"/>
+    </bean>
+
     <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
         <property name="templateLoaderPath" value="/WEB-INF/app/"/>
         <property name="freemarkerSettings">
@@ -76,6 +86,7 @@
         <property name="exposeSpringMacroHelpers" value="true"/>
         <property name="exposeRequestAttributes" value="true"/>
         <property name="exposeSessionAttributes" value="true"/>
+        <property name="order" value="0"/>
     </bean>
 
     <!--<bean id="viewResolver"-->
