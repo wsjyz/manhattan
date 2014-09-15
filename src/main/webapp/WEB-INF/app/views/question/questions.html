@@ -110,11 +110,19 @@ $(function() {
             type:'post',
             url:'${ctx!}/question/saveQuestion',
             success:function(data){
-                new PNotify({
-                    text: '提问成功.',
-                    animate_speed: 'fast',
-                    type: 'success'
-                });
+                if(data=='success'){
+                    new PNotify({
+                        text: '提问成功.',
+                        animate_speed: 'fast',
+                        type: 'success'
+                    });
+                }else{
+                    new PNotify({
+                        text: '请支付提问费用.',
+                        animate_speed: 'fast',
+                        type: 'error'
+                    });
+                }
             }
         });
         return false;

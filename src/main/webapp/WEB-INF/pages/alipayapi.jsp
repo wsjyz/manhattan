@@ -49,15 +49,15 @@
 		//req_data详细信息
 		
 		//服务器异步通知页面路径
-		String notify_url = "http://www.xxx.com/WS_WAP_PAYWAP-JAVA-UTF-8/notify_url.jsp";
+		String notify_url = request.getContextPath()+"/payment/toNotify";
 		//需http://格式的完整路径，不能加?id=123这类自定义参数
 
 		//页面跳转同步通知页面路径
-		String call_back_url = "http://127.0.0.1:8080/WS_WAP_PAYWAP-JAVA-UTF-8/call_back_url.jsp";
+		String call_back_url = request.getContextPath()+"/payment/toCallbackUrl";
 		//需http://格式的完整路径，不能加?id=123这类自定义参数，不能写成http://localhost/
 
 		//操作中断返回地址
-		String merchant_url = "http://127.0.0.1:8080/WS_WAP_PAYWAP-JAVA-UTF-8/xxxxxx.jsp";
+		String merchant_url = request.getContextPath()+"/payment/toMerchantUrl";
 		//用户付款中途退出返回商户的地址。需http://格式的完整路径，不允许加?id=123这类自定义参数
 
 		//卖家支付宝帐户

@@ -26,6 +26,8 @@ public class Wallet {
     private String payStatus;
     @Column(name = "opt_time")
     private Timestamp optTime;
+    @Column(name = "subject")
+    private String subject;
 
     public String getWalletId() {
         return walletId;
@@ -65,5 +67,13 @@ public class Wallet {
 
     public void setOptTime(Timestamp optTime) {
         this.optTime = optTime;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 }

@@ -2,11 +2,9 @@ package com.manhattan.controller;
 
 import com.manhattan.domain.Information;
 import com.manhattan.domain.Question;
+import com.manhattan.domain.Setting;
 import com.manhattan.domain.User;
-import com.manhattan.service.InformationService;
-import com.manhattan.service.PlaceService;
-import com.manhattan.service.QuestionService;
-import com.manhattan.service.UserService;
+import com.manhattan.service.*;
 import com.manhattan.util.*;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -17,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -42,6 +41,8 @@ public class MainController {
     private PlaceService placeService;
     @Autowired
     private ConfigurationFile confBean;
+    @Autowired
+    private SettingService settingService;
 
     @RequestMapping(value={"/","/index"})
 	public ModelAndView index(HttpSession session) {
@@ -212,8 +213,12 @@ public class MainController {
 
     @RequestMapping("/question/saveQuestion")
     public @ResponseBody String saveQuestion(MultipartHttpServletRequest request) {
-        Question question = new Question();
         String userId = request.getParameter("userId");
+        boolean limit=checkCountLimit(userId);
+        if (!limit) {
+            return "payment";
+        }
+        Question question = new Question();
         String questionTitle = request.getParameter("questionTitle");
         String questionContent = request.getParameter("questionContent");
 
@@ -221,13 +226,18 @@ public class MainController {
         MultipartFile file = request.getFile("questionPic");
         String originalFilename = file.getOriginalFilename();
         String fileSuffix = originalFilename.substring(originalFilename.indexOf("."), originalFilename.length());
-        path = path + new SimpleDateFormat("yyyyMMdd").format(new Date()) + "/";
+        String dirname = new SimpleDateFormat("yyyyMMdd").format(new Date()) + "/";
         String picName = UUID.randomUUID().toString().replace("-", "") + fileSuffix;
-        File targetFile = new File(path, picName);
+
+        File dir = new File(path, dirname);
+        if(!dir.exists()){
+            dir.mkdirs();
+        }
+        File targetFile = new File(dir, picName);
         if (!targetFile.exists()) {
             targetFile.mkdirs();
         }
-        String picUrl = path + picName;
+        String picUrl = "/upload/"+dirname+"/"+picName;
         try {
             file.transferTo(targetFile);
             question.setQuestionPic(picUrl);
@@ -241,5 +251,20 @@ public class MainController {
 
         questionService.saveQuestion(question);
         return "success";
+    }
+
+    private boolean checkCountLimit(String userId) {
+        User user = userService.load(userId);
+        if (user.getType().equals(MhtConstant.USER_TYPE_VIPSTUDENT)) {
+            Setting setting=settingService.getSetting();
+//            setting.get
+            Page<Question> page = questionService.findQuestionByPage(userId,null);
+            if (CollectionUtils.isEmpty(page.getContent())) {
+                if(page.getContent().size()<10){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

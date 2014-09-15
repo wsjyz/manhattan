@@ -1,8 +1,13 @@
 package com.manhattan.controller;
 
 import com.manhattan.domain.Question;
+import com.manhattan.domain.Setting;
+import com.manhattan.domain.User;
 import com.manhattan.service.QuestionService;
+import com.manhattan.service.SettingService;
+import com.manhattan.service.UserService;
 import com.manhattan.util.FastJson;
+import com.manhattan.util.MhtConstant;
 import com.manhattan.util.OpenPage;
 import com.manhattan.util.PageConvert;
 import org.apache.commons.lang3.StringUtils;
@@ -11,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +30,10 @@ public class QuestionController extends BaseController{
 
     @Autowired
     private QuestionService questionService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private SettingService settingService;
     /**
      * 提问
      * @param question
@@ -32,6 +42,13 @@ public class QuestionController extends BaseController{
     @RequestMapping(value = "/askQuestion")
     @ResponseBody
     public Boolean askQuestion(@FastJson Question question,HttpServletResponse response) {
+        String userId = question.getUserId();
+        boolean limit=checkCountLimit(userId);
+        if (!limit) {
+            //todo:
+            setResponse("请先支付费用", response);
+            return false;
+        }
         Question question1=questionService.saveQuestion(question);
         if (question1 == null || StringUtils.isEmpty(question1.getQuestionId())) {
             setResponse("保存提问失败", response);
@@ -105,5 +122,20 @@ public class QuestionController extends BaseController{
         Pageable pageAble = new PageRequest(openPage.getPageNo()-1, openPage.getPageSize());
         Page result = questionService.findQuestionByPage(userId,type,pageAble);
         return PageConvert.convert(result);
+    }
+
+    private boolean checkCountLimit(String userId) {
+        User user = userService.load(userId);
+        if (user.getType().equals(MhtConstant.USER_TYPE_VIPSTUDENT)) {
+            Setting setting=settingService.getSetting();
+//            setting.get
+            Page<Question> page = questionService.findQuestionByPage(userId,null);
+            if (CollectionUtils.isEmpty(page.getContent())) {
+                if(page.getContent().size()<10){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

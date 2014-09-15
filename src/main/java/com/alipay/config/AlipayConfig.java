@@ -21,23 +21,25 @@ package com.alipay.config;
  *2、更换浏览器或电脑，重新登录查询。
  */
 
+import com.manhattan.util.MhtConstant;
+
 public class AlipayConfig {
 	
 	//↓↓↓↓↓↓↓↓↓↓请在这里配置您的基本信息↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 	// 合作身份者ID，以2088开头由16位纯数字组成的字符串
-	public static String partner = "";
+	public static String partner = MhtConstant.ALIPAY_SELLER_PARTNER;
 	
 	// 交易安全检验码，由数字和字母组成的32位字符串
 	// 如果签名方式设置为“MD5”时，请设置该参数
-	public static String key = "";
+	public static String key = MhtConstant.ALIPAY_SELLER_KEY;
 	
     // 商户的私钥
     // 如果签名方式设置为“0001”时，请设置该参数
-	public static String private_key = "";
+	public static String private_key = MhtConstant.ALIPAY_SELLER__PRIVATE_KEY;
 
     // 支付宝的公钥
     // 如果签名方式设置为“0001”时，请设置该参数
-	public static String ali_public_key = "";
+	public static String ali_public_key = MhtConstant.ALIPAY_SELLER__PUBLIC_KEY;
 
 	//↑↑↑↑↑↑↑↑↑↑请在这里配置您的基本信息↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
 	
