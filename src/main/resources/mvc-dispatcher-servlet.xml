@@ -44,6 +44,7 @@
     <mvc:view-controller path="/" view-name="forward:/app/index"/>
     <!-- 静态资源映射 使spring mvc不过滤这些资源 如果不配置则无法访问-->
     <mvc:resources mapping="/images/**" location="/WEB-INF/app/images/"/>
+    <mvc:resources mapping="/pages/images/**" location="/WEB-INF/pages/images/"/>
     <mvc:resources mapping="/styles/**" location="/WEB-INF/app/styles/"/>
     <mvc:resources mapping="/scripts/**" location="/WEB-INF/app/scripts/"/>
     <mvc:resources mapping="/font/**" location="/WEB-INF/app/fonts/"/>

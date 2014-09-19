@@ -11,8 +11,22 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 	<head>
-	<title>支付宝手机网页支付</title>
+	<title>曼哈顿支付宝手机网页支付</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="bower_components/bootstrap/css/bootstrap.min.css" />
+    <!--<link rel="stylesheet" href="bower_components/bootstrap/css/bootstrap-journal.min.css" />-->
+    <!--<link rel="stylesheet" href="bower_components/fuelux/fuelux.min.css" />-->
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="bower_components/html5shiv/html5shiv.min.js"></script>
+    <script src="bower_components/respond/respond.min.js"></script>
+    <![endif]-->
 <style>
 *{
 	margin:0;
@@ -39,7 +53,7 @@ ul,ol{
 
 .new-btn-login{
     background-color: transparent;
-    background-image: url("images/new-btn-fixed.png");
+    background-image: url("<%=request.getContextPath()%>/pages/images/new-btn-fixed.png");
     border: medium none;
 }
 .new-btn-login{
@@ -78,7 +92,7 @@ ul,ol{
 }
 #logo{
 	background-color: transparent;
-    background-image: url("images/new-btn-fixed.png");
+    background-image: url("<%=request.getContextPath()%>/pages/images/new-btn-fixed.png");
     border: medium none;
 	background-position:0 0;
 	width:166px;
@@ -152,7 +166,7 @@ ul,ol{
 </style>
 </head>
 <body text=#000000 bgColor="#ffffff" leftMargin=0 topMargin=4>
-	<div id="main">
+	<div id="main" class="container">
 		<div id="head">
             <dl class="alipay_link">
                 <a target="_blank" href="http://www.alipay.com/"><span>支付宝首页</span></a>|
@@ -168,7 +182,7 @@ ul,ol{
 				<li class="last">3、确认完成</li>
             </ol>
         </div>
-        <form name="alipayment" action="<%=request.getContextPath()%>/payment/toAlipayApi" method=post target="_blank">
+        <form name=alipayment action="<%=request.getContextPath()%>/payment/toAlipayApi" method=post target="_blank">
             <div id="body" style="clear:left">
                 <dl class="content">
                     <dt>卖家支付宝帐户：</dt>

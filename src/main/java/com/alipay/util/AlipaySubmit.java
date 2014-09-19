@@ -36,7 +36,7 @@ import com.alipay.sign.RSA;
 
 public class AlipaySubmit {
     
-	
+    private static final String ALIPAY_GATEWAY_NEW = "https://mapi.alipay.com/gateway.do?";
     /**
      * 生成签名结果
      * @param sPara 要签名的数组
@@ -67,7 +67,7 @@ public class AlipaySubmit {
 
         //签名结果与签名方式加入请求提交参数组中
         sPara.put("sign", mysign);
-        if(! sPara.get("service").equals("com.alipay.wap.trade.create.direct") && ! sPara.get("service").equals("com.alipay.wap.auth.authAndExecute")) {
+        if(! sPara.get("service").equals("alipay.wap.trade.create.direct") && ! sPara.get("service").equals("alipay.wap.auth.authAndExecute")) {
         	sPara.put("sign_type", AlipayConfig.sign_type);
         }
 
@@ -175,6 +175,38 @@ public class AlipaySubmit {
 
         return strResult;
     }
+    /**
+     * 建立请求，以表单HTML形式构造（默认）
+     * @param sParaTemp 请求参数数组
+     * @param strMethod 提交方式。两个值可选：post、get
+     * @param strButtonName 确认按钮显示文字
+     * @return 提交表单HTML文本
+     */
+    public static String buildRequest(Map<String, String> sParaTemp, String strMethod, String strButtonName) {
+        //待请求参数数组
+        Map<String, String> sPara = buildRequestPara(sParaTemp);
+        List<String> keys = new ArrayList<String>(sPara.keySet());
+
+        StringBuffer sbHtml = new StringBuffer();
+
+        sbHtml.append("<form id=\"alipaysubmit\" name=\"alipaysubmit\" action=\"" + ALIPAY_GATEWAY_NEW
+                      + "_input_charset=" + AlipayConfig.input_charset + "\" method=\"" + strMethod
+                      + "\">");
+
+        for (int i = 0; i < keys.size(); i++) {
+            String name = (String) keys.get(i);
+            String value = (String) sPara.get(name);
+
+            sbHtml.append("<input type=\"hidden\" name=\"" + name + "\" value=\"" + value + "\"/>");
+        }
+
+        //submit按钮控件请不要含有name属性
+        sbHtml.append("<input type=\"submit\" value=\"" + strButtonName + "\" style=\"display:none;\"></form>");
+        sbHtml.append("<script>document.forms['alipaysubmit'].submit();</script>");
+
+        return sbHtml.toString();
+    }
+    
 
     /**
      * MAP类型数组转换成NameValuePair类型
@@ -235,15 +267,15 @@ public class AlipaySubmit {
      * 用于防钓鱼，调用接口query_timestamp来获取时间戳的处理函数
      * 注意：远程解析XML出错，与服务器是否支持SSL等配置有关
      * @return 时间戳字符串
-     * @throws java.io.IOException
-     * @throws org.dom4j.DocumentException
-     * @throws java.net.MalformedURLException
+     * @throws IOException
+     * @throws DocumentException
+     * @throws MalformedURLException
      */
 	public static String query_timestamp() throws MalformedURLException,
                                                         DocumentException, IOException {
 
         //构造访问query_timestamp接口的URL串
-        String strUrl = "https://mapi.com.alipay.com/gateway.do?service=query_timestamp&partner=" + AlipayConfig.partner;
+        String strUrl = "https://mapi.alipay.com/gateway.do?service=query_timestamp&partner=" + AlipayConfig.partner;
         StringBuffer result = new StringBuffer();
 
         SAXReader reader = new SAXReader();

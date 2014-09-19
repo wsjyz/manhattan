@@ -1,7 +1,7 @@
 package com.alipay.sign;
 
 import java.io.UnsupportedEncodingException;
-
+import java.security.SignatureException;
 import org.apache.commons.codec.digest.DigestUtils;
 
 /** 
@@ -50,8 +50,8 @@ public class MD5 {
      * @param content
      * @param charset
      * @return
-     * @throws java.security.SignatureException
-     * @throws java.io.UnsupportedEncodingException
+     * @throws SignatureException
+     * @throws UnsupportedEncodingException 
      */
     private static byte[] getContentBytes(String content, String charset) {
         if (charset == null || "".equals(charset)) {

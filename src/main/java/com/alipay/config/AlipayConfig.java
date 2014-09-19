@@ -35,7 +35,7 @@ public class AlipayConfig {
 	
     // 商户的私钥
     // 如果签名方式设置为“0001”时，请设置该参数
-	public static String private_key = MhtConstant.ALIPAY_SELLER__PRIVATE_KEY;
+	public static String private_key =  MhtConstant.ALIPAY_SELLER__PRIVATE_KEY;
 
     // 支付宝的公钥
     // 如果签名方式设置为“0001”时，请设置该参数
@@ -51,7 +51,7 @@ public class AlipayConfig {
 	public static String input_charset = "utf-8";
 	
 	// 签名方式，选择项：0001(RSA)、MD5
-	public static String sign_type = "0001";
+	public static String sign_type = "MD5";
 	// 无线的产品中，签名方式为rsa时，sign_type需赋值为0001而不是RSA
 
 }
