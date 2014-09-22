@@ -4,6 +4,7 @@ import com.manhattan.dao.AppointmentDAO;
 import com.manhattan.domain.Appointment;
 import com.manhattan.domain.TeacherDetail;
 import com.manhattan.service.AppointmentService;
+import com.manhattan.util.MhtConstant;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -46,6 +47,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                 if (StringUtils.isNotBlank(type)) {
                     predicate.getExpressions().add(cb.equal(root.<String>get("resourceType"), type));
                 }
+                predicate.getExpressions().add(cb.equal(root.<String>get("status"), MhtConstant.SUCCESS));
                 return predicate;
             }
         }, pageAble);
@@ -59,5 +61,10 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public void deleteById(String appointmentId) {
         appointmentDAO.delete(appointmentId);
+    }
+
+    @Override
+    public void updateAppiontByPayNo(String out_trade_no) {
+        appointmentDAO.updateAppointByPayNo(out_trade_no);
     }
 }

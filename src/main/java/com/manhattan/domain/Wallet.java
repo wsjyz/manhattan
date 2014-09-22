@@ -28,6 +28,9 @@ public class Wallet {
     private Timestamp optTime;
     @Column(name = "subject")
     private String subject;
+    @Column(name = "resource_id")
+    private String resourceId;
+    @Column(name="pay_no") private String payNo;
 
     public String getWalletId() {
         return walletId;
@@ -75,5 +78,21 @@ public class Wallet {
 
     public void setSubject(String subject) {
         this.subject = subject;
+    }
+
+    public String getResourceId() {
+        return resourceId;
+    }
+
+    public void setResourceId(String resourceId) {
+        this.resourceId = resourceId;
+    }
+
+    public void setPayNo(String payNo) {
+        this.payNo = payNo;
+    }
+
+    public String getPayNo() {
+        return payNo;
     }
 }

@@ -57,4 +57,14 @@ public class WalletServiceImpl implements WalletService {
         return  walletDao.findByUserId(userId,pageAble);
 
     }
+
+    @Override
+    public Wallet saveWallet(Wallet wallet) {
+        return walletDao.save(wallet);
+    }
+
+    @Override
+    public int updateWalletByPayNo(String out_trade_no) {
+        return walletDao.updateWalletByPayNo(out_trade_no);
+    }
 }

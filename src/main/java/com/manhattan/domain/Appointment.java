@@ -33,6 +33,8 @@ public class Appointment {
     @Column(name = "resource_id")private String resourceId;
     @Column(name = "payment")private String payment;
 
+    @Column private String status;
+
     public String getAppointmentId() {
         return appointmentId;
     }
@@ -167,5 +169,13 @@ public class Appointment {
 
     public void setPayment(String payment) {
         this.payment = payment;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

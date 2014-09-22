@@ -7,6 +7,7 @@ import com.manhattan.domain.TeacherDetail;
 import com.manhattan.domain.User;
 import com.manhattan.domain.rowMapper.TeacherDetailRowMapper;
 import com.manhattan.domain.rowMapper.UserRowMapper;
+import com.manhattan.util.MhtConstant;
 import com.manhattan.util.OpenPage;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
@@ -35,6 +36,8 @@ public class IUserDAOImpl extends BaseDAO implements IUserDAO {
             sql.append(" and ua.resource_type=? ");
             params.add(actionType);
         }
+        sql.append(" and ua.status=? ");
+        params.add(MhtConstant.SUCCESS);
         List<User> users = new ArrayList<User>();
         if (page.isAutoCount()) {
             long count = getJdbcTemplate().queryForObject(selectSql.append("count(*) ").append(sql).toString(), params.toArray(),Long.class);

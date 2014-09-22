@@ -16,4 +16,8 @@ public interface WalletService {
     Wallet saveWallet(String userId, BigDecimal money);
 
     Page<Wallet> getRecordList(Pageable pageAble, String userId);
+
+    Wallet saveWallet(Wallet wallet);
+
+    int updateWalletByPayNo(String out_trade_no);
 }

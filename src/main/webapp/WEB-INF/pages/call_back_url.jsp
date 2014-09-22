@@ -20,6 +20,10 @@
 <%@ page import="java.util.Map"%>
 <%@ page import="com.alipay.util.*"%>
 <%@ page import="com.alipay.config.*"%>
+<%@ page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
+<%@ page import="org.springframework.context.ApplicationContext" %>
+<%@ page import="com.manhattan.service.WalletService" %>
+<%@ page import="com.manhattan.service.AppointmentService" %>
 <html>
   <head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -44,10 +48,12 @@
 	}
 
 	//获取支付宝的通知返回参数，可参考技术文档中页面跳转同步通知参数列表(以下仅供参考)//
-	//商户订单号
+	//商户订单号
+
 	String out_trade_no = new String(request.getParameter("out_trade_no").getBytes("ISO-8859-1"),"UTF-8");
 
-	//支付宝交易号
+	//支付宝交易号
+
 	String trade_no = new String(request.getParameter("trade_no").getBytes("ISO-8859-1"),"UTF-8");
 
 	//交易状态
@@ -68,8 +74,12 @@
 				//如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
 				//如果有做过处理，不执行商户的业务程序
 
-		
-		//该页面可做页面美工编辑
+        ApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(request.getSession().getServletContext());
+        WalletService walletService = (WalletService) ctx.getBean("walletService");
+        walletService.updateWalletByPayNo(out_trade_no);
+        AppointmentService appointmentService = (AppointmentService) ctx.getBean("appointmentService");
+        appointmentService.updateAppiontByPayNo(out_trade_no);
+        //该页面可做页面美工编辑
 		out.println("验证成功<br />");
 		//——请根据您的业务逻辑来编写程序（以上代码仅作参考）——
 

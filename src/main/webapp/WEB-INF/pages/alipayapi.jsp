@@ -48,7 +48,8 @@
 		//必填，须保证每次请求都是唯一
 		
 		//req_data详细信息
-		String domain= request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath();
+//		String domain= request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath();
+		String domain= "http://203.195.131.34:8080/"+request.getContextPath();
 
 		//服务器异步通知页面路径
 		String notify_url = domain+"/payment/toNotify";

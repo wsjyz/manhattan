@@ -20,4 +20,6 @@ public interface AppointmentService {
     Appointment loadById(String appiontId);
 
     void deleteById(String appointmentId);
+
+    public void updateAppiontByPayNo(String out_trade_no);
 }

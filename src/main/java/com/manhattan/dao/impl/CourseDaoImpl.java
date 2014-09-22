@@ -127,6 +127,8 @@ public class CourseDaoImpl extends BaseDAO implements ICourseDao {
         sql.append("on c.course_id=ua.resource_id ")
                 .append(" where 1=1 ");
         List<Object> params = new ArrayList<Object>();
+        sql.append(" and ua.status=?");
+        params.add(MhtConstant.SUCCESS);
         if (StringUtils.isNotBlank(appointment.getUserId())) {
             sql.append(" and ua.user_id=?");
             params.add(appointment.getUserId());

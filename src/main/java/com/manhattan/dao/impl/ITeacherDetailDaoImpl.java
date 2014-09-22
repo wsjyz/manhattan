@@ -66,6 +66,8 @@ public class ITeacherDetailDaoImpl extends BaseDAO implements ITeacherDetailDao 
         sql.append("on t.user_id=ua.resource_id ")
                 .append(" where 1=1 ");
         List<Object> params = new ArrayList<Object>();
+        sql.append(" and ua.status=? ");
+        params.add(MhtConstant.SUCCESS);
         if (StringUtils.isNotBlank(userId)) {
             sql.append(" and ua.user_id = ? ");
             params.add(userId);
@@ -237,6 +239,9 @@ public class ITeacherDetailDaoImpl extends BaseDAO implements ITeacherDetailDao 
         sql.append("on t.user_id=ua.resource_id ")
                 .append(" where 1=1 ");
         List<Object> params = new ArrayList<Object>();
+
+        sql.append(" and ua.status = ? ");
+        params.add(MhtConstant.SUCCESS);
         if (StringUtils.isNotBlank(userId)) {
             sql.append(" and ua.user_id = ? ");
             params.add(userId);
