@@ -89,4 +89,14 @@ public class PaymentController {
         view.setViewName("call_back_url");
         return view;
     }
+
+    @RequestMapping("/toMerchantUrl")
+    public ModelAndView toMerchantUrl(@RequestParam String out_trade_no) {
+        Wallet wallet = walletService.getWalletByPayNo(out_trade_no);
+        ModelAndView view = new ModelAndView();
+        view.addObject("WIDsubject", wallet.getSubject());
+        view.addObject("WIDtotal_fee", wallet.getMoney());
+        view.setViewName("payment");
+        return view;
+    }
 }

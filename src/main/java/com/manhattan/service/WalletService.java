@@ -20,4 +20,6 @@ public interface WalletService {
     Wallet saveWallet(Wallet wallet);
 
     int updateWalletByPayNo(String out_trade_no);
+
+    public Wallet getWalletByPayNo(String payNo);
 }

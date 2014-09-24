@@ -67,4 +67,9 @@ public class WalletServiceImpl implements WalletService {
     public int updateWalletByPayNo(String out_trade_no) {
         return walletDao.updateWalletByPayNo(out_trade_no);
     }
+
+    @Override
+    public Wallet getWalletByPayNo(String payNo) {
+        return walletDao.findByPayNo(payNo);
+    }
 }

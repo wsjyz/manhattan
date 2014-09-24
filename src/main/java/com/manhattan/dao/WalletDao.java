@@ -24,4 +24,6 @@ public interface WalletDao extends JpaRepository<Wallet, String> {
     @Transactional
     @Query(value = "update Wallet w set w.payStatus='SUCCESS' where w.payNo=:out_trade_no")
     int updateWalletByPayNo(String out_trade_no);
+
+    Wallet findByPayNo(String payNo);
 }
