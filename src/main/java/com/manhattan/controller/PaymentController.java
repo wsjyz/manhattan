@@ -3,9 +3,11 @@ package com.manhattan.controller;
 import com.alipay.util.UtilDate;
 import com.manhattan.domain.Appointment;
 import com.manhattan.domain.Course;
+import com.manhattan.domain.TeacherDetail;
 import com.manhattan.domain.Wallet;
 import com.manhattan.service.AppointmentService;
 import com.manhattan.service.CourseService;
+import com.manhattan.service.TeacherDetailService;
 import com.manhattan.service.WalletService;
 import com.manhattan.util.MhtConstant;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,18 +35,25 @@ public class PaymentController {
     private WalletService walletService;
     @Autowired
     private CourseService courseService;
+    @Autowired
+    private TeacherDetailService teacherDetailService;
 
     @RequestMapping("payment")
     public ModelAndView toPay(@ModelAttribute Appointment appointment,
                               @RequestParam String subject,
                               @RequestParam(required = false) String money) {
         String payNo=UtilDate.getOrderNum();
-        if (MhtConstant.USER_ACTION_LISTEN_COURSE.equals(appointment.getResourceType())) {
+        if (MhtConstant.USER_ACTION_LISTEN_COURSE.equals(appointment.getResourceType())||
+                MhtConstant.USER_ACTION_LISTEN_TEACHER.equals(appointment.getResourceType())) {
             money = "50";
         }else if(MhtConstant.USER_ACTION_APPOINTMENT_COURSE.equals(appointment.getResourceType())){
             String courseId=appointment.getResourceId();
             Course course=courseService.load(courseId);
             money = course.getExpense()+"";
+        }else if(MhtConstant.USER_ACTION_APPOINTMENT_TEACHER.equals(appointment.getResourceType())){
+            String userId=appointment.getResourceId();
+            TeacherDetail teacherDetail=teacherDetailService.findTeacherDetail(userId);
+            money = teacherDetail.getClassFees()+"";
         }
 
         appointment.setAppointmentTime(new Date());
