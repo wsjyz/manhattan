@@ -26,7 +26,7 @@ public class SmsSendServiceImpl implements SmsSendService {
 
     @Override
     public boolean sendSms(String tel, String authCode) {
-        String message="&content=恭喜您成为本站荣誉会员，您的验证码为"+authCode+"。【上海曼哈顿英语】";
+        String message="&msgText=恭喜您成为本站荣誉会员，您的验证码为"+authCode+"。【上海曼哈顿英语】";
         String url=MhtConstant.SMS_URL+tel+message;
         HttpPost sendUrl = new HttpPost(url);
         HttpClient http = new DefaultHttpClient();
