@@ -25,7 +25,7 @@ public class MhtConstant {
     public final static String QUESTION_STATUS_UNANSWERED="UNANSWER";
 
     //短信API
-    public final static String SMS_URL="http://www.jianzhou.sh.cn/JianzhouSMSWSServer/services/BusinessService?account=sdk_shmhd&password=10000963&destmobile=";
+    public final static String SMS_URL="http://www.jianzhou.sh.cn/JianzhouSMSWSServer/http/sendBatchMessage?account=sdk_shmhd&password=10000963&destmobile=";
 
     public static final String ERROR_CODE = "ErrorMsg";
 
