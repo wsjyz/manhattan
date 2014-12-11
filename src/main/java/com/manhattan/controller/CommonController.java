@@ -32,7 +32,7 @@ public class CommonController {
             jsonResult.setMessage("此手机号已经注册!");
             return jsonResult;
         }
-        String authCode = StringUtils.upperCase(RandomStringUtils.randomAlphanumeric(6));
+        String authCode = RandomStringUtils.randomNumeric(6);
         Boolean res = smsSendService.sendSms(mobile, authCode);
         jsonResult.setSuccess(res);
         jsonResult.setData(authCode);

@@ -109,7 +109,7 @@ public class RemoteController {
     public
     @ResponseBody
     String getAuthCode(@RequestParam("tel") String tel,HttpServletResponse response) {
-        String authCode = StringUtils.upperCase(RandomStringUtils.randomAlphanumeric(6));
+        String authCode = RandomStringUtils.randomNumeric(6);
         User user=userService.findUserByMobile(tel);
         if(user==null){
         	user=new User();

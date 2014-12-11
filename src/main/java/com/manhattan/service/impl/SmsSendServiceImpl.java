@@ -12,10 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import sun.net.www.protocol.http.HttpURLConnection;
+
 
 /**
  * Created by Administrator on 2014/6/5 0005.
@@ -23,41 +27,46 @@ import java.io.InputStreamReader;
 @Service
 public class SmsSendServiceImpl implements SmsSendService {
 
-
     @Override
     public boolean sendSms(String tel, String authCode) {
-        String message="&msgText=恭喜您成为本站荣誉会员，您的验证码为"+authCode+"。【上海曼哈顿英语】";
-        String url=MhtConstant.SMS_URL+tel+message;
-        HttpPost sendUrl = new HttpPost(url);
-        HttpClient http = new DefaultHttpClient();
-        HttpResponse response = null;
         try {
-            response = http.execute(sendUrl);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (response.getStatusLine().getStatusCode() == 200) {
-            HttpEntity entity = response.getEntity();
-            InputStream in = null;
-            try{
-                in = entity.getContent();
+            URL postUrl = new URL(MhtConstant.SMS_URL);
+            HttpURLConnection connection = (HttpURLConnection) postUrl.openConnection();
+            connection.setDoOutput(true);
+            connection.setDoInput(true);
+            connection.setRequestMethod("POST");
+            connection.setUseCaches(false);
+            connection.setInstanceFollowRedirects(true);
+            connection.setRequestProperty("Content-Type",
+                    "application/x-www-form-urlencoded");
+            connection.connect();
+            DataOutputStream out = new DataOutputStream(connection
+                    .getOutputStream());
+            String content = "account=" + MhtConstant.SMS_ACOUNT + "&" + "password=" + MhtConstant.SMS_PASSWORD + "&" + "destmobile=" + tel + "&"
+                    + "msgText=" + URLEncoder.encode("验证码：[" + authCode + "]您正在申请注册成为本站会员【曼哈顿英语】", "UTF-8");
 
-                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-                String line = null;
-                while ((line = reader.readLine()) != null) {
-                    System.out.println(line);
-                }
-                return true;
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally{
-                if(in != null)
-                    try {
-                        in.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+            System.out.println(content);
+            out.writeBytes(content);
+
+            out.flush();
+            out.close(); // flush and close
+            BufferedReader reader = new BufferedReader(new InputStreamReader(
+                    connection.getInputStream()));
+            String line;
+            System.out.println("=============================");
+            System.out.println("Contents of post request ends");
+            System.out.println("=============================");
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
             }
+            System.out.println("=============================");
+            System.out.println("Contents of post request ends");
+            System.out.println("=============================");
+            reader.close();
+            connection.disconnect();
+            return true;
+        } catch (Exception e) {
+
         }
         return false;
     }
